@@ -1,0 +1,13 @@
+<%= form_tag({ :controller => 'bitcoin_app', :action => 'sent' },{ :method => :post}) do %>
+    <%= label_tag :address %> 
+    <%= text_field_tag :address %><br>
+    <%= label_tag :amount %> 
+    <%= text_field_tag :amount %><br>
+    <%= submit_tag "送金"%>
+<% end %>
+
+
+<br>
+<%= link_to 'マイニング', mining_path %>
+<br>
+<%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>

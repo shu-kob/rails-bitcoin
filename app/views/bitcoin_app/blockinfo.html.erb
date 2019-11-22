@@ -1,0 +1,38 @@
+<td><%= @blockinfos %></td><br>
+
+<br>
+
+<td><%= @blockinfos['height'] %></td><br>
+
+<br>
+
+<td><%= @blockinfos['hash'] %></td><br>
+
+<br>
+
+<td><%= @blockinfos['tx'] %></td><br>
+
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th>トランザクション</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for i in 0..@blockinfos['tx'].length-1 %>
+      <tr>
+        <td><%= link_to @blockinfos['tx'][i], txinfo_path(@blockinfos['tx'][i]) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<%= link_to '送金画面', sendings_path %>
+<br>
+<%= link_to 'マイニング', mining_path %>
+<br>
+<%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>

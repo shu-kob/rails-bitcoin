@@ -1,0 +1,22 @@
+<%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
+
+<br>
+blockHeight:
+<br>
+<td><%= @getblock['height'] %></td><br>
+
+<br>
+blockHash:
+<br>
+<td><%= @blockhash[0] %></td><br>
+
+<br>
+blockInfo:
+<br>
+<td><%= @getblock %></td><br>
+
+<br>
+
+<%= link_to '送金画面', sendings_path %>
+<br>
+<%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>
