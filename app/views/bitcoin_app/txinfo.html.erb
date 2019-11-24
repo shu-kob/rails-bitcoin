@@ -1,6 +1,12 @@
-<td><%= @txid %></td><br>
+TXID:
 <br>
-<td><%= @txinfo %></td><br>
+<td><%= @txid %></td><br>
+TO:
+<br>
+<td><%= @txinfo['vout'][0]['scriptPubKey']['addresses'][0] %></td><br>
+送金額:
+<br>
+<td><%= @txinfo['vout'][0]['value'] %></td><br>
 
 <%= link_to '送金画面', sendings_path %>
 <br>
