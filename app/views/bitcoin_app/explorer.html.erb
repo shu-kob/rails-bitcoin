@@ -24,6 +24,9 @@
 </table>
 
 <br>
+<%= button_to "前", {controller: 'bitcoin_app', action: 'explorer'}, {method: :get} %>
+<%= button_to "次", {controller: 'bitcoin_app', action: 'explorer'}, {method: :get} %>　
+<br>
 
 <%= link_to '送金画面', sendings_path %>
 <br>
