@@ -1,12 +1,58 @@
 TXID:
 <br>
 <td><%= @txid %></td><br>
-TO:
+
+<table>
+  <thead>
+    <tr>
+        <th>送金元</th>
+        <th>金額</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if(@vin_address) %>
+      <% for k in 0..@vin_address.length-1 %>
+        <tr>
+          <td><%= @vin_address[k] %></td>
+          <td><%= @vin_value[k] %></td>
+        </tr>
+      <% end %>
+    <% elsif %>
+      <tr>
+        <td>"Coinbase"</td>
+        <td>"Transaction"</td>
+    <% end %>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+        <th>送金先</th>
+        <th>送金額</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for i in 0..@txinfo['vout'].length-1 %>
+      <tr>
+        <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
+          <td><%= @txinfo['vout'][i]['scriptPubKey']['addresses'][0] %></td>
+        <% elsif %>
+          <td>"Null data"</td>
+        <% end %>
+        <td><%= @txinfo['vout'][i]['value'] %></td><br>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 <br>
-<td><%= @txinfo['vout'][0]['scriptPubKey']['addresses'][0] %></td><br>
-送金額:
-<br>
-<td><%= @txinfo['vout'][0]['value'] %></td><br>
+
+
+
+
 
 <%= link_to '送金画面', sendings_path %>
 <br>

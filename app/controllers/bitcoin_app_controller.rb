@@ -34,6 +34,27 @@ class BitcoinAppController < ApplicationController
         render template: 'bitcoin_app/explorer'
     end
 
+    def txinfo
+        @txid = params[:id]
+        @rawtx = bitcoinRPC('getrawtransaction',[@txid])
+        @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
+        vin_address = []
+        vin_value = []
+
+        for k in 0..@txinfo['vin'].length-1
+            @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
+            logger.debug @vinrawtx
+            @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+            logger.debug @vintx
+            @vin_outindex = @txinfo['vin'][k]['vout']
+            if(@txinfo['vin'][k]['vout'])
+                @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
+                @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
+            end
+        end
+        render template: 'bitcoin_app/txinfo'
+    end
+
     def blockinfo
         @blockhashid = params[:id]
         @blockinfos = bitcoinRPC('getblock',[@blockhashid])
@@ -80,13 +101,20 @@ class BitcoinAppController < ApplicationController
         logger.debug @txid
         @rawtx = bitcoinRPC('getrawtransaction',[@txid])
         @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
-        render template: 'bitcoin_app/txinfo'
-    end
+        vin_address = []
+        vin_value = []
 
-    def txinfo
-        @txid = params[:id]
-        @rawtx = bitcoinRPC('getrawtransaction',[@txid])
-        @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
+        for k in 0..@txinfo['vin'].length-1
+            @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
+            logger.debug @vinrawtx
+            @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+            logger.debug @vintx
+            @vin_outindex = @txinfo['vin'][k]['vout']
+            if(@txinfo['vin'][k]['vout'])
+                @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
+                @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
+            end
+        end
         render template: 'bitcoin_app/txinfo'
     end
 
