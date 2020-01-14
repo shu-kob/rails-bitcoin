@@ -49,7 +49,7 @@ class BitcoinAppController < ApplicationController
         @key = Bitcoin::Key.generate
         logger.debug @key
 
-        address = "2MyGPGbkuGfmFMM1B3EyQ74sYYpS3aa1wnp"
+        address = "2NA9JGD8MKjpffNsxqzPUtqPZiwYmzB9QEz"
 
         @txid = bitcoinRPC('sendtoaddress',[address, 1])
         logger.debug @txid
@@ -91,7 +91,7 @@ class BitcoinAppController < ApplicationController
     end
 
     def mining
-        address = "2MyGPGbkuGfmFMM1B3EyQ74sYYpS3aa1wnp"
+        address = "2NA9JGD8MKjpffNsxqzPUtqPZiwYmzB9QEz"
 
         @blockhash = bitcoinRPC('generatetoaddress',[1, address])
         logger.debug @blockhash
