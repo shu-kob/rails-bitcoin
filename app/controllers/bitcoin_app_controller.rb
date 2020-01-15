@@ -5,7 +5,7 @@ Bitcoin.chain_params = :regtest
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=18332
+PORT=18443
 
 
 class BitcoinAppController < ApplicationController
