@@ -2,51 +2,56 @@ TXID:
 <br>
 <td><%= @txid %></td><br>
 
-<table>
-  <thead>
-    <tr>
-        <th>送金元</th>
-        <th>金額</th>
-    </tr>
-  </thead>
+<% if @rawtx.nil? %>
+  <td>このTX <%= @txid %> は見つかりませんでした</td>
+<% else %>
 
-  <tbody>
-    <% if(@vin_address) %>
-      <% for k in 0..@vin_address.length-1 %>
-        <tr>
-          <td><%= @vin_address[k] %></td>
-          <td><%= @vin_value[k] %></td>
-        </tr>
-      <% end %>
-    <% elsif %>
+  <table>
+    <thead>
       <tr>
-        <td>"Coinbase"</td>
-        <td>"Transaction"</td>
-    <% end %>
-  </tbody>
-</table>
+          <th>送金元</th>
+          <th>金額</th>
+      </tr>
+    </thead>
 
-<table>
-  <thead>
-    <tr>
+    <tbody>
+       <% if(@vin_address) %>
+          <% for k in 0..@vin_address.length-1 %>
+            <tr>
+             <td><%= @vin_address[k] %></td>
+             <td><%= @vin_value[k] %></td>
+            </tr>
+          <% end %>
+        <% else %>
+         <tr>
+            <td>"Coinbase"</td>
+           <td>"Transaction"</td>
+        <% end %>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
         <th>送金先</th>
         <th>送金額</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% for i in 0..@txinfo['vout'].length-1 %>
-      <tr>
-        <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
-          <td><%= @txinfo['vout'][i]['scriptPubKey']['addresses'][0] %></td>
-        <% elsif %>
-          <td>"Null data"</td>
-        <% end %>
-        <td><%= @txinfo['vout'][i]['value'] %></td><br>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% for i in 0..@txinfo['vout'].length-1 %>
+        <tr>
+          <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
+            <td><%= @txinfo['vout'][i]['scriptPubKey']['addresses'][0] %></td>
+          <% elsif %>
+            <td>"Null data"</td>
+          <% end %>
+          <td><%= @txinfo['vout'][i]['value'] %></td><br>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>
 
 <br>
 
