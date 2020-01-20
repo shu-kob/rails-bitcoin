@@ -10,6 +10,12 @@
 
 <br>
 
+<% if(@blockinfos['previousblockhash']) %>
+  <td><%= link_to @blockinfos['previousblockhash'], blockinfo_path(@blockinfos['previousblockhash']) %></td>
+<% end %>
+
+<br>
+
 <td><%= @blockinfos['tx'] %></td><br>
 
 <br>
