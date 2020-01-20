@@ -28,6 +28,13 @@
 <%= button_to "次", {controller: 'bitcoin_app', action: 'explorer'}, {method: :get} %>　
 <br>
 
+<br>
+<%= form_tag(search_path,:method => 'get') do %>
+  <%= text_field_tag :search %>
+  <%= submit_tag 'Search', :name => nil %>
+<% end %>
+<br>
+
 <%= link_to '送金画面', sendings_path %>
 <br>
 <%= link_to 'マイニング', mining_path %>

@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   get '/sendings', to: 'bitcoin_app#sendings'
   get 'sent', to: 'bitcoin_app#sent'
   post '/sent', to: 'bitcoin_app#sent'
+  get '/search', to: 'bitcoin_app#search'
   get '/keys', to: 'bitcoin_app#keys'
+  get '/notfound', to: 'bitcoin_app#notfound'
 end
