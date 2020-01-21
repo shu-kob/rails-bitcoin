@@ -149,6 +149,33 @@ class BitcoinAppController < ApplicationController
         render template: 'bitcoin_app/mining'
     end
 
+    def search
+        @posts = params[:search]
+        logger.debug @posts.size
+        if @posts.size == 64
+            @txSearch = bitcoinRPC('getrawtransaction',[@posts])
+            if @txSearch.nil?
+                @blockinfos = bitcoinRPC('getblock',[@posts])
+                if @blockinfos
+                    render template: 'bitcoin_app/blockinfo'
+                else
+                    render template: 'bitcoin_app/notfound'
+                end
+            end
+        else
+            logger.debug @posts
+            @posts_num = @posts.to_i
+            @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
+            logger.debug @blockSearch
+            if @blockSearch
+                @blockinfos = bitcoinRPC('getblock',[@blockSearch])
+                render template: 'bitcoin_app/blockinfo'
+            else
+                render template: 'bitcoin_app/notfound'
+            end
+        end
+    end
+
     private
     def bitcoinRPC(method,param)
         http = Net::HTTP.new(HOST, PORT)
