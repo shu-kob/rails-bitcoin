@@ -4,7 +4,7 @@ require 'json'
 Bitcoin.chain_params = :regtest
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
-HOST="localhost"
+HOST="host.docker.internal"
 PORT=18443
 
 
