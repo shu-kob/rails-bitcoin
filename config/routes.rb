@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   get '/tx/:id', to: 'bitcoin_app#txinfo', as: 'txinfo'
   get '/block/:id', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
   get '/sendings', to: 'bitcoin_app#sendings'
-  get 'sent', to: 'bitcoin_app#sent'
   post '/sent', to: 'bitcoin_app#sent'
   get '/search', to: 'bitcoin_app#search'
   get '/keys', to: 'bitcoin_app#keys'
