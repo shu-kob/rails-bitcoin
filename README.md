@@ -53,19 +53,19 @@ $ bitcoin-cli -regtest stop
 
 いちいちオプションをつけて操作するのが面倒なので、設定ファイルにまとめましょう。
 
-### Macの場合
+#### Macの場合
 
 ```
 $ cd "/Users/${USER}/Library/Application Support/Bitcoin/"
 ```
 
-### Linuxの場合
+#### Linuxの場合
 
 ```
 $ cd ~/.bitcoin
 ```
 
-### Mac, Linux共通 
+#### Mac, Linux共通 
 
 生成されているbitcoin.confを編集
 
@@ -89,7 +89,7 @@ $ bitcoind
 $ bitcoin-cli getblockchaininfo
 ```
 
-起動したままにして、Ruby on Railsの環境を整えていきます。
+bitcoindを起動したままにして、Ruby on Railsの環境を整えていきます。
 
 ## Ruby on Railsのインストール
 
