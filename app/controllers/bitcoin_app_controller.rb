@@ -4,7 +4,7 @@ require 'json'
 Bitcoin.chain_params = :regtest
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
-HOST="host.docker.internal"
+HOST="localhost"
 PORT=18443
 
 
@@ -13,8 +13,8 @@ class BitcoinAppController < ApplicationController
         @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
         i = @blockchaininfo['blocks']
         logger.debug @blockchaininfo
-        if i > 10
-            @num = 10
+        if i > 25
+            @num = 25
         else
             @num = i
         end
@@ -80,6 +80,18 @@ class BitcoinAppController < ApplicationController
 
         render template: 'bitcoin_app/blockinfo'
     end
+
+    def mining
+        listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+        address = listaddressgroupings[0][0][0]
+        @blockhash = bitcoinRPC('generatetoaddress',[1, address])
+        logger.debug @blockhash
+        logger.debug @blockhash[0]
+        @getblock = bitcoinRPC('getblock',[@blockhash[0]])
+        logger.debug @getblock
+
+        render template: 'bitcoin_app/mining'
+    end
     
     def keys
         @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
@@ -89,7 +101,8 @@ class BitcoinAppController < ApplicationController
         @key = Bitcoin::Key.generate
         logger.debug @key
 
-        address = "2NA9JGD8MKjpffNsxqzPUtqPZiwYmzB9QEz"
+        listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+        address = listaddressgroupings[0][0][0]
 
         @txid = bitcoinRPC('sendtoaddress',[address, 1])
         logger.debug @txid
@@ -137,42 +150,49 @@ class BitcoinAppController < ApplicationController
         render template: 'bitcoin_app/txinfo'
     end
 
-    def mining
-        address = "2NA9JGD8MKjpffNsxqzPUtqPZiwYmzB9QEz"
-
-        @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-        logger.debug @blockhash
-        logger.debug @blockhash[0]
-        @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-        logger.debug @getblock
-
-        render template: 'bitcoin_app/mining'
-    end
-
     def search
         @posts = params[:search]
-        logger.debug @posts.size
+        flag = "notfound"
         if @posts.size == 64
-            @txSearch = bitcoinRPC('getrawtransaction',[@posts])
-            if @txSearch.nil?
+            if @posts == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"
+                @txid = @posts
+                flag = "txinfo"
+            elsif @txSearch = bitcoinRPC('getrawtransaction',[@posts])
+                @rawtx = @txSearch
+                @txid = @posts
+                @txinfo = bitcoinRPC('decoderawtransaction',[@txSearch])
+                vin_address = []
+                vin_value = []
+                for k in 0..@txinfo['vin'].length-1
+                    @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
+                    @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+                    @vin_outindex = @txinfo['vin'][k]['vout']
+                    if(@txinfo['vin'][k]['vout'])
+                        @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
+                        @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
+                    end
+                end
+                flag = "txinfo"                
+            else
                 @blockinfos = bitcoinRPC('getblock',[@posts])
                 if @blockinfos
-                    render template: 'bitcoin_app/blockinfo'
-                else
-                    render template: 'bitcoin_app/notfound'
+                    flag = "blockinfo"
                 end
             end
-        else
-            logger.debug @posts
+        elsif @posts =~ /\A[0-9]+\z/
             @posts_num = @posts.to_i
-            @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
-            logger.debug @blockSearch
-            if @blockSearch
+            logger.debug @posts_num
+            if @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
                 @blockinfos = bitcoinRPC('getblock',[@blockSearch])
-                render template: 'bitcoin_app/blockinfo'
-            else
-                render template: 'bitcoin_app/notfound'
+                flag = "blockinfo"
             end
+        end
+        if flag == "txinfo"
+            render template: 'bitcoin_app/txinfo'
+        elsif flag == "blockinfo"
+            render template: 'bitcoin_app/blockinfo'
+        else
+            render template: 'bitcoin_app/notfound'
         end
     end
 
