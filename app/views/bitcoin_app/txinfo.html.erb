@@ -1,36 +1,40 @@
-TXID:
-<br>
-<td><%= @txid %></td><br>
+<% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
+  <td>Genesis Blockのcoinbase TXです。</td>
+<% elsif @rawtx.nil? %>
+    <td>このTX <%= @txid %> は見つかりませんでした</td>
+  <% else %>
 
-<% if @rawtx.nil? %>
-  <td>このTX <%= @txid %> は見つかりませんでした</td>
-<% else %>
+<table border="1">
+<tr><th>トランザクションID</th><td><%= @txid %></td></tr>
+</table>
 
-  <table>
+  <table border="1">
+  <% if(@vin_address) %>
     <thead>
       <tr>
-          <th>送金元</th>
-          <th>金額</th>
+        <th>送金元</th>
+        <th>額</th>
       </tr>
     </thead>
 
     <tbody>
-       <% if(@vin_address) %>
           <% for k in 0..@vin_address.length-1 %>
             <tr>
              <td><%= @vin_address[k] %></td>
              <td><%= @vin_value[k] %></td>
             </tr>
           <% end %>
-        <% else %>
-         <tr>
-            <td>"Coinbase"</td>
-           <td>"Transaction"</td>
-        <% end %>
     </tbody>
-  </table>
+    <% else %>
+    <tr>
+    <td>新規発行</th>
+    <td>Coinbase Transaction</td>
+  </tr>
+    
+    <% end %>
 
-  <table>
+
+  <table  border="1">
     <thead>
       <tr>
         <th>送金先</th>

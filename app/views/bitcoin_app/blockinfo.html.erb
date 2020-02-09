@@ -1,26 +1,47 @@
-<td><%= @blockinfos %></td><br>
+<table border="1">
+  <tr>
+    <th>ブロック高</th><td><%= @blockinfos['height'] %></td>
+  </tr>
+  <tr>
+    <th>ブロックハッシュ</th><td><%= @blockinfos['hash'] %></td>
+  </tr>
+  <tr>
+    <th>承認数</th><td><%= @blockinfos['confirmations'] %></td>
+  </tr>
+  <tr>
+    <th>生成時刻</th><td><%= Time.at(@blockinfos['time']) %></td>
+  </tr>
+  <tr>
+    <th>次のブロック</th>
+    <% if(@blockinfos['nextblockhash']) %>
+      <td><%= link_to @blockinfos['nextblockhash'], blockinfo_path(@blockinfos['nextblockhash']) %></td>
+    <% else %>
+      <td>なし</td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>前のブロック</th>
+    <% if(@blockinfos['previousblockhash']) %>
+      <td><%= link_to @blockinfos['previousblockhash'], blockinfo_path(@blockinfos['previousblockhash']) %></td>
+    <% else %>
+      <td>なし</td>
+    <% end %>
+  </tr>
+  <tr>
+    <th>マークルルート</th>
+    <td><%= @blockinfos['merkleroot'] %></td>
+  </tr>
+  <tr>
+    <th>ナンス</th>
+    <td><%= @blockinfos['nonce'] %></td>
+  </tr>
+  <tr>
+    <th>トランザクション数</th>
+    <td><%= @blockinfos['nTx'] %></td>
+  </tr>
+</table>
 
-<br>
-
-<td><%= @blockinfos['height'] %></td><br>
-
-<br>
-
-<td><%= @blockinfos['hash'] %></td><br>
-
-<br>
-
-<% if(@blockinfos['previousblockhash']) %>
-  <td><%= link_to @blockinfos['previousblockhash'], blockinfo_path(@blockinfos['previousblockhash']) %></td>
-<% end %>
-
-<br>
-
-<td><%= @blockinfos['tx'] %></td><br>
-
-<br>
-
-<table>
+<table border="1">
   <thead>
     <tr>
       <th>トランザクション</th>

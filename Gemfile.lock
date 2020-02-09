@@ -138,7 +138,6 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
-    pg (1.2.2)
     protobuf (3.8.5)
       activesupport (>= 3.2)
       middleware
@@ -217,6 +216,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sqlite3 (1.4.2)
     thor (0.20.3)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -258,13 +258,13 @@ DEPENDENCIES
   capybara (>= 2.15)
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
-  pg (>= 0.18, < 2.0)
   puma (~> 4.3)
   rails (~> 6.0.1)
   sass-rails (>= 6)
   selenium-webdriver
   spring
   spring-watcher-listen (~> 2.0.0)
+  sqlite3 (~> 1.4)
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 3.3.0)
@@ -272,7 +272,7 @@ DEPENDENCIES
   webpacker (~> 4.0)
 
 RUBY VERSION
-   ruby 2.6.4p104
+   ruby 2.6.5p114
 
 BUNDLED WITH
    1.17.2
