@@ -59,6 +59,15 @@
   </tbody>
 </table>
 
+
+<br>
+ブロックハッシュ、ブロック高、トランザクションIDで検索
+<%= form_tag(search_path,:method => 'get') do %>
+  <%= text_field_tag :search %>
+  <%= submit_tag 'Search', :name => nil %>
+<% end %>
+<br>
+
 <%= link_to '送金画面', sendings_path %>
 <br>
 <%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>
