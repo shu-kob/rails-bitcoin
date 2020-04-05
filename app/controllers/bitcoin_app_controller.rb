@@ -92,6 +92,24 @@ class BitcoinAppController < ApplicationController
 
         render template: 'bitcoin_app/mining'
     end
+
+    def getnewaddress
+        @newaddress_bech32 = bitcoinRPC('getnewaddress',["", "bech32"])
+        logger.debug @newaddress_bech32
+
+        render template: 'bitcoin_app/getnewaddress'
+    end
+
+    def wallet
+        @listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+        logger.debug @listaddressgroupings
+
+        if @listaddressgroupings
+            render template: 'bitcoin_app/wallet'
+        else
+            render template: 'bitcoin_app/getnewaddress'
+        end
+    end
     
     def keys
         @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
