@@ -1,0 +1,37 @@
+<%= button_to "新しいbech32アドレス生成", {controller: 'bitcoin_app', action: 'getnewaddress'}, {method: :get} %>
+
+<br>
+<br>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>アドレス</th>
+      <th>残高</th>
+    </tr>
+  </thead>
+
+  <tbody>
+        <% for m in 0..@listaddressgroupings.length-1 %>
+            <% for n in 0..@listaddressgroupings[m].length-1 %>
+                <tr>
+                    <td><%= @listaddressgroupings[m][n][0] %></td>
+                    <td><%= @listaddressgroupings[m][n][1] %></td>
+                </tr>
+            <% end %>
+        <% end %>
+  </tbody>
+</table>
+
+<br>
+<br>
+ブロックハッシュ、ブロック高、トランザクションIDで検索
+<%= form_tag(search_path,:method => 'get') do %>
+  <%= text_field_tag :search %>
+  <%= submit_tag 'Search', :name => nil %>
+<% end %>
+<br>
+
+<%= link_to '送金画面', sendings_path %>
+<br>
+<%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>

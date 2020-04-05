@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   get '/search', to: 'bitcoin_app#search'
   get '/keys', to: 'bitcoin_app#keys'
   get '/notfound', to: 'bitcoin_app#notfound'
+  get '/getnewaddress', to: 'bitcoin_app#getnewaddress'
+  get '/wallet', to: 'bitcoin_app#wallet'
 end
