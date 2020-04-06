@@ -81,6 +81,11 @@ class BitcoinAppController < ApplicationController
         render template: 'bitcoin_app/blockinfo'
     end
 
+    def addressinfo
+        @addressid = params[:id]
+        render template: 'bitcoin_app/addressinfo'
+    end
+
     def mining
         listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
         address = listaddressgroupings[0][0][0]
