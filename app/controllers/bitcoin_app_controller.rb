@@ -83,12 +83,32 @@ class BitcoinAppController < ApplicationController
 
     def addressinfo
         @addressid = params[:id]
-        render template: 'bitcoin_app/addressinfo'
+        if @addressid.size == 35 or @addressid.size == 44
+            mempoolinfo = bitcoinRPC('getrawmempool',[])
+            unconfirmedtx = []
+            for n in 0..mempoolinfo.length-1
+                memrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
+                @memdecodetx = bitcoinRPC('decoderawtransaction',[memrawtx])
+                logger.debug @memdecodetx['vout'].length
+                for q in 0..@memdecodetx['vout'].length-1
+                    if @memdecodetx['vout'][q]['scriptPubKey']['addresses'][0] == @addressid
+                        @unconfirmedtx = unconfirmedtx.push(@memdecodetx)
+                        render template: 'bitcoin_app/addressinfo'
+                    end
+                end
+            end
+            # blockinfo = bitcoinRPC('getblockchaininfo',[])
+            # current_height = blockinfo.blocks
+            # r = current_height
+            # for p in 0..current_height
+        else
+            render template: 'bitcoin_app/notfound'
+        end
     end
 
     def mining
         listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-        address = listaddressgroupings[0][0][0]
+        address = listaddressgroupings[1][0][0]
         @blockhash = bitcoinRPC('generatetoaddress',[1, address])
         logger.debug @blockhash
         logger.debug @blockhash[0]
