@@ -1,0 +1,33 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+div#wrapper {
+    position: relative;
+    box-sizing: border-box;
+    min-height: 100%;
+    margin: 0 auto;
+    padding-bottom: 48px;
+    background-color: #ffffff;
+}
+header {
+    padding: 5px;
+    background-color: #eca437;
+    color: #000000;
+    span.logo-mark {
+        font-weight: bold;
+    }
+}
+footer {
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    background-color: #666666;
+    color: #eeeeee;
+    p {
+        text-align: center;
+        padding: 5px;
+        margin: 0;
+    }
+}

@@ -1,3 +1,6 @@
+<% @title = "ウォレット" %>
+<h1><%= @title %></h1>
+
 <%= button_to "新しいbech32アドレス生成", {controller: 'bitcoin_app', action: 'getnewaddress'}, {method: :get} %>
 
 <br>
