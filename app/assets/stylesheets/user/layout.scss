@@ -1,3 +1,6 @@
+@import "colors";
+@import "dimensions";
+
 html, body {
     margin: 0;
     padding: 0;
@@ -8,13 +11,13 @@ div#wrapper {
     box-sizing: border-box;
     min-height: 100%;
     margin: 0 auto;
-    padding-bottom: 48px;
-    background-color: #ffffff;
+    padding-bottom: ($wide + $moderate) * 2 + $standard_line_height;
+    background-color: $very_light_gray;
 }
 header {
-    padding: 5px;
-    background-color: #eca437;
-    color: #000000;
+    padding: $moderate;
+    background-color: $bitcoin_orange;
+    color: $black;
     span.logo-mark {
         font-weight: bold;
     }
@@ -23,11 +26,11 @@ footer {
     bottom: 0;
     position: absolute;
     width: 100%;
-    background-color: #666666;
-    color: #eeeeee;
+    background-color: $dark_gray;
+    color: $very_light_gray;
     p {
         text-align: center;
-        padding: 5px;
+        padding: $moderate;
         margin: 0;
     }
 }
