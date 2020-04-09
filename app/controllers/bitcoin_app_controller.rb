@@ -85,22 +85,33 @@ class BitcoinAppController < ApplicationController
         @addressid = params[:id]
         if @addressid.size == 35 or @addressid.size == 44
             mempoolinfo = bitcoinRPC('getrawmempool',[])
-            unconfirmedtx = []
+            @addresstx = []
             for n in 0..mempoolinfo.length-1
                 memrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
                 @memdecodetx = bitcoinRPC('decoderawtransaction',[memrawtx])
-                logger.debug @memdecodetx['vout'].length
                 for q in 0..@memdecodetx['vout'].length-1
                     if @memdecodetx['vout'][q]['scriptPubKey']['addresses'][0] == @addressid
-                        @unconfirmedtx = unconfirmedtx.push(@memdecodetx)
-                        render template: 'bitcoin_app/addressinfo'
+                        @addresstx.push(@memdecodetx)
                     end
                 end
             end
-            # blockinfo = bitcoinRPC('getblockchaininfo',[])
-            # current_height = blockinfo.blocks
-            # r = current_height
-            # for p in 0..current_height
+            blockinfo = bitcoinRPC('getblockchaininfo',[])
+            current_height = blockinfo['blocks']
+            for p in 0..current_height-1
+                blockhash = bitcoinRPC('getblockhash',[current_height - p])
+                @blosckinfos = bitcoinRPC('getblock',[blockhash])
+                logger.debug @blosckinfos
+                for s in 0..@blosckinfos['tx'].length-1
+                    rawtxinfo = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
+                    @decodedtxinfo = bitcoinRPC('decoderawtransaction',[rawtxinfo])
+                    for t in 0..@decodedtxinfo['vout'].length-1
+                        if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
+                            @addresstx.push(@decodedtxinfo)
+                        end
+                    end
+                end
+            end
+            render template: 'bitcoin_app/addressinfo'
         else
             render template: 'bitcoin_app/notfound'
         end

@@ -13,11 +13,13 @@
   </thead>
 
   <tbody>
-        <% for m in 0..@unconfirmedtx.length-1 %>
+    <% if(@addresstx) %>
+        <% for m in 0..@addresstx.length-1 %>
                 <tr>
-                    <td><%= link_to @unconfirmedtx[m]['txid'], txinfo_path(@unconfirmedtx[m]['txid']) %></td>
+                    <td><%= link_to @addresstx[m]['txid'], txinfo_path(@addresstx[m]['txid']) %></td>
                 </tr>
         <% end %>
+    <% end %>
   </tbody>
 </table>
 
