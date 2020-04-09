@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/explorer', to: 'bitcoin_app#explorer'
   get '/tx/:id', to: 'bitcoin_app#txinfo', as: 'txinfo'
   get '/block/:id', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
+  get '/address/:id', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
   get '/sendings', to: 'bitcoin_app#sendings'
   post '/sent', to: 'bitcoin_app#sent'
   get '/search', to: 'bitcoin_app#search'

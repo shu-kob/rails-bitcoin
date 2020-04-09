@@ -1,3 +1,6 @@
+<% @title = "トランザクション情報" %>
+<h1><%= @title %></h1>
+
 <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
   <td>Genesis Blockのcoinbase TXです。</td>
 <% elsif @rawtx.nil? %>
@@ -20,7 +23,7 @@
     <tbody>
           <% for k in 0..@vin_address.length-1 %>
             <tr>
-             <td><%= @vin_address[k] %></td>
+             <td><%= link_to @vin_address[k], addressinfo_path(@vin_address[k]) %></td>
              <td><%= @vin_value[k] %></td>
             </tr>
           <% end %>
@@ -45,7 +48,7 @@
       <% for i in 0..@txinfo['vout'].length-1 %>
         <tr>
           <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
-            <td><%= @txinfo['vout'][i]['scriptPubKey']['addresses'][0] %></td>
+            <td><%= link_to @txinfo['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
           <% elsif %>
             <td>"Null data"</td>
           <% end %>

@@ -1,3 +1,6 @@
+<% @title = "送金" %>
+<h1><%= @title %></h1>
+
 <%= form_tag({ :controller => 'bitcoin_app', :action => 'sent' },{ :method => :post}) do %>
     <%= label_tag :address %> 
     <%= text_field_tag :address %><br>

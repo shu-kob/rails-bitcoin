@@ -1,28 +1,25 @@
-<% @title = "ウォレット" %>
+<% @title = "アドレス詳細" %>
 <h1><%= @title %></h1>
 
-<%= button_to "新しいbech32アドレス生成", {controller: 'bitcoin_app', action: 'getnewaddress'}, {method: :get} %>
-
-<br>
-<br>
+<tr>
+    <th>アドレス: </th><td><%= @addressid %></td>
+</tr>
 
 <table border="1">
   <thead>
     <tr>
-      <th>アドレス</th>
-      <th>残高</th>
+      <th>トランザクションID</th>
     </tr>
   </thead>
 
   <tbody>
-        <% for m in 0..@listaddressgroupings.length-1 %>
-            <% for n in 0..@listaddressgroupings[m].length-1 %>
+    <% if(@addresstx) %>
+        <% for m in 0..@addresstx.length-1 %>
                 <tr>
-                    <td><%= @listaddressgroupings[m][n][0] %></td>
-                    <td><%= @listaddressgroupings[m][n][1] %></td>
+                    <td><%= link_to @addresstx[m]['txid'], txinfo_path(@addresstx[m]['txid']) %></td>
                 </tr>
-            <% end %>
         <% end %>
+    <% end %>
   </tbody>
 </table>
 
@@ -36,5 +33,7 @@
 <br>
 
 <%= link_to '送金画面', sendings_path %>
+<br>
+<%= link_to 'マイニング', mining_path %>
 <br>
 <%= link_to 'ブロックチェーンエクスプローラ', explorer_path %>

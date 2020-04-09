@@ -81,9 +81,45 @@ class BitcoinAppController < ApplicationController
         render template: 'bitcoin_app/blockinfo'
     end
 
+    def addressinfo
+        @addressid = params[:id]
+        if @addressid.size == 35 or @addressid.size == 44
+            mempoolinfo = bitcoinRPC('getrawmempool',[])
+            @addresstx = []
+            for n in 0..mempoolinfo.length-1
+                memrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
+                @memdecodetx = bitcoinRPC('decoderawtransaction',[memrawtx])
+                for q in 0..@memdecodetx['vout'].length-1
+                    if @memdecodetx['vout'][q]['scriptPubKey']['addresses'][0] == @addressid
+                        @addresstx.push(@memdecodetx)
+                    end
+                end
+            end
+            blockinfo = bitcoinRPC('getblockchaininfo',[])
+            current_height = blockinfo['blocks']
+            for p in 0..current_height-1
+                blockhash = bitcoinRPC('getblockhash',[current_height - p])
+                @blosckinfos = bitcoinRPC('getblock',[blockhash])
+                logger.debug @blosckinfos
+                for s in 0..@blosckinfos['tx'].length-1
+                    rawtxinfo = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
+                    @decodedtxinfo = bitcoinRPC('decoderawtransaction',[rawtxinfo])
+                    for t in 0..@decodedtxinfo['vout'].length-1
+                        if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
+                            @addresstx.push(@decodedtxinfo)
+                        end
+                    end
+                end
+            end
+            render template: 'bitcoin_app/addressinfo'
+        else
+            render template: 'bitcoin_app/notfound'
+        end
+    end
+
     def mining
         listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-        address = listaddressgroupings[0][0][0]
+        address = listaddressgroupings[1][0][0]
         @blockhash = bitcoinRPC('generatetoaddress',[1, address])
         logger.debug @blockhash
         logger.debug @blockhash[0]
