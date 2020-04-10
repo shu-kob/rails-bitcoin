@@ -5,23 +5,46 @@
     <th>アドレス: </th><td><%= @addressid %></td>
 </tr>
 
+<% if(@addresstx) %>
 <table border="1">
   <thead>
-    <tr>
-      <th>トランザクションID</th>
-    </tr>
+      <tr>
+        <th>トランザクション一覧</th>
+      </tr>
   </thead>
-
   <tbody>
-    <% if(@addresstx) %>
-        <% for m in 0..@addresstx.length-1 %>
-                <tr>
-                    <td><%= link_to @addresstx[m]['txid'], txinfo_path(@addresstx[m]['txid']) %></td>
-                </tr>
-        <% end %>
+    <% for l in 0..@vin_txinfo.length-1 %>
+      <tr>
+        <th>トランザクションID</th><td><%= link_to @vin_txinfo[l]['txid'], txinfo_path(@vin_txinfo[l]['txid']) %></td>
+      </tr> 
+      <% for q in 0..@vin_txinfo[l]['vout'].length-1 %>
+        <tr>
+          <% if(@vin_txinfo[l]['vout'][q]["scriptPubKey"]["addresses"]) %>
+            <th>送金元</th><td><%= link_to @vin_txinfo[l]['vout'][q]["scriptPubKey"]["addresses"][0], addressinfo_path(@vin_txinfo[l]['vout'][q]["scriptPubKey"]["addresses"][0]) %></td>
+            <th>額</th><td><%= @vin_txinfo[l]['vout'][q]["value"] %><td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% end %>  
+
+    <% for m in 0..@addresstx.length-1 %>
+      <tr>
+          <th>トランザクションID</th><td><%= link_to @addresstx[m]['txid'], txinfo_path(@addresstx[m]['txid']) %></td>
+      </tr>    
+          <% for n in 0..@addresstx[m]['vout'].length-1 %>
+            <tr>
+            <% if(@addresstx[m]['vout'][n]["scriptPubKey"]["addresses"]) %>
+            <th>送金先</th><td><%= link_to @addresstx[m]['vout'][n]["scriptPubKey"]["addresses"][0], addressinfo_path(@addresstx[m]['vout'][n]["scriptPubKey"]["addresses"][0]) %></td>
+            <% else %>
+              <th>データ</th><td><%= @addresstx[m]['vout'][n]["scriptPubKey"]["type"] %></td>
+            <% end %>
+              <th>額</th><td><%= @addresstx[m]['vout'][n]["value"] %><td>
+          <% end %>
+      </tr>
     <% end %>
   </tbody>
 </table>
+<% end %>
 
 <br>
 <br>

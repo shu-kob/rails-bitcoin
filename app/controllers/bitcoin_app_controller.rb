@@ -97,16 +97,27 @@ class BitcoinAppController < ApplicationController
             end
             blockinfo = bitcoinRPC('getblockchaininfo',[])
             current_height = blockinfo['blocks']
+            @vin_txinfo = []
             for p in 0..current_height-1
                 blockhash = bitcoinRPC('getblockhash',[current_height - p])
                 @blosckinfos = bitcoinRPC('getblock',[blockhash])
-                logger.debug @blosckinfos
                 for s in 0..@blosckinfos['tx'].length-1
                     rawtxinfo = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
                     @decodedtxinfo = bitcoinRPC('decoderawtransaction',[rawtxinfo])
                     for t in 0..@decodedtxinfo['vout'].length-1
                         if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
                             @addresstx.push(@decodedtxinfo)
+                        end
+                    end
+                    for k in 0..@decodedtxinfo['vin'].length-1
+                        if (@decodedtxinfo['vin'][k]['txid'])
+                            @vinrawtx = bitcoinRPC('getrawtransaction',[@decodedtxinfo['vin'][k]['txid']])
+                            @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+                            for w in 0..@vintx['vout'].length-1
+                                if(@vintx['vout'][w]['scriptPubKey']['addresses']) && (@vintx['vout'][w]['scriptPubKey']['addresses'][0] == @addressid)
+                                    @vin_txinfo.push(@vintx)
+                                end
+                            end
                         end
                     end
                 end
