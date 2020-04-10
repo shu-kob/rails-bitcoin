@@ -61,9 +61,7 @@ class BitcoinAppController < ApplicationController
 
             for k in 0..@txinfo['vin'].length-1
                 @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
-                logger.debug @vinrawtx
                 @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-                logger.debug @vintx
                 @vin_outindex = @txinfo['vin'][k]['vout']
                 if(@txinfo['vin'][k]['vout'])
                     @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
@@ -97,7 +95,8 @@ class BitcoinAppController < ApplicationController
             end
             blockinfo = bitcoinRPC('getblockchaininfo',[])
             current_height = blockinfo['blocks']
-            @vin_txinfo = []
+            @vin_address = []
+            @vin_value = []
             for p in 0..current_height-1
                 blockhash = bitcoinRPC('getblockhash',[current_height - p])
                 @blosckinfos = bitcoinRPC('getblock',[blockhash])
@@ -107,15 +106,13 @@ class BitcoinAppController < ApplicationController
                     for t in 0..@decodedtxinfo['vout'].length-1
                         if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
                             @addresstx.push(@decodedtxinfo)
-                        end
-                    end
-                    for k in 0..@decodedtxinfo['vin'].length-1
-                        if (@decodedtxinfo['vin'][k]['txid'])
-                            @vinrawtx = bitcoinRPC('getrawtransaction',[@decodedtxinfo['vin'][k]['txid']])
-                            @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-                            for w in 0..@vintx['vout'].length-1
-                                if(@vintx['vout'][w]['scriptPubKey']['addresses']) && (@vintx['vout'][w]['scriptPubKey']['addresses'][0] == @addressid)
-                                    @vin_txinfo.push(@vintx)
+                            for k in 0..@decodedtxinfo['vin'].length-1
+                                @vinrawtx = bitcoinRPC('getrawtransaction',[@decodedtxinfo['vin'][k]['txid']])
+                                @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+                                @vin_outindex = @decodedtxinfo['vin'][k]['vout']
+                                if(@decodedtxinfo['vin'][k]['vout'])
+                                    @vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
+                                    @vin_value.push(@vintx['vout'][@vin_outindex]['value'])
                                 end
                             end
                         end
