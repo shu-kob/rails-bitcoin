@@ -157,30 +157,6 @@ class BitcoinAppController < ApplicationController
             render template: 'bitcoin_app/getnewaddress'
         end
     end
-    
-    def keys
-        @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-        logger.debug @blockchaininfo
-        @balance = bitcoinRPC('getbalance',[])
-    
-        @key = Bitcoin::Key.generate
-        logger.debug @key
-
-        listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-        address = listaddressgroupings[0][0][0]
-
-        @txid = bitcoinRPC('sendtoaddress',[address, 1])
-        logger.debug @txid
-        @gettx = bitcoinRPC('gettransaction',[@txid])
-        logger.debug @gettx
-        @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-        logger.debug @blockhash
-        logger.debug @blockhash[0]
-        @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-        logger.debug @getblock
-
-        render template: 'bitcoin_app/keys'
-    end
 
     def sendings
 
@@ -259,6 +235,30 @@ class BitcoinAppController < ApplicationController
         else
             render template: 'bitcoin_app/notfound'
         end
+    end
+
+    def keys
+        @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+        logger.debug @blockchaininfo
+        @balance = bitcoinRPC('getbalance',[])
+    
+        @key = Bitcoin::Key.generate
+        logger.debug @key
+
+        listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+        address = listaddressgroupings[0][0][0]
+
+        @txid = bitcoinRPC('sendtoaddress',[address, 1])
+        logger.debug @txid
+        @gettx = bitcoinRPC('gettransaction',[@txid])
+        logger.debug @gettx
+        @blockhash = bitcoinRPC('generatetoaddress',[1, address])
+        logger.debug @blockhash
+        logger.debug @blockhash[0]
+        @getblock = bitcoinRPC('getblock',[@blockhash[0]])
+        logger.debug @getblock
+
+        render template: 'bitcoin_app/keys'
     end
 
     private
