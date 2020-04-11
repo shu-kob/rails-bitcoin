@@ -106,15 +106,6 @@ class BitcoinAppController < ApplicationController
                     for t in 0..@decodedtxinfo['vout'].length-1
                         if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
                             @addresstx.push(@decodedtxinfo)
-                            for k in 0..@decodedtxinfo['vin'].length-1
-                                @vinrawtx = bitcoinRPC('getrawtransaction',[@decodedtxinfo['vin'][k]['txid']])
-                                @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-                                @vin_outindex = @decodedtxinfo['vin'][k]['vout']
-                                if(@decodedtxinfo['vin'][k]['vout'])
-                                    @vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
-                                    @vin_value.push(@vintx['vout'][@vin_outindex]['value'])
-                                end
-                            end
                         end
                     end
                 end
