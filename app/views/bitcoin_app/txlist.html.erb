@@ -1,0 +1,31 @@
+<% @title = "トランザクション一覧" %>
+<h1><%= @title %></h1>
+
+<% if(@unconfirmedtxlist) %>
+<table border="1">
+  <thead>
+      <tr>
+        <th>トランザクションID</th>
+        <th>サイズ</th>
+      </tr>
+  </thead>
+  <tbody>
+    <% for m in 0..@unconfirmedtxlist.length-1 %>
+      <tr>
+          <td><%= link_to @unconfirmedtxlist[m]['txid'], txinfo_path(@unconfirmedtxlist[m]['txid']) %></td>
+          <td><%= @unconfirmedtxlist[m]['size'] %> vB</td>
+      </tr>    
+    <% end %>
+    <% for n in 0..@confirmedtxlist.length-1 %>
+      <tr>
+          <td><%= link_to @confirmedtxlist[n]['txid'], txinfo_path(@confirmedtxlist[n]['txid']) %></td>
+          <td><%= @confirmedtxlist[n]['size'] %> vB</td>
+      </tr>    
+    <% end %>
+    <tr>
+        <td><%= link_to "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b", txinfo_path("4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b") %></td>
+        <td>285 vB</td>
+    <tr>
+  </tbody>
+</table>
+<% end %>

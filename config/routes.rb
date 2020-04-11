@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get '/notfound', to: 'bitcoin_app#notfound'
   get '/getnewaddress', to: 'bitcoin_app#getnewaddress'
   get '/wallet', to: 'bitcoin_app#wallet'
+  get '/txlist', to: 'bitcoin_app#txlist'
 end

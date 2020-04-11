@@ -49,8 +49,8 @@
         <tr>
           <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
             <td><%= link_to @txinfo['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
-          <% elsif %>
-            <td>"Null data"</td>
+          <% else %>
+            <td><%= @txinfo['vout'][i]['scriptPubKey']['type'] %></td>
           <% end %>
           <td><%= @txinfo['vout'][i]['value'] %></td><br>
         </tr>
