@@ -136,10 +136,7 @@ class BitcoinAppController < ApplicationController
                 @confirmedtxlist.push(@decodedtxinfo)
             end
         end
-        # zero_blockhash = bitcoinRPC('getblockhash',[0])
-        # @zero_blosckinfo = bitcoinRPC('getblock',[zero_blockhash])
-        # @confirmedtxlist.push(@zero_blosckinfo['tx'][0])
-        # render template: 'bitcoin_app/txlist'
+        render template: 'bitcoin_app/txlist'
     end
 
     def mining
