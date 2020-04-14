@@ -223,15 +223,15 @@ class BitcoinAppController < ApplicationController
             @posts_num = @posts.to_i
             logger.debug @posts_num
             if @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
-                @blockinfos = bitcoinRPC('getblock',[@blockSearch])
                 flag = "blocknum"
             end
         end
+        logger.debug flag
         if flag == "txinfo"
             redirect_to txinfo_path(@posts)
         elsif flag == "blockinfo"
             redirect_to blockinfo_path(@posts)
-        elsif flag = "blocknum"
+        elsif flag == "blocknum"
             redirect_to blockinfo_path(@blockSearch)
         elsif flag == "addressinfo"
             redirect_to addressinfo_path(@posts)
