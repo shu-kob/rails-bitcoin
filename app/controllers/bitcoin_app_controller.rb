@@ -210,20 +210,6 @@ class BitcoinAppController < ApplicationController
                 @txid = @posts
                 flag = "txinfo"
             elsif @txSearch = bitcoinRPC('getrawtransaction',[@posts])
-                @rawtx = @txSearch
-                @txid = @posts
-                @txinfo = bitcoinRPC('decoderawtransaction',[@txSearch])
-                vin_address = []
-                vin_value = []
-                for k in 0..@txinfo['vin'].length-1
-                    @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
-                    @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-                    @vin_outindex = @txinfo['vin'][k]['vout']
-                    if(@txinfo['vin'][k]['vout'])
-                        @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
-                        @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
-                    end
-                end
                 flag = "txinfo"                
             else
                 @blockinfos = bitcoinRPC('getblock',[@posts])
@@ -231,18 +217,24 @@ class BitcoinAppController < ApplicationController
                     flag = "blockinfo"
                 end
             end
+        elsif @posts.size == 35 or @posts.size == 44 or @posts.size == 42
+            flag = "addressinfo"
         elsif @posts =~ /\A[0-9]+\z/
             @posts_num = @posts.to_i
             logger.debug @posts_num
             if @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
                 @blockinfos = bitcoinRPC('getblock',[@blockSearch])
-                flag = "blockinfo"
+                flag = "blocknum"
             end
         end
         if flag == "txinfo"
-            render template: 'bitcoin_app/txinfo'
+            redirect_to txinfo_path(@posts)
         elsif flag == "blockinfo"
-            render template: 'bitcoin_app/blockinfo'
+            redirect_to blockinfo_path(@posts)
+        elsif flag = "blocknum"
+            redirect_to blockinfo_path(@blockSearch)
+        elsif flag == "addressinfo"
+            redirect_to addressinfo_path(@posts)
         else
             render template: 'bitcoin_app/notfound'
         end
