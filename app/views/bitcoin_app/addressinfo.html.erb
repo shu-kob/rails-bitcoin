@@ -4,8 +4,12 @@
 <tr>
     <th>アドレス: </th><td><%= @addressid %></td>
 </tr>
+<br>
 
-<% if(@addresstx) %>
+<br>
+<% if @addresstx.empty? %>
+  <td>トランザクションはまだありません</td>
+<% else %>
 <table border="1">
   <thead>
       <tr>

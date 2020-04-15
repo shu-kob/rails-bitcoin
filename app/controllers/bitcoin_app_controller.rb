@@ -108,7 +108,8 @@ class BitcoinAppController < ApplicationController
 					
 				end
 				
-      end
+			end
+			
       render template: 'bitcoin_app/addressinfo'
     else
     render template: 'bitcoin_app/notfound'
