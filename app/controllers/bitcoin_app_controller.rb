@@ -63,10 +63,24 @@ class BitcoinAppController < ApplicationController
   end
 
   def blockinfo
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     @blockhashid = params[:id]
     @blockinfos = bitcoinRPC('getblock',[@blockhashid])
 
     render template: 'bitcoin_app/blockinfo'
+  end
+
+  def mining
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+		
+		if @blockchaininfo['chain'] == "regtest"
+    	listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+      address = listaddressgroupings[1][0][0]
+      @blockhash = bitcoinRPC('generatetoaddress',[1, address])
+      @getblock = bitcoinRPC('getblock',[@blockhash[0]])
+    end
+    
+		redirect_to blockinfo_path(@blockhash)
   end
 
   def addressinfo
@@ -142,19 +156,6 @@ class BitcoinAppController < ApplicationController
 		
 		end
     render template: 'bitcoin_app/txlist'
-  end
-
-  def mining
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-		
-		if @blockchaininfo['chain'] == "regtest"
-    	listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-      address = listaddressgroupings[1][0][0]
-      @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-      @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-		end
-		
-    render template: 'bitcoin_app/mining'
   end
 
   def getnewaddress

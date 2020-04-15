@@ -1,6 +1,9 @@
-<% @title = "アドレス情報" %>
+<% @title = "ブロック詳細" %>
 <h1><%= @title %></h1>
 
+<% if @blockchaininfo['chain'] == "regtest" %>
+  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
+<% end %>
 <table border="1">
   <tr>
     <th>ブロック高</th><td><%= @blockinfos['height'] %></td>
@@ -59,7 +62,6 @@
     <% end %>
   </tbody>
 </table>
-
 
 <br>
 ブロックハッシュ、ブロック高、トランザクションID、アドレスで検索
