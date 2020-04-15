@@ -1,7 +1,9 @@
 <% @title = "マイニング" %>
 <h1><%= @title %></h1>
 
-<% if (@getblock['height']) %>
+<% if !@getblock %>
+  <td>regtestモードではないのでマイニングできません</td>
+<% else %>
   <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
   <table border="1">
     <tr>
@@ -61,10 +63,8 @@
       <% end %>
     </tbody>
   </table>
-<% else %>
-    <td>regtestモードではないのでマイニングできません</td>
 <% end %>
-
+<br>
 
 
 <br>
