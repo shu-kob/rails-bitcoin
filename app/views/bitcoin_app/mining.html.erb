@@ -3,6 +3,7 @@
 
 <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
 
+<% if (@getblock['height']) %>
 <table border="1">
   <tr>
     <th>ブロック高</th><td><%= @getblock['height'] %></td>
@@ -61,6 +62,10 @@
     <% end %>
   </tbody>
 </table>
+<% else %>
+<td>regtestモードではないのでマイニングできません</td>
+<% end %>
+
 
 
 <br>
