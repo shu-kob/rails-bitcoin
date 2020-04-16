@@ -1,8 +1,10 @@
 <% @title = "ブロック詳細" %>
 <h1><%= @title %></h1>
 
+<br>
 <% if @blockchaininfo['chain'] == "regtest" %>
-  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
+  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mined'}, {method: :get} %>
+  <br>
 <% end %>
 <table border="1">
   <tr>

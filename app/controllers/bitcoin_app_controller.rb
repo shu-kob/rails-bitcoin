@@ -72,13 +72,25 @@ class BitcoinAppController < ApplicationController
 
   def mining
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-		
-		if @blockchaininfo['chain'] == "regtest"
-    	listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-      address = listaddressgroupings[1][0][0]
-      @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-      @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-    end
+
+    render template: 'bitcoin_app/mining'
+  end
+
+  def mine
+    blocknum = params[:blocknum]
+    address = params[:address]
+    @blockhash = bitcoinRPC('generatetoaddress',[blocknum.to_i, address])
+    num = @blockhash.count - 1
+    redirect_to blockinfo_path(@blockhash[num])
+  end
+
+  def mined
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+    address_num = listaddressgroupings[0].count - 1
+    address = listaddressgroupings[0][address_num][0]
+    @blockhash = bitcoinRPC('generatetoaddress',[1, address])
+    @getblock = bitcoinRPC('getblock',[@blockhash[0]])
     
 		redirect_to blockinfo_path(@blockhash)
   end
@@ -182,24 +194,11 @@ class BitcoinAppController < ApplicationController
     address = params[:address]
     amount = params[:amount]
     @txid = bitcoinRPC('sendtoaddress',[address, amount])
-    @rawtx = bitcoinRPC('getrawtransaction',[@txid])
-    @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
-    vin_address = []
-    vin_value = []
-
-    for k in 0..@txinfo['vin'].length-1
-      @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
-      @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-      @vin_outindex = @txinfo['vin'][k]['vout']
-			
-			if(@txinfo['vin'][k]['vout'])
-        @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
-        @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
-      end
-		
-		end
-		
-		render template: 'bitcoin_app/txinfo'
+    if (@txid)
+      redirect_to txinfo_path(@txid)
+    else
+      render template: 'bitcoin_app/notfound'
+    end
   end
 
   def search
