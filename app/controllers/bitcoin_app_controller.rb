@@ -86,14 +86,11 @@ class BitcoinAppController < ApplicationController
 
   def mined
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-		
-		if @blockchaininfo['chain'] == "regtest"
-      listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-      address_num = listaddressgroupings[0].count - 1
-      address = listaddressgroupings[0][address_num][0]
-      @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-      @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-    end
+    listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+    address_num = listaddressgroupings[0].count - 1
+    address = listaddressgroupings[0][address_num][0]
+    @blockhash = bitcoinRPC('generatetoaddress',[1, address])
+    @getblock = bitcoinRPC('getblock',[@blockhash[0]])
     
 		redirect_to blockinfo_path(@blockhash)
   end
