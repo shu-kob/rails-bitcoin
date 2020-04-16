@@ -1,9 +1,13 @@
 <% @title = "マイニング" %>
 <h1><%= @title %></h1>
 
+<br>
+
 <% if !(@blockchaininfo['chain'] == "regtest") %>
   <td>regtestモードではないのでマイニングできません</td>
 <% else %>
+  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mined'}, {method: :get} %>
+  <br>
   <%= form_tag({ :controller => 'bitcoin_app', :action => 'mine' },{ :method => :post }) do %>
     <%= label_tag :blocknum %>
     <%= text_field_tag :blocknum %><br>
