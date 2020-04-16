@@ -1,70 +1,17 @@
 <% @title = "マイニング" %>
 <h1><%= @title %></h1>
 
-<% if !@getblock %>
+<% if !(@blockchaininfo['chain'] == "regtest") %>
   <td>regtestモードではないのでマイニングできません</td>
 <% else %>
-  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mining'}, {method: :get} %>
-  <table border="1">
-    <tr>
-      <th>ブロック高</th><td><%= @getblock['height'] %></td>
-    </tr>
-    <tr>
-      <th>ブロックハッシュ</th><td><%= @getblock['hash'] %></td>
-    </tr>
-    <tr>
-      <th>承認数</th><td><%= @getblock['confirmations'] %></td>
-    </tr>
-    <tr>
-      <th>生成時刻</th><td><%= Time.at(@getblock['time']) %></td>
-    </tr>
-    <tr>
-      <th>次のブロック</th>
-      <% if(@getblock['nextblockhash']) %>
-        <td><%= link_to @getblock['nextblockhash'], blockinfo_path(@getblock['nextblockhash']) %></td>
-      <% else %>
-        <td>なし</td>
-      <% end %>
-    </tr>
-    <tr>
-      <th>前のブロック</th>
-      <% if(@getblock['previousblockhash']) %>
-        <td><%= link_to @getblock['previousblockhash'], blockinfo_path(@getblock['previousblockhash']) %></td>
-      <% else %>
-        <td>なし</td>
-      <% end %>
-    </tr>
-    <tr>
-      <th>マークルルート</th>
-      <td><%= @getblock['merkleroot'] %></td>
-    </tr>
-    <tr>
-      <th>ナンス</th>
-      <td><%= @getblock['nonce'] %></td>
-    </tr>
-    <tr>
-      <th>トランザクション数</th>
-      <td><%= @getblock['nTx'] %></td>
-    </tr>
-  </table>
-    
-  <table border="1">
-    <thead>
-      <tr>
-        <th>トランザクション</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% for i in 0..@getblock['tx'].length-1 %>
-        <tr>
-          <td><%= link_to @getblock['tx'][i], txinfo_path(@getblock['tx'][i]) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= form_tag({ :controller => 'bitcoin_app', :action => 'mine' },{ :method => :post }) do %>
+    <%= label_tag :blocknum %>
+    <%= text_field_tag :blocknum %><br>
+    <%= label_tag :address %>
+    <%= text_field_tag :address %><br>
+    <%= submit_tag "マイニング"%>
+  <% end %>
 <% end %>
-<br>
 
 
 <br>
