@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get '/address/:id', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
   get '/mining', to: 'bitcoin_app#mining'
   post '/mine', to: 'bitcoin_app#mine'
-  get '/mined', to: 'bitcoin_app#mined'
+  get '/mine', to: 'bitcoin_app#mine'
   get '/sendings', to: 'bitcoin_app#sendings'
   post '/sent', to: 'bitcoin_app#sent'
   get '/search', to: 'bitcoin_app#search'

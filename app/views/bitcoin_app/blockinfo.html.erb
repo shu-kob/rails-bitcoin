@@ -3,7 +3,7 @@
 
 <br>
 <% if @blockchaininfo['chain'] == "regtest" %>
-  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mined'}, {method: :get} %>
+  <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mine'}, {method: :get} %>
   <br>
 <% end %>
 <table border="1">

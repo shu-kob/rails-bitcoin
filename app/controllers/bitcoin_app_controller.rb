@@ -77,22 +77,21 @@ class BitcoinAppController < ApplicationController
   end
 
   def mine
-    blocknum = params[:blocknum]
-    address = params[:address]
+    if params[:blocknum]
+      blocknum = params[:blocknum]
+    else
+      blocknum = 1
+    end
+    if params[:address]
+      address = params[:address]
+    else
+      listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+      address_num = listaddressgroupings[0].count - 1
+      address = listaddressgroupings[0][address_num][0]
+    end
     @blockhash = bitcoinRPC('generatetoaddress',[blocknum.to_i, address])
     num = @blockhash.count - 1
     redirect_to blockinfo_path(@blockhash[num])
-  end
-
-  def mined
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-    address_num = listaddressgroupings[0].count - 1
-    address = listaddressgroupings[0][address_num][0]
-    @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-    @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-    
-		redirect_to blockinfo_path(@blockhash)
   end
 
   def addressinfo
