@@ -39,26 +39,21 @@ class BitcoinAppController < ApplicationController
   end
 
   def txinfo
-    @txid = params[:id]
-		@rawtx = bitcoinRPC('getrawtransaction',[@txid])
-		
-    if @rawtx
-      @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
-      vin_address = []
-      vin_value = []
+    txid = params[:id]
+    @txinfo = addresstxinfo(txid)
+    vin_address = []
+    vin_value = []
 
-      for k in 0..@txinfo['vin'].length-1
-        @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
-        @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
-        @vin_outindex = @txinfo['vin'][k]['vout']
-				
-				if(@txinfo['vin'][k]['vout'])
+    for k in 0..@txinfo['vin'].length-1
+      @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
+      @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+      @vin_outindex = @txinfo['vin'][k]['vout']
+      if(@txinfo['vin'][k]['vout'])
           @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
           @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
-				end
-				
       end
     end
+
     render template: 'bitcoin_app/txinfo'
   end
 
@@ -77,22 +72,21 @@ class BitcoinAppController < ApplicationController
   end
 
   def mine
-    blocknum = params[:blocknum]
-    address = params[:address]
+    if params[:blocknum]
+      blocknum = params[:blocknum]
+    else
+      blocknum = 1
+    end
+    if params[:address]
+      address = params[:address]
+    else
+      listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
+      address_num = listaddressgroupings[0].count - 1
+      address = listaddressgroupings[0][address_num][0]
+    end
     @blockhash = bitcoinRPC('generatetoaddress',[blocknum.to_i, address])
     num = @blockhash.count - 1
     redirect_to blockinfo_path(@blockhash[num])
-  end
-
-  def mined
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-    address_num = listaddressgroupings[0].count - 1
-    address = listaddressgroupings[0][address_num][0]
-    @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-    @getblock = bitcoinRPC('getblock',[@blockhash[0]])
-    
-		redirect_to blockinfo_path(@blockhash)
   end
 
   def addressinfo
@@ -102,33 +96,26 @@ class BitcoinAppController < ApplicationController
 			@addresstx = []
 			
       for n in 0..mempoolinfo.length-1
-        memrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
-				@memdecodetx = bitcoinRPC('decoderawtransaction',[memrawtx])
-				
-        for q in 0..@memdecodetx['vout'].length-1
-          if @memdecodetx['vout'][q]['scriptPubKey']['addresses'][0] == @addressid
-            @addresstx.push(@memdecodetx)
+        address_unconf_txlist = addresstxinfo(mempoolinfo[n])
+        for p in 0..address_unconf_txlist['vout'].length-1
+          if (address_unconf_txlist['vout'][p]['scriptPubKey']['addresses']) && (address_unconf_txlist['vout'][p]['scriptPubKey']['addresses'][0] == @addressid)
+            @addresstx.push(address_unconf_txlist)
           end
-				end
-				
+        end
 			end
 			
       blockinfo = bitcoinRPC('getblockchaininfo',[])
       current_height = blockinfo['blocks']
-      @vin_address = []
-      @vin_value = []
 			
 			for p in 0..current_height-1
         blockhash = bitcoinRPC('getblockhash',[current_height - p])
         @blosckinfos = bitcoinRPC('getblock',[blockhash])
 				
-				for s in 0..@blosckinfos['tx'].length-1
-          rawtxinfo = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
-          @decodedtxinfo = bitcoinRPC('decoderawtransaction',[rawtxinfo])
-					
-					for t in 0..@decodedtxinfo['vout'].length-1
-            if (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses']) && (@decodedtxinfo['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
-              @addresstx.push(@decodedtxinfo)
+        for s in 0..@blosckinfos['tx'].length-1
+          address_conf_txlist = addresstxinfo(@blosckinfos['tx'][s])
+					for t in 0..address_conf_txlist['vout'].length-1
+            if (address_conf_txlist['vout'][t]['scriptPubKey']['addresses']) && (address_conf_txlist['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
+              @addresstx.push(address_conf_txlist)
             end
 					end
 					
@@ -141,6 +128,26 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/notfound'
   	end
 	end
+
+  def addresstxinfo(txid)
+		@rawtx = bitcoinRPC('getrawtransaction',[txid])
+    if @rawtx
+      @txinfo = bitcoinRPC('decoderawtransaction',[@rawtx])
+      vin_address = []
+      vin_value = []
+
+      for k in 0..@txinfo['vin'].length-1
+        @vinrawtx = bitcoinRPC('getrawtransaction',[@txinfo['vin'][k]['txid']])
+        @vintx = bitcoinRPC('decoderawtransaction',[@vinrawtx])
+        @vin_outindex = @txinfo['vin'][k]['vout']
+				if(@txinfo['vin'][k]['vout'])
+          @vin_address = vin_address.push(@vintx['vout'][@vin_outindex]['scriptPubKey']['addresses'][0])
+          @vin_value = vin_value.push(@vintx['vout'][@vin_outindex]['value'])
+				end
+      end
+    end
+    return @txinfo
+  end
 
 	def txlist
     mempoolinfo = bitcoinRPC('getrawmempool',[])
@@ -177,13 +184,7 @@ class BitcoinAppController < ApplicationController
 
   def wallet
     @listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-		
-		if @listaddressgroupings
-      render template: 'bitcoin_app/wallet'
-    else
-      render template: 'bitcoin_app/getnewaddress'
-		end
-		
+    render template: 'bitcoin_app/wallet'
   end
 
   def sendings
