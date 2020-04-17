@@ -190,13 +190,7 @@ class BitcoinAppController < ApplicationController
 
   def wallet
     @listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-		
-		if @listaddressgroupings
-      render template: 'bitcoin_app/wallet'
-    else
-      render template: 'bitcoin_app/getnewaddress'
-		end
-		
+    render template: 'bitcoin_app/wallet'
   end
 
   def sendings

@@ -6,6 +6,9 @@
 <br>
 <br>
 
+<% if !@listaddressgroupings %>
+  <td>ウォレットにはアドレスがありません</td>
+<% else %>
 <table border="1">
   <thead>
     <tr>
@@ -25,6 +28,7 @@
         <% end %>
   </tbody>
 </table>
+<% end %>
 
 <br>
 <br>
