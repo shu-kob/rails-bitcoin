@@ -65,9 +65,9 @@ class BitcoinAppController < ApplicationController
       for u in 0..decodedunconfirmedtxinfo['vout'].length-1
         unconf_value = unconf_value + decodedunconfirmedtxinfo['vout'][u]['value']
       end
-      @conftx = []
-      @conftx.push(decodedunconfirmedtxinfo, unconf_value, 0)
-     @txlist.push(@conftx)
+      @unconftx = []
+      @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0)
+     @txlist.push(@unconftx)
 		end
     @blockinfo = bitcoinRPC('getblockchaininfo',[])
     current_height = @blockinfo['blocks']
