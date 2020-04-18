@@ -66,7 +66,7 @@ class BitcoinAppController < ApplicationController
         unconf_value = unconf_value + decodedunconfirmedtxinfo['vout'][u]['value']
       end
       @unconftx = []
-      @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0)
+      @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0, -1, -1)
       @txlist.push(@unconftx)
 		end
     @blockinfo = bitcoinRPC('getblockchaininfo',[])
@@ -82,12 +82,15 @@ class BitcoinAppController < ApplicationController
           value = value + @decodedtxinfo['vout'][t]['value']
         end
         confirmation_num = @blockinfos['confirmations']
+        blockheight = @blockinfos['height']
+        blockhash = @blockinfos['hash']
         @conftx = []
-        @conftx.push(@decodedtxinfo, value, confirmation_num)
-       @txlist.push(@conftx)
+        @conftx.push(@decodedtxinfo, value, confirmation_num, blockheight, blockhash)
+        @txlist.push(@conftx)
       end
     end
-    logger.debug@txlist[0]
+    zero_blockhash = bitcoinRPC('getblockhash',[0])
+    @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
     render template: 'bitcoin_app/txlist'
   end
 
