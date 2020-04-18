@@ -54,6 +54,29 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/explorer'
   end
 
+  def txlist
+    mempoolinfo = bitcoinRPC('getrawmempool',[])
+    @unconfirmedtxlist = []
+		for n in 0..mempoolinfo.length-1
+      unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
+      decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
+      @unconfirmedtxlist.push(decodedunconfirmedtxinfo)
+		end
+    blockinfo = bitcoinRPC('getblockchaininfo',[])
+    @confirmedtxlist = []
+    current_height = blockinfo['blocks']
+		for p in 0..current_height-1
+			blockhash = bitcoinRPC('getblockhash',[current_height - p])
+      @blosckinfos = bitcoinRPC('getblock',[blockhash])
+			for s in 0..@blosckinfos['tx'].length-1
+        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
+        @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
+        @confirmedtxlist.push(@decodedtxinfo)
+      end
+		end
+    render template: 'bitcoin_app/txlist'
+  end
+
   def txinfo
     @txid = params[:id]
     @txinfo = addresstxinfo(@txid)
@@ -165,34 +188,6 @@ class BitcoinAppController < ApplicationController
       end
     end
     return @txinfo
-  end
-
-	def txlist
-    mempoolinfo = bitcoinRPC('getrawmempool',[])
-    @unconfirmedtxlist = []
-		
-		for n in 0..mempoolinfo.length-1
-      unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
-      decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
-      @unconfirmedtxlist.push(decodedunconfirmedtxinfo)
-		end
-		
-    blockinfo = bitcoinRPC('getblockchaininfo',[])
-    @confirmedtxlist = []
-    current_height = blockinfo['blocks']
-				
-		for p in 0..current_height-1
-			blockhash = bitcoinRPC('getblockhash',[current_height - p])
-      @blosckinfos = bitcoinRPC('getblock',[blockhash])
-						
-			for s in 0..@blosckinfos['tx'].length-1
-        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
-        @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
-        @confirmedtxlist.push(@decodedtxinfo)
-      end
-		
-		end
-    render template: 'bitcoin_app/txlist'
   end
 
   def getnewaddress
