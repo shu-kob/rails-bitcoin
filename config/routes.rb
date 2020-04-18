@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/explorer', to: 'bitcoin_app#explorer'
+  get '/explorer/:id/:num', to: 'bitcoin_app#explorer', as: 'pagenation'
   get '/tx/:id', to: 'bitcoin_app#txinfo', as: 'txinfo'
   get '/block/:id', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
   get '/address/:id', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
