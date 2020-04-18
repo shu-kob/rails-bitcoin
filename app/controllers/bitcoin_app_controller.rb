@@ -29,7 +29,7 @@ class BitcoinAppController < ApplicationController
       @num = 25
     elsif i < num - 1 && @blockheight >= num
       @num = num
-      i = num
+      i = num - 1
     else
       @num = i
     end
