@@ -9,8 +9,10 @@ PORT=18443
 
 class BitcoinAppController < ApplicationController
   def explorer
+    blockheightnum = params[:id].to_i
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-		i = @blockchaininfo['blocks']
+    @blockheight = @blockchaininfo['blocks']
+    i = @blockheight
 		
     if i > 25
       @num = 25
