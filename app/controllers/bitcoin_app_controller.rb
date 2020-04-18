@@ -67,7 +67,7 @@ class BitcoinAppController < ApplicationController
       end
       @unconftx = []
       @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0)
-     @txlist.push(@unconftx)
+      @txlist.push(@unconftx)
 		end
     @blockinfo = bitcoinRPC('getblockchaininfo',[])
     current_height = @blockinfo['blocks']
