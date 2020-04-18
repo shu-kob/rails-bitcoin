@@ -56,24 +56,38 @@ class BitcoinAppController < ApplicationController
 
   def txlist
     mempoolinfo = bitcoinRPC('getrawmempool',[])
-    @unconfirmedtxlist = []
+    confirmation_num = []
+   @txlist = []
 		for n in 0..mempoolinfo.length-1
       unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
       decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
-      @unconfirmedtxlist.push(decodedunconfirmedtxinfo)
+      unconf_value = 0
+      for u in 0..decodedunconfirmedtxinfo['vout'].length-1
+        unconf_value = unconf_value + decodedunconfirmedtxinfo['vout'][u]['value']
+      end
+      @conftx = []
+      @conftx.push(decodedunconfirmedtxinfo, unconf_value, 0)
+     @txlist.push(@conftx)
 		end
-    blockinfo = bitcoinRPC('getblockchaininfo',[])
-    @confirmedtxlist = []
-    current_height = blockinfo['blocks']
+    @blockinfo = bitcoinRPC('getblockchaininfo',[])
+    current_height = @blockinfo['blocks']
 		for p in 0..current_height-1
 			blockhash = bitcoinRPC('getblockhash',[current_height - p])
-      @blosckinfos = bitcoinRPC('getblock',[blockhash])
-			for s in 0..@blosckinfos['tx'].length-1
-        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blosckinfos['tx'][s]])
+      @blockinfos = bitcoinRPC('getblock',[blockhash])
+      for s in 0..@blockinfos['tx'].length-1 
+        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfos['tx'][s]])
         @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
-        @confirmedtxlist.push(@decodedtxinfo)
+        value = 0
+        for t in 0..@decodedtxinfo['vout'].length-1
+          value = value + @decodedtxinfo['vout'][t]['value']
+        end
+        confirmation_num = @blockinfos['confirmations']
+        @conftx = []
+        @conftx.push(@decodedtxinfo, value, confirmation_num)
+       @txlist.push(@conftx)
       end
-		end
+    end
+    logger.debug@txlist[0]
     render template: 'bitcoin_app/txlist'
   end
 
