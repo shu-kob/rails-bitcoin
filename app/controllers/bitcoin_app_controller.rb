@@ -9,85 +9,32 @@ PORT=18443
 
 class BitcoinAppController < ApplicationController
   def explorer
-    blockheightnum = params[:id].to_i
+    if params[:id]
+      blockheightnum = params[:id].to_i
+    end
+    if params[:num]
+      num = params[:num].to_i
+    else
+      num = 25
+    end
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     @blockheight = @blockchaininfo['blocks']
-    i = @blockheight
-		
-    if i > 25
-      @num = 25
+    if (blockheightnum) && (blockheightnum < @blockheight)
+      i = blockheightnum
     else
-      @num = i
-		end
-		
-    @height_num  = @blockchaininfo['blocks'] - @num
-    blockhash = []
-    blockinfo = []
-		j = 0
-		
-    if i == 0
-    	@blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-      @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-		else
-      while i > @height_num do
-        @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-        @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-        i = i - 1
-        j = j + 1
-      end
-		end
-		
-    render template: 'bitcoin_app/explorer'
-  end
-
-  def previouspage
-    i = params[:id].to_i
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-		@blockheight = @blockchaininfo['blocks']
-		
-    if i > 25
-      @num = 25
-    else
-      @num = i
-		end
-		
-    @height_num  = i - 1 - @num
-    blockhash = []
-    blockinfo = []
-		j = 0
-		
-    if i == 0
-    	@blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-      @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-		else
-      while i > @height_num do
-        @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-        @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-        i = i - 1
-        j = j + 1
-      end
-		end
-		
-    render template: 'bitcoin_app/explorer'
-  end
-
-  def nextpage
-    i = params[:id].to_i
-    i = i + 25
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    @blockheight = @blockchaininfo['blocks']
-
-    if i > @blockheight
       i = @blockheight
     end
-		
-    if i > 25
+
+    if i >= num - 1
       @num = 25
+    elsif i < num - 1 && @blockheight >= num
+      @num = num
+      i = num
     else
       @num = i
-		end
+    end
 		
-    @height_num  = i - 1 - @num
+    @height_num  = i - @num
     blockhash = []
     blockinfo = []
 		j = 0
@@ -102,7 +49,7 @@ class BitcoinAppController < ApplicationController
         i = i - 1
         j = j + 1
       end
-		end
+    end
 		
     render template: 'bitcoin_app/explorer'
   end
