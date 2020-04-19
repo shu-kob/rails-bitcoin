@@ -98,8 +98,6 @@ class BitcoinAppController < ApplicationController
     @txid = params[:id]
     @txinfo = gettxinfo(@txid)
 
-    logger.debug @txinfo[1]
-
     render template: 'bitcoin_app/txinfo'
   end
 
