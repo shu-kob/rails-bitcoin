@@ -188,7 +188,8 @@ class BitcoinAppController < ApplicationController
 				end
 				
 			end
-			
+      logger.debug @addresstx[0][1]
+      logger.debug @addresstx[0][1][0]
       render template: 'bitcoin_app/addressinfo'
     else
     render template: 'bitcoin_app/notfound'
