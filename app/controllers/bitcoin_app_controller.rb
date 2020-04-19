@@ -98,6 +98,8 @@ class BitcoinAppController < ApplicationController
     @txid = params[:id]
     @txinfo = gettxinfo(@txid)
 
+    logger.debug @txinfo[1]
+
     render template: 'bitcoin_app/txinfo'
   end
 
@@ -105,14 +107,14 @@ class BitcoinAppController < ApplicationController
 		rawtx = bitcoinRPC('getrawtransaction',[txid])
     if rawtx
       txinfo = bitcoinRPC('decoderawtransaction',[rawtx])
-      vin_info = []
       vin_allinfos = []
       @txallinfo = []
       for k in 0..txinfo['vin'].length-1
         vinrawtx = bitcoinRPC('getrawtransaction',[txinfo['vin'][k]['txid']])
         vintx = bitcoinRPC('decoderawtransaction',[vinrawtx])
         vin_outindex = txinfo['vin'][k]['vout']
-				if (vin_outindex)
+        if (vin_outindex)
+          vin_info = []
           vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['addresses'][0])
           vin_info.push(vintx['vout'][vin_outindex]['value'])
           vin_allinfos.push(vin_info)
