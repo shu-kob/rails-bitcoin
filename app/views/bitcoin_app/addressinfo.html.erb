@@ -22,6 +22,14 @@
       <tr>
           <th>トランザクションID</th><td><%= link_to @addresstx[m][0]['txid'], txinfo_path(@addresstx[m][0]['txid']) %></td>
       </tr>    
+      <% for l in 0..@addresstx[m][1].length-1 %>
+        <tr>
+            <% if(@addresstx[m][1]) %>
+            <th>送金元</th><td><%= link_to @addresstx[m][1][l][0], addressinfo_path(@addresstx[m][1][l][0]) %></td>
+            <th>額</th><td><%= @addresstx[m][1][l][1] %><td>
+            <% end %>
+        </tr>
+      <% end %>
       <% for n in 0..@addresstx[m][0]['vout'].length-1 %>
         <tr>
             <% if(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"]) %>
@@ -29,7 +37,7 @@
             <% else %>
               <th>データ</th><td><%= @addresstx[m][0]['vout'][n]["scriptPubKey"]["type"] %></td>
             <% end %>
-              <th>額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td>
+              <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td>
         </tr>
       <% end %>
     <% end %>
