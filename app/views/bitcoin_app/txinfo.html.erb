@@ -7,8 +7,10 @@
     <th>トランザクションID</th><td><%= @txid %></td>
   </tr>
   <tr>
+    <th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td>
+    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td>
     <th>承認数</th>
-      <td><%= @current_block_height + 1 %></td>
+      <td><%= @blockchaininfo['blocks'] + 1 %></td>
     <th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td>
   </tr>
   <th>説明</th><td>Genesis Blockのcoinbase TX</td>
@@ -22,11 +24,12 @@
   <th>トランザクションID</th><td><%= @txid %></td>
 </tr>
 <tr>
-  <th>承認数</th>
   <% if @in_mempool %>
-    <td>未承認</td>
+    <th>承認数</th><td>未承認</td>
   <% elsif @confirm_block %>
-    <td><%= @current_block_height - @confirm_block['height'] + 1 %></td>
+    <th>承認ブロックハッシュ</th><td><%= link_to @confirm_block['hash'], blockinfo_path(@confirm_block['hash']) %></td>
+    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td>
+    <th>承認数</th><td><%= @blockchaininfo['blocks'] - @confirm_block['height'] + 1 %></td>
     <th>承認日時</th><td><%= Time.at(@confirm_block['time']) %></td>
   <% end %>
 </tr>

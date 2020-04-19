@@ -69,23 +69,21 @@ class BitcoinAppController < ApplicationController
       @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0, -1, -1)
       @txlist.push(@unconftx)
 		end
-    @blockinfo = bitcoinRPC('getblockchaininfo',[])
-    current_height = @blockinfo['blocks']
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    current_height = @blockchaininfo['blocks']
 		for p in 0..current_height-1
 			blockhash = bitcoinRPC('getblockhash',[current_height - p])
-      @blockinfos = bitcoinRPC('getblock',[blockhash])
-      for s in 0..@blockinfos['tx'].length-1 
-        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfos['tx'][s]])
+      @blockinfo = bitcoinRPC('getblock',[blockhash])
+      for s in 0..@blockinfo['tx'].length-1 
+        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfo['tx'][s]])
         @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
         value = 0
         for t in 0..@decodedtxinfo['vout'].length-1
           value = value + @decodedtxinfo['vout'][t]['value']
         end
-        confirmation_num = @blockinfos['confirmations']
-        blockheight = @blockinfos['height']
-        blockhash = @blockinfos['hash']
+
         @conftx = []
-        @conftx.push(@decodedtxinfo, value, confirmation_num, blockheight, blockhash)
+        @conftx.push(@decodedtxinfo, value, @blockinfo)
         @txlist.push(@conftx)
       end
     end
@@ -103,10 +101,9 @@ class BitcoinAppController < ApplicationController
       if mempoolinfo[w] == @txid
         @in_mempool = true
       else
-        blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-        @current_block_height = blockchaininfo['blocks']
-        for i in 0..@current_block_height
-          blockhash = bitcoinRPC('getblockhash', [@current_block_height - i])
+        @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+        for i in 0..@blockchaininfo['blocks']
+          blockhash = bitcoinRPC('getblockhash', [@blockchaininfo['blocks'] - i])
           blockinfo = bitcoinRPC('getblock', [blockhash])
           for v in 0..blockinfo['tx'].length - 1
             if blockinfo['tx'][v] == @txid

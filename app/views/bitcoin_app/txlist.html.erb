@@ -13,6 +13,7 @@
         <th>承認数</th>
         <th>このTXを含むブロック高</th>
         <th>このTXを含むブロックハッシュ</th>
+        <th>承認日時</th>
       </tr>
   </thead>
   <tbody>
@@ -22,9 +23,12 @@
           <td><%= @txlist[n][1] %> BTC</td>
           <td><%= @txlist[n][0]['size'] %> vB</td>
           <% if @txlist[n][2] == 0 %>
-            <td>未承認</td><td>未承認</td><td>未承認</td>
+            <td>未承認</td><td></td><td></td><td></td>
           <% else %>
-            <td><%= @txlist[n][2] %></td><td><%= @txlist[n][3] %></td><td><%= link_to @txlist[n][4], blockinfo_path(@txlist[n][4]) %></td>
+            <td><%= @blockchaininfo['blocks'] - @txlist[n][2]['height'] + 1 %></td>
+            <td><%= @txlist[n][2]['height'] %></td>
+            <td><%= link_to @txlist[n][2]['hash'], blockinfo_path(@txlist[n][2]['hash']) %></td>
+            <td><%= Time.at(@txlist[n][2]['time']) %></td>
           <% end %>
       </tr>    
     <% end %>
@@ -32,9 +36,10 @@
         <td><%= link_to @decode_zero_blockhash['tx'][0], txinfo_path(@decode_zero_blockhash['tx'][0]) %></td>
         <td>50.0 BTC</td>
         <td>204 vB</td>
-        <td><%= @blockinfo['blocks'] + 1 %></td>
+        <td><%= @blockchaininfo['blocks'] + 1 %></td>
         <td><%= @decode_zero_blockhash['height'] %></td>
         <td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td>
+        <td><%= Time.at(@decode_zero_blockhash['time']) %></td>
     <tr>
   </tbody>
 </table>
