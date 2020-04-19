@@ -57,7 +57,7 @@ class BitcoinAppController < ApplicationController
   def txlist
     mempoolinfo = bitcoinRPC('getrawmempool',[])
     confirmation_num = []
-   @txlist = []
+    @txlist = []
 		for n in 0..mempoolinfo.length-1
       unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
       decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
@@ -69,23 +69,21 @@ class BitcoinAppController < ApplicationController
       @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0, -1, -1)
       @txlist.push(@unconftx)
 		end
-    @blockinfo = bitcoinRPC('getblockchaininfo',[])
-    current_height = @blockinfo['blocks']
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    current_height = @blockchaininfo['blocks']
 		for p in 0..current_height-1
 			blockhash = bitcoinRPC('getblockhash',[current_height - p])
-      @blockinfos = bitcoinRPC('getblock',[blockhash])
-      for s in 0..@blockinfos['tx'].length-1 
-        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfos['tx'][s]])
+      @blockinfo = bitcoinRPC('getblock',[blockhash])
+      for s in 0..@blockinfo['tx'].length-1 
+        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfo['tx'][s]])
         @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
         value = 0
         for t in 0..@decodedtxinfo['vout'].length-1
           value = value + @decodedtxinfo['vout'][t]['value']
         end
-        confirmation_num = @blockinfos['confirmations']
-        blockheight = @blockinfos['height']
-        blockhash = @blockinfos['hash']
+
         @conftx = []
-        @conftx.push(@decodedtxinfo, value, confirmation_num, blockheight, blockhash)
+        @conftx.push(@decodedtxinfo, value, @blockinfo)
         @txlist.push(@conftx)
       end
     end
@@ -98,7 +96,26 @@ class BitcoinAppController < ApplicationController
     @txid = params[:id]
     @txinfo = gettxinfo(@txid)
 
-    logger.debug @txinfo[1]
+    mempoolinfo = bitcoinRPC('getrawmempool',[])
+    for w in 0..mempoolinfo.length
+      if mempoolinfo[w] == @txid
+        @in_mempool = true
+      else
+        @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+        for i in 0..@blockchaininfo['blocks']
+          blockhash = bitcoinRPC('getblockhash', [@blockchaininfo['blocks'] - i])
+          blockinfo = bitcoinRPC('getblock', [blockhash])
+          for v in 0..blockinfo['tx'].length - 1
+            if blockinfo['tx'][v] == @txid
+              @confirm_block = blockinfo
+            end
+          end
+        end
+      end
+    end
+
+    zero_blockhash = bitcoinRPC('getblockhash',[0])
+    @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
 
     render template: 'bitcoin_app/txinfo'
   end
@@ -167,7 +184,7 @@ class BitcoinAppController < ApplicationController
         address_unconf_txlist = gettxinfo(mempoolinfo[n])
         for p in 0..address_unconf_txlist[0]['vout'].length-1
           if (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses']) && (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses'][0] == @addressid)
-            @addresstx.push(address_unconf_txlist[0])
+            @addresstx.push(address_unconf_txlist)
           end
         end
 			end
@@ -190,8 +207,6 @@ class BitcoinAppController < ApplicationController
 				end
 				
 			end
-      logger.debug @addresstx[0][1]
-      logger.debug @addresstx[0][1][0]
       render template: 'bitcoin_app/addressinfo'
     else
     render template: 'bitcoin_app/notfound'
