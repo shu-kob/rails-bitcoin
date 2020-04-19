@@ -3,7 +3,7 @@
 
 <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
   <td>Genesis Blockのcoinbase TXです。</td>
-<% elsif @rawtx.nil? %>
+<% elsif @txinfo.nil? %>
     <td>このTX <%= @txid %> は見つかりませんでした</td>
   <% else %>
 
@@ -12,7 +12,7 @@
 </table>
 
   <table border="1">
-  <% if(@vin_address) %>
+  <% if(@txinfo[1][0]) %>
     <thead>
       <tr>
         <th>送金元</th>
@@ -21,12 +21,12 @@
     </thead>
 
     <tbody>
-          <% for k in 0..@vin_address.length-1 %>
-            <tr>
-             <td><%= link_to @vin_address[k], addressinfo_path(@vin_address[k]) %></td>
-             <td><%= @vin_value[k] %></td>
-            </tr>
-          <% end %>
+      <% for k in 0..@txinfo[1].length-1 %>
+      <tr>
+        <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td>
+        <td><%= @txinfo[1][k][1] %></td>
+      </tr>
+      <% end %>
     </tbody>
     <% else %>
     <tr>
@@ -45,14 +45,14 @@
       </tr>
     </thead>
     <tbody>
-      <% for i in 0..@txinfo['vout'].length-1 %>
+      <% for i in 0..@txinfo[0]['vout'].length-1 %>
         <tr>
-          <% if(@txinfo['vout'][i]['scriptPubKey']['addresses']) %>
-            <td><%= link_to @txinfo['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
+          <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
+            <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
           <% else %>
-            <td><%= @txinfo['vout'][i]['scriptPubKey']['type'] %></td>
+            <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
           <% end %>
-          <td><%= @txinfo['vout'][i]['value'] %></td><br>
+          <td><%= @txinfo[0]['vout'][i]['value'] %></td><br>
         </tr>
       <% end %>
     </tbody>
