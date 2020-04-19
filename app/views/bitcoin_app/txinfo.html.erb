@@ -2,13 +2,35 @@
 <h1><%= @title %></h1>
 
 <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
-  <td>Genesis Blockのcoinbase TXです。</td>
+  <table border="1">
+  <tr>
+    <th>トランザクションID</th><td><%= @txid %></td>
+  </tr>
+  <tr>
+    <th>承認数</th>
+      <td><%= @current_block_height + 1 %></td>
+    <th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td>
+  </tr>
+  <th>説明</th><td>Genesis Blockのcoinbase TX</td>
+</table>
 <% elsif @txinfo.nil? %>
     <td>このTX <%= @txid %> は見つかりませんでした</td>
-  <% else %>
+<% else %>
 
 <table border="1">
-<tr><th>トランザクションID</th><td><%= @txid %></td></tr>
+<tr>
+  <th>トランザクションID</th><td><%= @txid %></td>
+</tr>
+<tr>
+  <th>承認数</th>
+  <% if @in_mempool %>
+    <td>未承認</td>
+  <% elsif @confirm_block %>
+    <td><%= @current_block_height - @confirm_block['height'] + 1 %></td>
+    <th>承認日時</th><td><%= Time.at(@confirm_block['time']) %></td>
+  <% end %>
+</tr>
+
 </table>
 
   <table border="1">

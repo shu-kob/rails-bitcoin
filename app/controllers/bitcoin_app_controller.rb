@@ -98,6 +98,28 @@ class BitcoinAppController < ApplicationController
     @txid = params[:id]
     @txinfo = gettxinfo(@txid)
 
+    mempoolinfo = bitcoinRPC('getrawmempool',[])
+    for w in 0..mempoolinfo.length
+      if mempoolinfo[w] == @txid
+        @in_mempool = true
+      else
+        blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+        @current_block_height = blockchaininfo['blocks']
+        for i in 0..@current_block_height
+          blockhash = bitcoinRPC('getblockhash', [@current_block_height - i])
+          blockinfo = bitcoinRPC('getblock', [blockhash])
+          for v in 0..blockinfo['tx'].length - 1
+            if blockinfo['tx'][v] == @txid
+              @confirm_block = blockinfo
+            end
+          end
+        end
+      end
+    end
+
+    zero_blockhash = bitcoinRPC('getblockhash',[0])
+    @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
+
     render template: 'bitcoin_app/txinfo'
   end
 
