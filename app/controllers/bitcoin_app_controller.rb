@@ -57,7 +57,7 @@ class BitcoinAppController < ApplicationController
   def txlist
     mempoolinfo = bitcoinRPC('getrawmempool',[])
     confirmation_num = []
-   @txlist = []
+    @txlist = []
 		for n in 0..mempoolinfo.length-1
       unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
       decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
@@ -165,7 +165,7 @@ class BitcoinAppController < ApplicationController
         address_unconf_txlist = gettxinfo(mempoolinfo[n])
         for p in 0..address_unconf_txlist[0]['vout'].length-1
           if (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses']) && (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses'][0] == @addressid)
-            @addresstx.push(address_unconf_txlist[0])
+            @addresstx.push(address_unconf_txlist)
           end
         end
 			end
@@ -188,8 +188,6 @@ class BitcoinAppController < ApplicationController
 				end
 				
 			end
-      logger.debug @addresstx[0][1]
-      logger.debug @addresstx[0][1][0]
       render template: 'bitcoin_app/addressinfo'
     else
     render template: 'bitcoin_app/notfound'
