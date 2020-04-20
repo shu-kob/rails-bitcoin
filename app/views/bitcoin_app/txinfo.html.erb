@@ -22,6 +22,21 @@
 <table border="1">
 <tr>
   <th>トランザクションID</th><td><%= @txid %></td>
+  <th>総入力</th>
+  <td>
+    <% input_value = 0 %>
+    <% for k in 0..@txinfo[1].length-1 %>
+    <% input_value = input_value + @txinfo[1][k][1] %>
+    <% end %>
+    <%= input_value %> BTC
+  </td>
+  <th>送金額合計</th><td><%= @txinfo[2] %> BTC</td>
+  <th>手数料</th><td>
+    <% if input_value == 0 %>
+    0 BTC
+    <% else %>
+    <%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
+    <% end %>
 </tr>
 <tr>
   <% if @in_mempool %>

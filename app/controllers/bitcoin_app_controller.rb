@@ -137,7 +137,11 @@ class BitcoinAppController < ApplicationController
           vin_allinfos.push(vin_info)
         end
       end
-      @txallinfo.push(txinfo, vin_allinfos)
+      output_value = 0
+      for t in 0..txinfo['vout'].length-1
+        output_value = output_value + txinfo['vout'][t]['value']
+      end
+      @txallinfo.push(txinfo, vin_allinfos, output_value)
     end
     return @txallinfo
   end
