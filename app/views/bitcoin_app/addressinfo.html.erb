@@ -7,6 +7,9 @@
 <br>
 
 <br>
+<% if !@validateaddress['isvalid'] %>
+  <td>ビットコインのアドレスではありません</td>
+<% else %>
 <% if @addresstx.empty? %>
   <td>トランザクションはまだありません</td>
 <% else %>
@@ -45,6 +48,7 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
 <% end %>
 
 <br>

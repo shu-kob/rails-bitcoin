@@ -180,7 +180,8 @@ class BitcoinAppController < ApplicationController
 
   def addressinfo
     @addressid = params[:id]
-    if @addressid.size == 35 or @addressid.size == 44 or @addressid.size == 42
+    @validateaddress = bitcoinRPC('validateaddress',[@addressid])
+    if @validateaddress['isvalid']
       mempoolinfo = bitcoinRPC('getrawmempool',[])
 			@addresstx = []
 			
@@ -210,11 +211,9 @@ class BitcoinAppController < ApplicationController
 					
 				end
 				
-			end
-      render template: 'bitcoin_app/addressinfo'
-    else
-    render template: 'bitcoin_app/notfound'
-  	end
+      end
+    end
+    render template: 'bitcoin_app/addressinfo'
 	end
 
   def getnewaddress
@@ -244,47 +243,33 @@ class BitcoinAppController < ApplicationController
 
   def search
     @posts = params[:search]
-    flag = "notfound"
 		
 		if @posts.size == 64
 			
 			if @posts == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"
         @txid = @posts
-        flag = "txinfo"
+        redirect_to txinfo_path(@posts)
       elsif @txSearch = bitcoinRPC('getrawtransaction',[@posts])
-        flag = "txinfo"                
+        redirect_to txinfo_path(@posts)
       else
         @blockinfos = bitcoinRPC('getblock',[@posts])
 				
 				if @blockinfos
-        flag = "blockinfo"
+        redirect_to blockinfo_path(@posts)
         end
 						
 			end
 				
 		elsif @posts.size == 35 or @posts.size == 44 or @posts.size == 42
-      flag = "addressinfo"
+      redirect_to addressinfo_path(@posts)
     elsif @posts =~ /\A[0-9]+\z/
       @posts_num = @posts.to_i
-			
 			if @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
-        flag = "blocknum"
+        redirect_to blockinfo_path(@blockSearch)
       end
-				
-		end
-		
-		if flag == "txinfo"
-      redirect_to txinfo_path(@posts)
-    elsif flag == "blockinfo"
-      redirect_to blockinfo_path(@posts)
-    elsif flag == "blocknum"
-      redirect_to blockinfo_path(@blockSearch)
-    elsif flag == "addressinfo"
-      redirect_to addressinfo_path(@posts)
     else
       render template: 'bitcoin_app/notfound'
     end
-	
 	end
 
   def keys
