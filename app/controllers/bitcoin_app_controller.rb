@@ -180,7 +180,8 @@ class BitcoinAppController < ApplicationController
 
   def addressinfo
     @addressid = params[:id]
-    if @addressid.size == 35 or @addressid.size == 44 or @addressid.size == 42
+    @validateaddress = bitcoinRPC('validateaddress',[@addressid])
+    if @validateaddress['isvalid']
       mempoolinfo = bitcoinRPC('getrawmempool',[])
 			@addresstx = []
 			
@@ -210,11 +211,9 @@ class BitcoinAppController < ApplicationController
 					
 				end
 				
-			end
-      render template: 'bitcoin_app/addressinfo'
-    else
-    render template: 'bitcoin_app/notfound'
-  	end
+      end
+    end
+    render template: 'bitcoin_app/addressinfo'
 	end
 
   def getnewaddress
@@ -262,12 +261,7 @@ class BitcoinAppController < ApplicationController
 			end
 				
 		elsif @posts.size == 35 or @posts.size == 44 or @posts.size == 42
-      address = bitcoinRPC('validateaddress',[@posts])
-      if address['isvalid']
-        redirect_to addressinfo_path(@posts)
-      else
-        render template: 'bitcoin_app/notfound'
-      end
+      redirect_to addressinfo_path(@posts)
     elsif @posts =~ /\A[0-9]+\z/
       @posts_num = @posts.to_i
 			if @blockSearch = bitcoinRPC('getblockhash',[@posts_num])
