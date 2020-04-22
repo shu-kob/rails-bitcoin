@@ -216,9 +216,17 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/addressinfo'
 	end
 
-  def getnewaddress
-    @newaddress_bech32 = bitcoinRPC('getnewaddress',["", "bech32"])
-    redirect_to addressinfo_path(@newaddress_bech32)
+  def getnewaddress(address_type)
+    logger.debug "toooo"
+    @newaddress = bitcoinRPC('getnewaddress',["", address_type])
+    logger.debug @newaddress
+    return @newaddress
+  end
+
+  def receive
+    address_type = "bech32"
+    @address = getnewaddress(address_type)
+    render template: 'bitcoin_app/receive'
   end
 
   def wallet
