@@ -1,103 +1,70 @@
 <% @title = "トランザクション情報" %>
 <h1><%= @title %></h1>
 
+<table border="1">
 <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
-  <table border="1">
-  <tr>
-    <th>トランザクションID</th><td><%= @txid %></td>
-  </tr>
-  <tr>
-    <th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td>
-    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td>
-    <th>承認数</th>
-      <td><%= @blockchaininfo['blocks'] + 1 %></td>
-    <th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td>
-  </tr>
-  <th>説明</th><td>Genesis Blockのcoinbase TX</td>
-</table>
+  <tr><th>トランザクションID</th><td><%= @txid %></td></tr>
+  <tr><th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td></tr>
+  <tr><th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
+  <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] + 1 %></td></tr>
+  <tr><th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td></tr>
+  <tr><th>説明</th><td>Genesis Blockのcoinbase TX</td></tr>
 <% elsif @txinfo.nil? %>
-    <td>このTX <%= @txid %> は見つかりませんでした</td>
+  <tr><td>このTX <%= @txid %> は見つかりませんでした</td></tr>
 <% else %>
 
-<table border="1">
-<tr>
-  <th>トランザクションID</th><td><%= @txid %></td>
-  <th>総入力</th>
+<tr><th>トランザクションID</th><td><%= @txid %></td></tr>
+<tr><th>総入力</th>
   <td>
     <% input_value = 0 %>
     <% for k in 0..@txinfo[1].length-1 %>
     <% input_value = input_value + @txinfo[1][k][1] %>
     <% end %>
     <%= input_value %> BTC
-  </td>
-  <th>送金額合計</th><td><%= @txinfo[2] %> BTC</td>
-  <th>手数料</th><td>
+  </td></tr>
+  <tr><th>送金額合計</th><td><%= @txinfo[2] %> BTC</td></tr>
+  <tr><th>手数料</th>
     <% if input_value == 0 %>
-    0 BTC
+    <td>0 BTC</td>
     <% else %>
-    <%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
+    <td><%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
     <% end %>
 </tr>
-<tr>
+
   <% if @in_mempool %>
-    <th>承認数</th><td>未承認</td>
+  <tr><th>承認数</th><td>未承認</td></tr>
   <% elsif @confirm_block %>
-    <th>承認ブロックハッシュ</th><td><%= link_to @confirm_block['hash'], blockinfo_path(@confirm_block['hash']) %></td>
-    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td>
-    <th>承認数</th><td><%= @blockchaininfo['blocks'] - @confirm_block['height'] + 1 %></td>
-    <th>承認日時</th><td><%= Time.at(@confirm_block['time']) %></td>
+  <tr><th>承認ブロックハッシュ</th><td><%= link_to @confirm_block['hash'], blockinfo_path(@confirm_block['hash']) %></td>
+    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
+    <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] - @confirm_block['height'] + 1 %></td></tr>
+    <tr><th>承認日時</th><td><%= Time.at(@confirm_block['time']) %></td></tr>
   <% end %>
-</tr>
 
-</table>
-
-  <table border="1">
   <% if(@txinfo[1][0]) %>
-    <thead>
-      <tr>
-        <th>送金元</th>
-        <th>額</th>
-      </tr>
-    </thead>
-
-    <tbody>
       <% for k in 0..@txinfo[1].length-1 %>
-      <tr>
-        <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td>
-        <td><%= @txinfo[1][k][1] %></td>
-      </tr>
+      <tr><th>送金元</th>
+        <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td><th>額</th><td><%= @txinfo[1][k][1] %> BTC</td></tr>
       <% end %>
-    </tbody>
     <% else %>
     <tr>
     <td>新規発行</th>
     <td>Coinbase Transaction</td>
   </tr>
   <% end %>
-</table>
-
-<table border="1">
-    <thead>
-      <tr>
-        <th>送金先</th>
-        <th>送金額</th>
-      </tr>
-    </thead>
-    <tbody>
+  <tr><th></th><td>↓</td></tr>
       <% for i in 0..@txinfo[0]['vout'].length-1 %>
-        <tr>
+        <tr><th>送金先</th>
           <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
             <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
           <% else %>
             <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
-          <% end %>
-          <td><%= @txinfo[0]['vout'][i]['value'] %></td><br>
+          <% end %><th>送金額</th>
+          <td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
         </tr>
       <% end %>
-    </tbody>
-  </table>
 
 <% end %>
+</table>
 
 <br>
 
