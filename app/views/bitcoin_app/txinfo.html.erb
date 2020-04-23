@@ -2,8 +2,8 @@
 <h1><%= @title %></h1>
 
 <table border="1">
+  <tr><th>トランザクションID</th><td><%= link_to @txid, txinfo_path(@txid) %></td></tr>
 <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
-  <tr><th>トランザクションID</th><td><%= @txid %></td></tr>
   <tr><th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td></tr>
   <tr><th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
   <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] + 1 %></td></tr>
@@ -13,7 +13,6 @@
   <tr><td>このTX <%= @txid %> は見つかりませんでした</td></tr>
 <% else %>
 
-<tr><th>トランザクションID</th><td><%= @txid %></td></tr>
 <tr><th>総入力</th>
   <td>
     <% input_value = 0 %>
