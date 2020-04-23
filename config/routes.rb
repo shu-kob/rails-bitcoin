@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   post '/sent', to: 'bitcoin_app#sent'
   get '/search', to: 'bitcoin_app#search'
   get '/notfound', to: 'bitcoin_app#notfound'
-  get '/getnewaddress', to: 'bitcoin_app#getnewaddress'
+  get '/receive', to: 'bitcoin_app#receive'
   get '/wallet', to: 'bitcoin_app#wallet'
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/keys', to: 'bitcoin_app#keys'
