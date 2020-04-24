@@ -134,6 +134,7 @@ class BitcoinAppController < ApplicationController
           vin_info = []
           vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['addresses'][0])
           vin_info.push(vintx['vout'][vin_outindex]['value'])
+          vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['asm'])
           vin_allinfos.push(vin_info)
         end
       end
