@@ -59,7 +59,16 @@
             <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
           <% end %><th>送金額</th>
           <td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
+        <tr><th>タイプ</th>
+          <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "scripthash" %>
+          <td>P2PKH</td>
+        <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "witness_v0_keyhash" %>
+          <td>V0_P2WPKH</td>
+        <% end %>
         </tr>
+        <tr><th>SCRIPTPUBKEY (ASM)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['asm'] %></td></tr>
+        <tr><th>SCRIPTPUBKEY (HEX)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['hex'] %></td></tr>
+      </tr>
       <% end %>
 
 <% end %>
