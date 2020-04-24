@@ -43,6 +43,16 @@
       <% for k in 0..@txinfo[1].length-1 %>
       <tr><th>送金元</th>
         <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td><th>額</th><td><%= @txinfo[1][k][1] %> BTC</td></tr>
+      <tr><th>TXID</th><td><%= link_to @txinfo[0]['vin'][k]["txid"], txinfo_path(@txinfo[0]['vin'][k]["txid"]) %></td></tr>
+      <tr><th>VOUT</th><td><%= @txinfo[0]['vin'][k]["vout"] %></td></tr>
+      <% if @txinfo[0]['vin'][k]["scriptSig"]["asm"] != "" %>
+      <tr><th>SCRIPTSIG (ASM)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["asm"] %></td></tr>
+      <tr><th>SCRIPTSIG (HEX)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["hex"] %></td></tr>
+      <% end %>
+      <% if @txinfo[0]['vin'][k]["txinwitness"][0] %>
+      <tr><th>WITNESS</th><td><%= @txinfo[0]['vin'][k]["txinwitness"][0] %></td></tr>
+      <% end %>
+      <tr><th>SEQUENCE</th><td><%= "0x" + @txinfo[0]['vin'][k]["sequence"].to_s(16) %></td></tr>
       <% end %>
     <% else %>
     <tr>
@@ -61,6 +71,8 @@
           <td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
         <tr><th>タイプ</th>
           <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "scripthash" %>
+          <td>P2SH</td>
+          <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "pubkeyhash" %>
           <td>P2PKH</td>
         <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "witness_v0_keyhash" %>
           <td>V0_P2WPKH</td>
