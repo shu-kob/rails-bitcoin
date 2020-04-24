@@ -217,9 +217,7 @@ class BitcoinAppController < ApplicationController
 	end
 
   def getnewaddress(address_type)
-    logger.debug "toooo"
     @newaddress = bitcoinRPC('getnewaddress',["", address_type])
-    logger.debug @newaddress
     return @newaddress
   end
 
