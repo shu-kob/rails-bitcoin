@@ -43,10 +43,31 @@
       <% for k in 0..@txinfo[1].length-1 %>
       <tr><th>送金元</th>
         <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td><th>額</th><td><%= @txinfo[1][k][1] %> BTC</td></tr>
+      <tr><th>TXID</th><td><%= link_to @txinfo[0]['vin'][k]["txid"], txinfo_path(@txinfo[0]['vin'][k]["txid"]) %></td></tr>
+      <tr><th>VOUT</th><td><%= @txinfo[0]['vin'][k]["vout"] %></td></tr>
+      <% if @txinfo[0]['vin'][k]["scriptSig"]["asm"] != "" %>
+      <tr><th>SCRIPTSIG (ASM)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["asm"] %></td></tr>
+      <tr><th>SCRIPTSIG (HEX)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["hex"] %></td></tr>
+      <% end %>
+      <% if @txinfo[0]['vin'][k]["txinwitness"][0] %>
+      <tr><th>WITNESS</th><td><%= @txinfo[0]['vin'][k]["txinwitness"][0] %></td></tr>
+      <% end %>
+      <tr><th>SEQUENCE</th><td><%= "0x" + @txinfo[0]['vin'][k]["sequence"].to_s(16) %></td></tr>
+      <tr><th>PREVIOUS OUTPUT SCRIPT</th><td><%= @txinfo[1][k][2] %></td></tr>
+      <tr><th>PREVIOUS OUTPUT SCRIPT TYPE</th>
+        <% if @txinfo[1][k][3] == "scripthash" %>
+        <td>P2SH</td>
+        <% elsif @txinfo[1][k][3] == "pubkeyhash" %>
+        <td>P2PKH</td>
+        <% elsif @txinfo[1][k][3] == "witness_v0_keyhash" %>
+        <td>V0_P2WPKH</td>
+        <% else %>
+        <%= @txinfo[1][k][3] %>
+      <% end %>
       <% end %>
     <% else %>
-    <tr>
-    <td>新規発行</th>
+    <tr><th>説明</th>
+    <td>新規発行</td>
     <td>Coinbase Transaction</td>
   </tr>
   <% end %>
@@ -56,12 +77,26 @@
           <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
             <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
           <% else %>
-            <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
+            <td>EMPTY</td>
           <% end %><th>送金額</th>
           <td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
+        <tr><th>タイプ</th>
+          <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "scripthash" %>
+          <td>P2SH</td>
+          <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "pubkeyhash" %>
+          <td>P2PKH</td>
+        <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "witness_v0_keyhash" %>
+          <td>V0_P2WPKH</td>
+        <% else %>
+        <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
+        <% end %>
         </tr>
+        <tr><th>SCRIPTPUBKEY (ASM)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['asm'] %></td></tr>
+        <tr><th>SCRIPTPUBKEY (HEX)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['hex'] %></td></tr>
+        <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] != "nulldata" %>
+        <tr><th>使用有無</th><td><%= @txinfo[3][i] %></td></tr>
+        <% end %>
       <% end %>
-
 <% end %>
 </table>
 

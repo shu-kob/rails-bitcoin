@@ -125,6 +125,7 @@ class BitcoinAppController < ApplicationController
     if rawtx
       txinfo = bitcoinRPC('decoderawtransaction',[rawtx])
       vin_allinfos = []
+      spentflags = []
       @txallinfo = []
       for k in 0..txinfo['vin'].length-1
         vinrawtx = bitcoinRPC('getrawtransaction',[txinfo['vin'][k]['txid']])
@@ -134,14 +135,23 @@ class BitcoinAppController < ApplicationController
           vin_info = []
           vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['addresses'][0])
           vin_info.push(vintx['vout'][vin_outindex]['value'])
+          vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['asm'])
+          vin_info.push(vintx['vout'][vin_outindex]['scriptPubKey']['type'])
           vin_allinfos.push(vin_info)
         end
       end
       output_value = 0
       for t in 0..txinfo['vout'].length-1
         output_value = output_value + txinfo['vout'][t]['value']
+        gettxout = bitcoinRPC('gettxout',[txid, t])
+        if gettxout
+          spent_flag = "未使用"
+        else
+          spent_flag = "使用済"
+        end
+        spentflags.push(spent_flag)
       end
-      @txallinfo.push(txinfo, vin_allinfos, output_value)
+      @txallinfo.push(txinfo, vin_allinfos, output_value, spentflags)
     end
     return @txallinfo
   end
