@@ -234,15 +234,18 @@ class BitcoinAppController < ApplicationController
   end
 
   def receive
+
     address_type = "bech32"
     @address = getnewaddress(address_type)
-    #@address = "2NEiVcW9KbXTY4i874fHUvqfvWvuVuVvsYQ"
-    amount = 0.01
-    uri = "bitcoin:" + @address.to_s + "?amount=" + amount.to_s
-    qr = RQRCode::QRCode.new(uri, :size => 10, :level => :h)
-    logger.debug qr
+    amount = params[:amount].to_s
+    if params[:amount]
+      @uri = "bitcoin:" + @address + "?amount=" + amount
+    else
+      @uri = "bitcoin:" + @address
+    end
+
+    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
     png = qr.to_img
-    logger.debug png
     @qrcode = png.resize(300, 300).to_data_url
     render template: 'bitcoin_app/receive'
   end
