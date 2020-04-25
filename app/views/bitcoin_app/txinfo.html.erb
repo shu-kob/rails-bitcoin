@@ -3,101 +3,107 @@
 
 <table border="1">
   <tr><th>トランザクションID</th><td><%= link_to @txid, txinfo_path(@txid) %></td></tr>
-<% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
-  <tr><th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td></tr>
-  <tr><th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
-  <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] + 1 %></td></tr>
-  <tr><th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td></tr>
-  <tr><th>説明</th><td>Genesis Blockのcoinbase TX</td></tr>
-<% elsif @txinfo.nil? %>
-  <tr><td>このTX <%= @txid %> は見つかりませんでした</td></tr>
-<% else %>
+  <% if @txid == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b" %>
+    <tr><th>承認ブロックハッシュ</th><td><%= link_to @decode_zero_blockhash['hash'], blockinfo_path(@decode_zero_blockhash['hash']) %></td></tr>
+    <tr><th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
+    <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] + 1 %></td></tr>
+    <tr><th>承認日時</th><td><%= Time.at(@decode_zero_blockhash['time']) %></td></tr>
+    <tr><th>説明</th><td>Genesis Blockのcoinbase TX</td></tr>
+  <% elsif @txinfo.nil? %>
+    <tr><td>このTX <%= @txid %> は見つかりませんでした</td></tr>
+  <% else %>
 
-<tr><th>総入力</th>
-  <td>
-    <% input_value = 0 %>
-    <% for k in 0..@txinfo[1].length-1 %>
-    <% input_value = input_value + @txinfo[1][k][1] %>
-    <% end %>
-    <%= input_value %> BTC
-  </td></tr>
+  <tr><th>総入力</th>
+    <td>
+      <% input_value = 0 %>
+      <% for k in 0..@txinfo[1].length-1 %>
+      <% input_value = input_value + @txinfo[1][k][1] %>
+      <% end %>
+      <%= input_value %> BTC
+    </td>
+  </tr>
   <tr><th>送金額合計</th><td><%= @txinfo[2] %> BTC</td></tr>
-  <tr><th>手数料</th>
+  <tr>
+    <th>手数料</th>
     <% if input_value == 0 %>
-    <td>0 BTC</td>
+      <td>0 BTC</td>
     <% else %>
-    <td><%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
+      <td><%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
     <% end %>
-</tr>
+  </tr>
 
   <% if @in_mempool %>
-  <tr><th>承認数</th><td>未承認</td></tr>
+    <tr><th>承認数</th><td>未承認</td></tr>
   <% elsif @confirm_block %>
-  <tr><th>承認ブロックハッシュ</th><td><%= link_to @confirm_block['hash'], blockinfo_path(@confirm_block['hash']) %></td>
-    <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td></tr>
+    <tr>
+      <th>承認ブロックハッシュ</th><td><%= link_to @confirm_block['hash'], blockinfo_path(@confirm_block['hash']) %></td>
+      <th>承認ブロック高</th><td><%= @confirm_block['height'] %></td>
+    </tr>
     <tr><th>承認数</th><td><%= @blockchaininfo['blocks'] - @confirm_block['height'] + 1 %></td></tr>
     <tr><th>承認日時</th><td><%= Time.at(@confirm_block['time']) %></td></tr>
   <% end %>
 
   <% if(@txinfo[1][0]) %>
-      <% for k in 0..@txinfo[1].length-1 %>
+    <% for k in 0..@txinfo[1].length-1 %>
       <tr><th>送金元</th>
-        <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td><th>額</th><td><%= @txinfo[1][k][1] %> BTC</td></tr>
+        <td><%= link_to @txinfo[1][k][0], addressinfo_path(@txinfo[1][k][0]) %></td><th>額</th><td><%= @txinfo[1][k][1] %> BTC</td>
+      </tr>
       <tr><th>TXID</th><td><%= link_to @txinfo[0]['vin'][k]["txid"], txinfo_path(@txinfo[0]['vin'][k]["txid"]) %></td></tr>
       <tr><th>VOUT</th><td><%= @txinfo[0]['vin'][k]["vout"] %></td></tr>
-      <% if @txinfo[0]['vin'][k]["scriptSig"]["asm"] != "" %>
+        <% if @txinfo[0]['vin'][k]["scriptSig"]["asm"] != "" %>
       <tr><th>SCRIPTSIG (ASM)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["asm"] %></td></tr>
       <tr><th>SCRIPTSIG (HEX)</th><td><%= @txinfo[0]['vin'][k]["scriptSig"]["hex"] %></td></tr>
-      <% end %>
-      <% if @txinfo[0]['vin'][k]["txinwitness"][0] %>
-      <tr><th>WITNESS</th><td><%= @txinfo[0]['vin'][k]["txinwitness"][0] %></td></tr>
-      <% end %>
+        <% end %>
+        <% if @txinfo[0]['vin'][k]["txinwitness"][0] %>
+        <tr><th>WITNESS</th><td><%= @txinfo[0]['vin'][k]["txinwitness"][0] %></td></tr>
+        <% end %>
       <tr><th>SEQUENCE</th><td><%= "0x" + @txinfo[0]['vin'][k]["sequence"].to_s(16) %></td></tr>
       <tr><th>PREVIOUS OUTPUT SCRIPT</th><td><%= @txinfo[1][k][2] %></td></tr>
       <tr><th>PREVIOUS OUTPUT SCRIPT TYPE</th>
         <% if @txinfo[1][k][3] == "scripthash" %>
-        <td>P2SH</td>
+          <td>P2SH</td>
         <% elsif @txinfo[1][k][3] == "pubkeyhash" %>
-        <td>P2PKH</td>
+          <td>P2PKH</td>
         <% elsif @txinfo[1][k][3] == "witness_v0_keyhash" %>
-        <td>V0_P2WPKH</td>
+          <td>V0_P2WPKH</td>
         <% else %>
-        <%= @txinfo[1][k][3] %>
-      <% end %>
-      <% end %>
-    <% else %>
-    <tr><th>説明</th>
-    <td>新規発行</td>
-    <td>Coinbase Transaction</td>
-  </tr>
+          <%= @txinfo[1][k][3] %>
+        <% end %>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <th>説明</th><td>新規発行</td><td>Coinbase Transaction</td>
+    </tr>
   <% end %>
   <tr><th></th><td>↓</td></tr>
-      <% for i in 0..@txinfo[0]['vout'].length-1 %>
-        <tr><th>送金先</th>
-          <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
-            <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
-          <% else %>
-            <td>EMPTY</td>
-          <% end %><th>送金額</th>
-          <td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
-        <tr><th>タイプ</th>
-          <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "scripthash" %>
+    <% for i in 0..@txinfo[0]['vout'].length-1 %>
+      <tr><th>送金先</th>
+        <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
+          <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
+        <% else %>
+          <td>EMPTY</td>
+        <% end %>
+        <th>送金額</th><td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
+      </tr>
+      <tr><th>タイプ</th>
+        <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "scripthash" %>
           <td>P2SH</td>
-          <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "pubkeyhash" %>
+        <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "pubkeyhash" %>
           <td>P2PKH</td>
         <% elsif @txinfo[0]['vout'][i]['scriptPubKey']['type'] == "witness_v0_keyhash" %>
           <td>V0_P2WPKH</td>
         <% else %>
-        <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
+          <td><%= @txinfo[0]['vout'][i]['scriptPubKey']['type'] %></td>
         <% end %>
-        </tr>
-        <tr><th>SCRIPTPUBKEY (ASM)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['asm'] %></td></tr>
-        <tr><th>SCRIPTPUBKEY (HEX)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['hex'] %></td></tr>
-        <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] != "nulldata" %>
+      </tr>
+      <tr><th>SCRIPTPUBKEY (ASM)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['asm'] %></td></tr>
+      <tr><th>SCRIPTPUBKEY (HEX)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['hex'] %></td></tr>
+      <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] != "nulldata" %>
         <tr><th>使用有無</th><td><%= @txinfo[3][i] %></td></tr>
-        <% end %>
       <% end %>
-<% end %>
+    <% end %>
+  <% end %>
 </table>
 
 <br>
