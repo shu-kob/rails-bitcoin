@@ -6,6 +6,8 @@ RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
 PORT=18443
+require 'rqrcode'
+require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def explorer
@@ -232,8 +234,19 @@ class BitcoinAppController < ApplicationController
   end
 
   def receive
+
     address_type = "bech32"
     @address = getnewaddress(address_type)
+    amount = params[:amount].to_s
+    if params[:amount]
+      @uri = "bitcoin:" + @address + "?amount=" + amount
+    else
+      @uri = "bitcoin:" + @address
+    end
+
+    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    png = qr.to_img
+    @qrcode = png.resize(300, 300).to_data_url
     render template: 'bitcoin_app/receive'
   end
 

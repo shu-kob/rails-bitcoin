@@ -1,10 +1,21 @@
 <% @title = "受取" %>
 <h1><%= @title %></h1>
 
-<tr>
-    <th>アドレス: </th><td><%= @address %></td>
-</tr>
+<tr><img src ="<%= @qrcode %>"></tr>
+
 <br>
+
+<tr></tr>
+<%= form_tag({ :controller => 'bitcoin_app', :action => 'receive' },{ :method => :post}) do %>
+    <%= label_tag :amount %>
+    <%= text_field_tag :amount %><br>
+    <%= submit_tag "QRコード生成"%>
+<% end %>
+</tr>
+
+<br>
+
+<tr><td><%= @uri %></td></tr>
 
 <%= button_to "新しいアドレス生成", {controller: 'bitcoin_app', action: 'receive'}, {method: :get} %>
 
