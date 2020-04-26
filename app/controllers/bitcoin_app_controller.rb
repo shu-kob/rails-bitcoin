@@ -10,7 +10,7 @@ require 'rqrcode'
 require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
-  def explorer
+  def index
     if params[:id]
       blockheightnum = params[:id].to_i
     end
@@ -53,7 +53,7 @@ class BitcoinAppController < ApplicationController
       end
     end
 		
-    render template: 'bitcoin_app/explorer'
+    render template: 'bitcoin_app/index'
   end
 
   def txlist
