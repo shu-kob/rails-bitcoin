@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/notfound', to: 'bitcoin_app#notfound'
   get '/receive', to: 'bitcoin_app#receive'
   post '/receive', to: 'bitcoin_app#receive'
-  get '/wallet', to: 'bitcoin_app#wallet'
+  get '/addresslist', to: 'bitcoin_app#addresslist'
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/keys', to: 'bitcoin_app#keys'
 end

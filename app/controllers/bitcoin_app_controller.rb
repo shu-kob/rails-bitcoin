@@ -250,9 +250,9 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/receive'
   end
 
-  def wallet
+  def addresslist
     @listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-    render template: 'bitcoin_app/wallet'
+    render template: 'bitcoin_app/addresslist'
   end
 
   def sendings
