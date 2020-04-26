@@ -11,13 +11,13 @@ require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
-    if params[:id]
-      blockheightnum = params[:id].to_i
+    if params[:blockheight]
+      blockheightnum = params[:blockheight].to_i
     end
-    if params[:num]
-      num = params[:num].to_i
+    if params[:blocknum]
+      blocknum = params[:blocknum].to_i
     else
-      num = 25
+      blocknum = 25
     end
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     @blockheight = @blockchaininfo['blocks']
@@ -27,16 +27,16 @@ class BitcoinAppController < ApplicationController
       i = @blockheight
     end
 
-    if i >= num - 1
-      @num = 25
-    elsif i < num - 1 && @blockheight >= num
-      @num = num
-      i = num - 1
+    if i >= blocknum - 1
+      @blocknum = 25
+    elsif i < blocknum - 1 && @blockheight >= blocknum
+      @blocknum = blocknum
+      i = blocknum - 1
     else
-      @num = i
+      @blocknum = i
     end
 		
-    @height_num  = i - @num
+    @height_num  = i - @blocknum
     blockhash = []
     blockinfo = []
 		j = 0
@@ -95,7 +95,7 @@ class BitcoinAppController < ApplicationController
   end
 
   def txinfo
-    @txid = params[:id]
+    @txid = params[:txid]
     @txinfo = gettxinfo(@txid)
 
     mempoolinfo = bitcoinRPC('getrawmempool',[])
@@ -160,7 +160,7 @@ class BitcoinAppController < ApplicationController
 
   def blockinfo
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    @blockhashid = params[:id]
+    @blockhashid = params[:blockhash]
     @blockinfos = bitcoinRPC('getblock',[@blockhashid])
 
     render template: 'bitcoin_app/blockinfo'
@@ -191,7 +191,7 @@ class BitcoinAppController < ApplicationController
   end
 
   def addressinfo
-    @addressid = params[:id]
+    @addressid = params[:address]
     @validateaddress = bitcoinRPC('validateaddress',[@addressid])
     if @validateaddress['isvalid']
       mempoolinfo = bitcoinRPC('getrawmempool',[])
@@ -250,9 +250,9 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/receive'
   end
 
-  def wallet
+  def addresslist
     @listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-    render template: 'bitcoin_app/wallet'
+    render template: 'bitcoin_app/addresslist'
   end
 
   def sendings

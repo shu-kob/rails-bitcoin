@@ -2,10 +2,10 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/', to: 'bitcoin_app#index'
   get '/index', to: 'bitcoin_app#index'
-  get '/index/:id/:num', to: 'bitcoin_app#index', as: 'pagenation'
-  get '/tx/:id', to: 'bitcoin_app#txinfo', as: 'txinfo'
-  get '/block/:id', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
-  get '/address/:id', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
+  get '/index/:blockheight/:blocknum', to: 'bitcoin_app#index', as: 'pagenation'
+  get '/tx/:txid', to: 'bitcoin_app#txinfo', as: 'txinfo'
+  get '/block/:blockhash', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
+  get '/address/:address', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
   get '/mining', to: 'bitcoin_app#mining'
   post '/mine', to: 'bitcoin_app#mine'
   get '/mine', to: 'bitcoin_app#mine'
@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get '/notfound', to: 'bitcoin_app#notfound'
   get '/receive', to: 'bitcoin_app#receive'
   post '/receive', to: 'bitcoin_app#receive'
-  get '/wallet', to: 'bitcoin_app#wallet'
+  get '/addresslist', to: 'bitcoin_app#addresslist'
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/keys', to: 'bitcoin_app#keys'
 end
