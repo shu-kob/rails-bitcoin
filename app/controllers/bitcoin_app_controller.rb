@@ -225,6 +225,12 @@ class BitcoinAppController < ApplicationController
 				
       end
     end
+
+    @uri = "bitcoin:" + @addressid
+
+    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    png = qr.to_img
+    @qrcode = png.resize(300, 300).to_data_url
     render template: 'bitcoin_app/addressinfo'
 	end
 

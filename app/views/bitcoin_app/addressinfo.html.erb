@@ -1,52 +1,47 @@
 <% @title = "アドレス詳細" %>
 <h1><%= @title %></h1>
 
-<tr>
-    <th>アドレス: </th><td><%= @addressid %></td>
-</tr>
+<br>
+
+<tr><img src ="<%= @qrcode %>"></tr>
+<br>
+
+<tr><%= @addressid %></tr>
 <br>
 
 <br>
 <% if !@validateaddress['isvalid'] %>
   <td>ビットコインのアドレスではありません</td>
 <% else %>
-<% if @addresstx.empty? %>
-  <td>トランザクションはまだありません</td>
-<% else %>
-<table border="1">
-  <thead>
-      <tr>
-        <th>アドレスのトランザクション一覧</th>
-      </tr>
-  </thead>
-  <tbody>
-
-    <% for m in 0..@addresstx.length-1 %>
-      <tr>
+  <% if @addresstx.empty? %>
+    <td>トランザクションはまだありません</td>
+  <% else %>
+    <table border="1">
+      <% for m in 0..@addresstx.length-1 %>
+        <tr>
           <th>トランザクションID</th><td><%= link_to @addresstx[m][0]['txid'], txinfo_path(@addresstx[m][0]['txid']) %></td>
-      </tr>
-      <% if (@addresstx[m][1].empty?) %>
-        <th>送金元</th><td>Coinbase TX</td>
-      <% else %>
-        <% for l in 0..@addresstx[m][1].length-1 %>
-          <tr>
-            <th>送金元</th><td><%= link_to @addresstx[m][1][l][0], addressinfo_path(@addresstx[m][1][l][0]) %></td>
-            <th>額</th><td><%= @addresstx[m][1][l][1] %><td>
+        </tr>
+        <% if (@addresstx[m][1].empty?) %>
+          <tr><th>送金元</th><td>Coinbase TX</td></tr>
+        <% else %>
+          <% for l in 0..@addresstx[m][1].length-1 %>
+            <tr>
+              <th>送金元</th><td><%= link_to @addresstx[m][1][l][0], addressinfo_path(@addresstx[m][1][l][0]) %></td>
+              <th>額</th><td><%= @addresstx[m][1][l][1] %><td>
+            </tr>
+          <% end %>
+        <% end %>
+        <% for n in 0..@addresstx[m][0]['vout'].length-1 %>
+          <tr><th>送金先</th>
+            <% if(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"]) %>
+              <td><%= link_to @addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0], addressinfo_path(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0]) %></td>
+            <% else %>
+              <td><%= @addresstx[m][0]['vout'][n]["scriptPubKey"]["type"] %></td>
+            <% end %>
+            <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td>
           </tr>
         <% end %>
       <% end %>
-      <% for n in 0..@addresstx[m][0]['vout'].length-1 %>
-        <tr>
-            <% if(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"]) %>
-            <th>送金先</th><td><%= link_to @addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0], addressinfo_path(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0]) %></td>
-            <% else %>
-              <th>データ</th><td><%= @addresstx[m][0]['vout'][n]["scriptPubKey"]["type"] %></td>
-            <% end %>
-              <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
-</table>
-<% end %>
+    </table>
+  <% end %>
 <% end %>
