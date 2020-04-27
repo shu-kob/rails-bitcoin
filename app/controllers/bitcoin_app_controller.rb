@@ -156,7 +156,29 @@ class BitcoinAppController < ApplicationController
           end
         end
       end
-      @txallinfo.push(txinfo, vin_allinfos, output_value, gettxouts, spendable)
+      # confirmations = -1
+      # mempoolinfo = bitcoinRPC('getrawmempool',[])
+      # for i in 0..mempoolinfo.length-1
+      #   if mempoolinfo[i] == txid
+      #     confirmations = 0
+      #     break
+      #   end
+      # end
+      # if confirmations < 0
+      #   blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+      #   for j in 0..blockchaininfo['blocks']-1
+      #     blockhash = bitcoinRPC('getblockhash',[blockchaininfo['blocks'] - j])
+      #     block = bitcoinRPC('getblock',[blockhash])
+      #     for l in 0..block['tx'].length-1
+      #       if block['tx'][l] == txid
+      #         confirmations = block['confirmations']
+      #         break
+      #       end
+      #     end
+      #   end
+      # end
+
+      @txallinfo.push(txinfo, vin_allinfos, output_value, gettxouts, spendable, confirmations)
     end
     return @txallinfo
   end

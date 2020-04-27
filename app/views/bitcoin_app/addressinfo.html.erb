@@ -49,10 +49,13 @@
           <tr><th>送金先</th>
             <% if(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"]) %>
               <td><%= link_to @addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0], addressinfo_path(@addresstx[m][0]['vout'][n]["scriptPubKey"]["addresses"][0]) %></td>
+              <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td></td>
+              <th>使用有無</th><% if @addresstx[m][3][n] %><td>未使用</td><% else %><td>使用済</td><% end %>
+              <th></th>
             <% else %>
               <td><%= @addresstx[m][0]['vout'][n]["scriptPubKey"]["type"] %></td>
+              <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td></td>
             <% end %>
-            <th>送金額</th><td><%= @addresstx[m][0]['vout'][n]["value"] %><td>
           </tr>
         <% end %>
       <% end %>
