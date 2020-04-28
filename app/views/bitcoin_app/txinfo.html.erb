@@ -100,7 +100,11 @@
       <tr><th>SCRIPTPUBKEY (ASM)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['asm'] %></td></tr>
       <tr><th>SCRIPTPUBKEY (HEX)</th><td><%= @txinfo[0]['vout'][i]['scriptPubKey']['hex'] %></td></tr>
       <% if @txinfo[0]['vout'][i]['scriptPubKey']['type'] != "nulldata" %>
-        <tr><th>使用有無</th><td><%= @txinfo[3][i] %></td></tr>
+        <tr><th>使用有無</th>
+          <% if @txinfo[3][i] %><td>未使用</td>
+          <% else %><td>使用済</td>
+          <% end %>
+        </tr>
       <% end %>
     <% end %>
   <% end %>

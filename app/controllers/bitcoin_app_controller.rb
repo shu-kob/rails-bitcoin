@@ -127,7 +127,7 @@ class BitcoinAppController < ApplicationController
     if rawtx
       txinfo = bitcoinRPC('decoderawtransaction',[rawtx])
       vin_allinfos = []
-      spentflags = []
+      gettxouts = []
       @txallinfo = []
       for k in 0..txinfo['vin'].length-1
         vinrawtx = bitcoinRPC('getrawtransaction',[txinfo['vin'][k]['txid']])
@@ -143,17 +143,44 @@ class BitcoinAppController < ApplicationController
         end
       end
       output_value = 0
+      spendable = true
       for t in 0..txinfo['vout'].length-1
         output_value = output_value + txinfo['vout'][t]['value']
         gettxout = bitcoinRPC('gettxout',[txid, t])
+        gettxouts.push(gettxout)
         if gettxout
-          spent_flag = "未使用"
-        else
-          spent_flag = "使用済"
+          if gettxout['coinbase'] == true
+            if (gettxout['confirmations'] <= 100)
+              spendable = false
+            end
+          end
         end
-        spentflags.push(spent_flag)
       end
-      @txallinfo.push(txinfo, vin_allinfos, output_value, spentflags)
+      confirmations = -1
+      mempoolinfo = bitcoinRPC('getrawmempool',[])
+      for i in 0..mempoolinfo.length-1
+        if mempoolinfo[i] == txid
+          logger.debug mempoolinfo[i]
+          confirmations = 0
+          break
+        end
+      end
+      if confirmations < 0
+        blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+
+        for j in 0..blockchaininfo['blocks']-1
+          blockhash = bitcoinRPC('getblockhash',[blockchaininfo['blocks'] - j])
+          block = bitcoinRPC('getblock',[blockhash])
+          for l in 0..block['tx'].length-1
+            if block['tx'][l] == txid
+              confirmations = block['confirmations']
+              break
+            end
+          end
+        end
+      end
+
+      @txallinfo.push(txinfo, vin_allinfos, output_value, gettxouts, spendable, confirmations)
     end
     return @txallinfo
   end
@@ -225,6 +252,12 @@ class BitcoinAppController < ApplicationController
 				
       end
     end
+
+    @uri = "bitcoin:" + @addressid
+
+    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    png = qr.to_img
+    @qrcode = png.resize(300, 300).to_data_url
     render template: 'bitcoin_app/addressinfo'
 	end
 
