@@ -32,7 +32,8 @@
     <table border="1">
       <% for m in 0..@addresstx.length-1 %>
         <tr>
-          <th>トランザクションID</th><td><%= link_to @addresstx[m][0]['txid'], txinfo_path(@addresstx[m][0]['txid']) %></td><th>承認数</th><td><%= @addresstx[m][5] %></td>
+          <th>トランザクションID</th><td><%= link_to @addresstx[m][0]['txid'], txinfo_path(@addresstx[m][0]['txid']) %></td>
+        <th>承認数</th><% if @addresstx[m][5] == 0 %><td>未承認</td><% else %><td><%= @addresstx[m][5] %></td><% end %>
         </tr>
         <% if (@addresstx[m][1].empty?) %>
           <tr><th>送金元</th><td>Coinbase TX</td></tr>

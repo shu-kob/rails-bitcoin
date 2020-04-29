@@ -221,7 +221,7 @@ class BitcoinAppController < ApplicationController
           address_conf_txlist = gettxinfo(@blosckinfos['tx'][s])
 					for t in 0..address_conf_txlist[0]['vout'].length-1
             if (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses']) && (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
-              address_conf_txlist.push(@blosckinfos['height'])
+              address_conf_txlist.push(current_height - @blosckinfos['height'] + 1)
               @addresstx.push(address_conf_txlist)
             end
 					end
