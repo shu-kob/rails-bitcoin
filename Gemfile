@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.2', require: false
 
 gem 'bitcoinrb', require: 'bitcoin'
+gem 'c-lightningrb', require: 'lightning'
 
 gem "actionview", ">= 6.0.2.2"
 

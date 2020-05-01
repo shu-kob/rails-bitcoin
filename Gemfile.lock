@@ -79,6 +79,7 @@ GEM
       msgpack (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
+    c-lightningrb (0.2.0)
     capybara (3.32.1)
       addressable
       mini_mime (>= 0.1.3)
@@ -268,6 +269,7 @@ DEPENDENCIES
   bitcoinrb
   bootsnap (>= 1.4.2)
   byebug
+  c-lightningrb
   capybara (>= 2.15)
   jbuilder (~> 2.7)
   jquery-rails

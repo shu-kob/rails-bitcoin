@@ -18,4 +18,5 @@ Rails.application.routes.draw do
   get '/addresslist', to: 'bitcoin_app#addresslist'
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/keys', to: 'bitcoin_app#keys'
+  get 'lightning', to: 'lightning#lightning'
 end
