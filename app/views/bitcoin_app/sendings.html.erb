@@ -3,8 +3,8 @@
 
 <%= form_tag({ :controller => 'bitcoin_app', :action => 'sent' },{ :method => :post}) do %>
     <%= label_tag :address %> 
-    <%= text_field_tag :address %><br>
+    <%= text_field :sending, :address %><br>
     <%= label_tag :amount %> 
-    <%= text_field_tag :amount %><br>
+    <%= text_field :sending, :amount %><br>
     <%= submit_tag "送金"%>
 <% end %>

@@ -271,8 +271,8 @@ class BitcoinAppController < ApplicationController
   end
 
   def sent
-    address = params[:address]
-    amount = params[:amount]
+    address = params[:sending]['address']
+    amount = params[:sending]['amount']
     @txid = bitcoinRPC('sendtoaddress',[address, amount])
     if (@txid)
       redirect_to txinfo_path(@txid)
@@ -283,7 +283,7 @@ class BitcoinAppController < ApplicationController
 
   def search
     @posts = params[:search]
-		
+
 		if @posts.size == 64
 			
 			if @posts == "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"
