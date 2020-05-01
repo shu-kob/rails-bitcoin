@@ -1,0 +1,88 @@
+<h1>Lightning Network 運用監視画面</h1>
+
+<br>
+<b>自分のLightning Network ID</b>
+<br>
+<div><%= @getinfo['id'] %></div>
+<br>
+<br>
+
+<b>接続ピア数：</b>
+<%= @listpeers['peers'].length %>
+
+<% if @listpeers['peers'][0] %>
+<table>
+  <thead>
+    <tr>
+      <th>接続先ID</th>
+      <th>ネットワークアドレス</th>
+      <th>エイリアス</th>
+      <th>チャネル状態</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for i in 0..@listpeers.length-1 %>
+      <tr>
+        <td><%= @listpeers[i]['id'] %></td>
+        <td><%= @listpeers[i]['netaddr'][0] %></td>
+        <td><%= @listpeers[i]['alias'] %></td>
+        <td><%= @listpeers[i]['channels'][0]['state'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+<br>
+<br>
+<%= link_to 'LN Testnet Explorer', 'https://explorer.acinq.co/', :target=>["_blank"] %>
+<br>
+
+<br>
+<h2>ネットワーク全体のノード</h2>
+
+<b>ノード数：</b>
+<%= @listnodes['nodes'].length %>
+
+<% if @listnodes['nodes'][0] %>
+
+<table>
+  <thead>
+    <tr>
+      <th>ノードID</th>
+      <th>エイリアス</th>
+      <th>IPアドレス</th>
+      <th>ポート</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for i in 0..49 %>
+      <tr>
+        <td><%= @listnodes[i]['nodeid'] %></td>
+        <td>
+        <% if @listnodes[i]['alias'] %>
+            <%= @listnodes[i]['alias'] %>
+        <% end %>
+        </td>
+        <td>
+        <% if @listnodes[i]['addresses'] %>
+        <% if @listnodes[i]['addresses'][0] %>
+            <%= @listnodes[i]['addresses'][0]['address']  %>
+        <% end %>
+        <% end %>
+        </td>
+        <td>
+        <% if @listnodes[i]['addresses'] %>
+        <% if @listnodes[i]['addresses'][0] %>
+            <%= @listnodes[i]['addresses'][0]['port']  %>
+        <% end %>
+        <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>

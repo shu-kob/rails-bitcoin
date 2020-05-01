@@ -1,11 +1,11 @@
 require 'bitcoin'
 require 'net/http'
 require 'json'
-Bitcoin.chain_params = :regtest
+Bitcoin.chain_params = :testnet
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=18443
+PORT=18332
 require 'rqrcode'
 require 'rqrcode_png'
 
