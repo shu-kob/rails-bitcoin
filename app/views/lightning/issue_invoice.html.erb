@@ -1,0 +1,27 @@
+<% @title = "Invoice発行" %>
+<h1><%= @title %></h1>
+
+<br>
+<br>
+
+<br>
+
+<%= form_tag({ :controller => 'lightning', :action => 'invoice' },{ :method => :post }) do %>
+    <%= label_tag :msatoshi %> 
+    <%= text_field :issue, :msatoshi %><br>
+    <%= label_tag :label %> 
+    <%= text_field :issue, :label %><br>
+    <%= label_tag :description %> 
+    <%= text_field :issue, :description %><br>
+    <%= submit_tag "Invoice発行"%>
+<% end %>
+
+<br>
+
+<br>
+<br>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>

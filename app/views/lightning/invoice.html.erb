@@ -1,0 +1,26 @@
+<% @title = "Invoice" %>
+<h1><%= @title %></h1>
+
+<br>
+<br>
+
+<td><img src ="<%= @qrcode %>"></td>
+
+<br>
+
+<tr><th>Invoice</th></tr>
+<tr><td><%= @uri %></td></tr>
+
+<br>
+<br>
+
+<tr><th>支払期限: </th><td><%= Time.at(@invoice['expires_at']) %></td></tr>
+
+
+<br>
+<br>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>

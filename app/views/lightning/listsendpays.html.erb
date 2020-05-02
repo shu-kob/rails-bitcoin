@@ -1,0 +1,32 @@
+<% @title = "支払履歴" %>
+<h1><%= @title %></h1>
+
+<br>
+<br>
+
+<% if @listsendpays['payments'] %>
+  <table border="1">
+    <% for i in 0..@listsendpays['payments'].length-1 %>
+      <tr><th>id</th><td><%= @listsendpays['payments'][i]['id'] %></td></tr>
+      <tr><th>payment_hash</th><td><%= @listsendpays['payments'][i]['payment_hash'] %></td></tr>
+      <tr><th>destination</th><td><%= link_to @listsendpays['payments'][i]['destination'], "https://1ml.com/testnet/node/" + @listsendpays['payments'][i]['destination'] %></td></tr>
+      <tr><th>msatoshi</th><td><%= @listsendpays['payments'][i]['msatoshi'] %></td></tr>
+      <tr><th>amount_msat</th><td><%= @listsendpays['payments'][i]['amount_msat'] %></td></tr>
+      <tr><th>msatoshi_sent</th><td><%= @listsendpays['payments'][i]['msatoshi_sent'] %></td></tr>
+      <tr><th>amount_sent_msat</th><td><%= @listsendpays['payments'][i]['amount_sent_msat'] %></td></tr>
+      <tr><th>支払日時</th><td><%= Time.at(@listsendpays['payments'][i]['created_at']) %></td></tr>
+      <tr><th>status</th><td><%= @listsendpays['payments'][i]['status'] %></td></tr>
+      <tr><th>payment_preimage</th><td><%= @listsendpays['payments'][i]['payment_preimage'] %></td></tr>
+      <tr><th>bolt11</th><td><%= @listsendpays['payments'][i]['bolt11'] %></td></tr>
+      <tr><th></th><td></td></tr>
+    <% end %>
+  </table>
+<% end %>
+
+<br>
+<br>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>

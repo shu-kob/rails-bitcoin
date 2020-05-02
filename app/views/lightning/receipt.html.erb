@@ -1,0 +1,27 @@
+<% @title = "レシート" %>
+<h1><%= @title %></h1>
+
+<br>
+<br>
+
+<table border="1">
+  <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
+  <tr><th>payment_hash</th><td><%= @receipt['payment_hash'] %></td></tr>
+  <tr><th>destination</th><td><%= link_to @receipt['destination'], "https://1ml.com/testnet/node/" + @receipt['destination'] %></td></tr>
+  <tr><th>msatoshi</th><td><%= @receipt['msatoshi'] %></td></tr>
+  <tr><th>amount_msat</th><td><%= @receipt['amount_msat'] %></td></tr>
+  <tr><th>msatoshi_sent</th><td><%= @receipt['msatoshi_sent'] %></td></tr>
+  <tr><th>amount_sent_msat</th><td><%= @receipt['amount_sent_msat'] %></td></tr>
+  <tr><th>created_at</th><td><%= Time.at(@receipt['created_at']) %></td></tr>
+  <tr><th>status</th><td><%= @receipt['status'] %></td></tr>
+  <tr><th>payment_preimage</th><td><%= @receipt['payment_preimage'] %></td></tr>
+  <tr><th>bolt11</th><td><%= @receipt['bolt11'] %></td></tr>
+</table>
+
+<br>
+<br>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払に戻る', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>

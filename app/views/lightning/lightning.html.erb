@@ -1,9 +1,23 @@
-<h1>Lightning Network 運用監視画面</h1>
+<% @title = "Ligtning Network 運用" %>
+<h1><%= @title %></h1>
 
 <br>
 <b>自分のLightning Network ID</b>
 <br>
-<div><%= @getinfo['id'] %></div>
+<div><%= link_to @getinfo['id'], "https://1ml.com/testnet/node/" + @getinfo['id'] %></div>
+<br>
+
+<td><img src ="<%= @qrcode %>"></td>
+
+<br>
+
+<td><%= @uri %></td>
+
+<br>
+<br>
+
+<%= link_to '支払', pay_path %>
+
 <br>
 <br>
 
@@ -23,7 +37,7 @@
   <tbody>
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
-        <td><%= @listpeers['peers'][i]['id'] %></td>
+        <td><%= link_to @listpeers['peers'][i]['id'], "https://1ml.com/testnet/node/" + @listpeers['peers'][i]['id'] %></td>
         <td><%= @listpeers['peers'][i]['netaddr'][0] %></td>
         <% if @listpeers['peers'][i]['channels'][0] %>
             <td><%= @listpeers['peers'][i]['channels'][0]['state'] %></td>
@@ -54,13 +68,14 @@
       <th>エイリアス</th>
       <th>IPアドレス</th>
       <th>ポート</th>
+      <th>接続</th>
     </tr>
   </thead>
 
   <tbody>
-    <% for i in 0..@listnodes['nodes'].length-1 %>
+    <% for i in @list_start_id..@num_per_page %>
       <tr>
-        <td><%= @listnodes['nodes'][i]['nodeid'] %></td>
+        <td><%= link_to @listnodes['nodes'][i]['nodeid'], "https://1ml.com/testnet/node/" + @listnodes['nodes'][i]['nodeid'] %></td>
         <td>
         <% if @listnodes['nodes'][i]['alias'] %>
             <%= @listnodes['nodes'][i]['alias'] %>
@@ -80,6 +95,9 @@
         <% end %>
         <% end %>
         </td>
+        <% if @listnodes['nodes'][i]['addresses'][0] %>
+        <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid'] + "@" + @listnodes['nodes'][i]['addresses'][0]['address'] + ":" + @listnodes['nodes'][i]['addresses'][0]['port'].to_s) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -88,3 +106,8 @@
 <br>
 
 <% end %>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>
