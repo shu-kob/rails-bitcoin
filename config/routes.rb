@@ -19,4 +19,6 @@ Rails.application.routes.draw do
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/keys', to: 'bitcoin_app#keys'
   get 'lightning', to: 'lightning#lightning'
+  get 'lightning/pay', to: 'lightning#pay', as: 'pay'
+  post 'lightning/paid', to: 'lightning#paid'
 end
