@@ -72,7 +72,7 @@
   </thead>
 
   <tbody>
-    <% for i in 0..@listnodes['nodes'].length-1 %>
+    <% for i in @list_start_id..@num_per_page %>
       <tr>
         <td><%= link_to @listnodes['nodes'][i]['nodeid'], "https://1ml.com/testnet/node/" + @listnodes['nodes'][i]['nodeid'] %></td>
         <td>
@@ -102,3 +102,8 @@
 <br>
 
 <% end %>
+
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>

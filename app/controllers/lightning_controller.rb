@@ -10,6 +10,9 @@ class LightningController < ApplicationController
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
 
+    @num_per_page = 25;
+    @list_start_id = 0;
+
     logger.debug @getinfo['address']
     logger.debug @getinfo['address'][0]['address']
 
@@ -30,6 +33,27 @@ class LightningController < ApplicationController
     invoice = params[:pay]['invoice']
     @receipt = rpc.pay(invoice)
     render template: 'lightning/receipt'
+  end
+
+  def listsendpays
+    @listsendpays = rpc.listsendpays
+    render template: 'lightning/listsendpays'
+  end
+
+  def issue_invoice
+
+  end
+
+  def invoice
+    msatoshi = params[:issue]['msatoshi'].to_i
+    label = params[:issue]['label']
+    description = params[:issue]['description']
+    @invoice = rpc.invoice(msatoshi, label, description)
+    @uri = @invoice['bolt11']
+    qr = RQRCode::QRCode.new(@uri)
+    png = qr.to_img
+    @qrcode = png.resize(300, 300).to_data_url
+    render template: 'lightning/invoice'
   end
 
   private

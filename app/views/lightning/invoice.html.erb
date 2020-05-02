@@ -1,14 +1,23 @@
-<% @title = "支払" %>
+<% @title = "Invoice" %>
 <h1><%= @title %></h1>
 
 <br>
+<br>
 
-<%= form_tag({ :controller => 'lightning', :action => 'paid' },{ :method => :post }) do %>
-    <%= label_tag :invoice %> 
-    <%= text_field :pay, :invoice %><br>
-    <%= submit_tag "支払う"%>
-<% end %>
+<td><img src ="<%= @qrcode %>"></td>
 
+<br>
+
+<tr><th>Invoice</th></tr>
+<tr><td><%= @uri %></td></tr>
+
+<br>
+<br>
+
+<tr><th>支払期限: </th><td><%= Time.at(@invoice['expires_at']) %></td></tr>
+
+
+<br>
 <br>
 
 <%= link_to 'Lightning トップ', lightning_path %><br>

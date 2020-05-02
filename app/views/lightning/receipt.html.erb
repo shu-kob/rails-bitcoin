@@ -1,7 +1,8 @@
 <% @title = "レシート" %>
 <h1><%= @title %></h1>
 
-<br><br>
+<br>
+<br>
 
 <table border="1">
   <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
@@ -20,7 +21,7 @@
 <br>
 <br>
 
-<%= link_to '支払に戻る', pay_path %>
-
-<br>
-<br>
+<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to '支払履歴', listsendpays_path %><br>
+<%= link_to '支払に戻る', pay_path %><br>
+<%= link_to 'Invoice発行', issue_invoice_path %><br>
