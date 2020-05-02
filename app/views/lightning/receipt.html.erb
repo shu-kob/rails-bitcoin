@@ -4,43 +4,23 @@
 <br><br>
 
 <table border="1">
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>payment_hash</th>
-        <th>destination</th>
-        <th>msatoshi</th>
-        <th>amount_msat</th>
-        <th>msatoshi_sent</th>
-        <th>amount_sent_msat</th>
-        <th>created_at</th>
-        <th>status</th>
-        <th>payment_preimage</th>
-        <th>bolt11</th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <tr>
-        <td><%= @receipt['id'] %></td>
-        <td><%= @receipt['payment_hash'] %></td>
-        <td><%= link_to @receipt['destination'], "https://1ml.com/testnet/node/" + @receipt['destination'] %></td>
-        <td><%= @receipt['msatoshi'] %></td>
-        <td><%= @receipt['amount_msat'] %></td>
-        <td><%= @receipt['msatoshi_sent'] %></td>
-        <td><%= @receipt['amount_sent_msat'] %></td>
-        <td><%= Time.at(@receipt['created_at']) %></td>
-        <td><%= @receipt['status'] %></td>
-        <td><%= @receipt['payment_preimage'] %></td>
-        <td><%= @receipt['bolt11'] %></td>
-      </tr>
-    </tbody>
+  <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
+  <tr><th>payment_hash</th><td><%= @receipt['payment_hash'] %></td></tr>
+  <tr><th>destination</th><td><%= link_to @receipt['destination'], "https://1ml.com/testnet/node/" + @receipt['destination'] %></td></tr>
+  <tr><th>msatoshi</th><td><%= @receipt['msatoshi'] %></td></tr>
+  <tr><th>amount_msat</th><td><%= @receipt['amount_msat'] %></td></tr>
+  <tr><th>msatoshi_sent</th><td><%= @receipt['msatoshi_sent'] %></td></tr>
+  <tr><th>amount_sent_msat</th><td><%= @receipt['amount_sent_msat'] %></td></tr>
+  <tr><th>created_at</th><td><%= Time.at(@receipt['created_at']) %></td></tr>
+  <tr><th>status</th><td><%= @receipt['status'] %></td></tr>
+  <tr><th>payment_preimage</th><td><%= @receipt['payment_preimage'] %></td></tr>
+  <tr><th>bolt11</th><td><%= @receipt['bolt11'] %></td></tr>
 </table>
 
 <br>
 <br>
 
-<%= link_to '支払', pay_path %>
+<%= link_to '支払に戻る', pay_path %>
 
 <br>
 <br>
