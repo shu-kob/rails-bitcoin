@@ -24,4 +24,5 @@ Rails.application.routes.draw do
   get 'lightning/listsendpays', to: 'lightning#listsendpays', as: 'listsendpays'
   get 'lightning/issue_invoice', to: 'lightning#issue_invoice', as: 'issue_invoice'
   post 'lightning/invoice', to: 'lightning#invoice', as: 'invoice'
+  post 'lightning/connect', to: 'lightning#connect', as: 'connect'
 end

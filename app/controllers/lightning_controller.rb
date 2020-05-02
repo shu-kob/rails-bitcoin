@@ -25,6 +25,27 @@ class LightningController < ApplicationController
     render template: 'lightning/lightning'
   end
 
+  def connect
+    id = params[:id]
+    logger.debug id
+
+    begin
+      Timeout.timeout(10) do # 10秒でタイムアウト
+        if @connect = rpc.connect(id)
+          redirect_to lightning_path
+        else
+          render template: 'bitcoin_app/notfound'
+        end    
+      end
+    rescue Timeout::Error
+      redirect_to lightning_path   # タイムアウト発生時の処理
+    end
+
+  end
+
+  def fundchannel
+  end
+
   def pay
 
   end
@@ -52,7 +73,7 @@ class LightningController < ApplicationController
     @uri = @invoice['bolt11']
     qr = RQRCode::QRCode.new(@uri)
     png = qr.to_img
-    @qrcode = png.resize(300, 300).to_data_url
+    @qrcode = png.resize(500, 500).to_data_url
     render template: 'lightning/invoice'
   end
 

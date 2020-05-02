@@ -68,6 +68,7 @@
       <th>エイリアス</th>
       <th>IPアドレス</th>
       <th>ポート</th>
+      <th>接続</th>
     </tr>
   </thead>
 
@@ -94,6 +95,9 @@
         <% end %>
         <% end %>
         </td>
+        <% if @listnodes['nodes'][i]['addresses'][0] %>
+        <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid'] + "@" + @listnodes['nodes'][i]['addresses'][0]['address'] + ":" + @listnodes['nodes'][i]['addresses'][0]['port'].to_s) %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
