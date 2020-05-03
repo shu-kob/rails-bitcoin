@@ -5,12 +5,14 @@ require 'rqrcode_png'
 class LightningController < ApplicationController
   
   def lightning
+    @message = params[:message]
+    logger.debug @message
     @getinfo = rpc.getinfo
     @listpeers = rpc.listpeers
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
 
-    @num_per_page = 25;
+    @num_per_page = 250;
     @list_start_id = 0;
 
     if @getinfo['address'][0]
@@ -29,27 +31,44 @@ class LightningController < ApplicationController
 
   def connect
     id = params[:id]
-    logger.debug id
-
     begin
-      Timeout.timeout(5) do # 5秒でタイムアウト
-        if @connect = rpc.connect(id)
-          return true
-        else
-          render template: 'bitcoin_app/notfound'
-        end    
+      Timeout.timeout(3) do
+        @connect = rpc.connect(id)
+        @message = "connect success"
+        return @message
       end
     rescue Lightning::RPCError
-      return false
+      @message = "RPCError"
+      return @message
     rescue Timeout::Error
-      return false   # タイムアウト発生時の処理
+      @message = "timeout"
+      return @message
     ensure
-      redirect_to lightning_path
+      redirect_to lightning_path(@message)
     end
 
   end
 
   def fundchannel
+    id = params[:id]
+    amount = params[:amount]
+    logger.debug id
+    logger.debug amount
+    begin
+      Timeout.timeout(3) do
+        @fundchannel = rpc.fundchannel(id, amount)
+        @message = "fundchannel success"
+        return @message
+      end
+    rescue Lightning::RPCError
+      @message = "RPCError"
+      return @message
+    rescue Timeout::Error
+      @message = "timeout"
+      return @message
+    ensure
+      redirect_to lightning_path(@message)
+    end
   end
 
   def pay

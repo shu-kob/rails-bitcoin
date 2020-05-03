@@ -2,6 +2,10 @@
 <h1><%= @title %></h1>
 
 <br>
+<% if @message %><%= @message %><% end %>
+<br>
+
+<br>
 <b>自分のLightning Network ID</b>
 <br>
 <div><%= link_to @getinfo['id'], "https://1ml.com/testnet/node/" + @getinfo['id'] %></div>
@@ -31,6 +35,7 @@
       <th>接続先ID</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
+      <th>fundchannel</th>
     </tr>
   </thead>
 
@@ -38,11 +43,14 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= link_to @listpeers['peers'][i]['id'], "https://1ml.com/testnet/node/" + @listpeers['peers'][i]['id'] %></td>
-        <% if @listpeers['peers'][i]['netaddr'] %>
-      <td><%= @listpeers['peers'][i]['netaddr'][0] %></td><% end %>
-        <% if @listpeers['peers'][i]['channels'][0] %>
-            <td><%= @listpeers['peers'][i]['channels'][0]['state'] %></td>
-        <% end %>
+        <td><% if @listpeers['peers'][i]['netaddr'] %>
+          <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
+        <td><% if @listpeers['peers'][i]['channels'][0] %>
+            <%= @listpeers['peers'][i]['channels'][0]['state'] %><% end %></td>
+        <td><% if !@listpeers['peers'][i]['channels'][0] %>
+          <%= button_to "接続", fundchannel_path(id: @listnodes['nodes'][i]['nodeid'], amount: 100000) %>
+        <% elsif !@listpeers['peers'][i]['channels'][0]['state'] %>
+            <%= button_to "接続", fundchannel_path(id: @listnodes['nodes'][i]['nodeid'], amount: 100000) %><% end %></td>
       </tr>
     <% end %>
   </tbody>
@@ -67,7 +75,7 @@
     <tr>
       <th>ノードID</th>
       <th>エイリアス</th>
-      <th>IPアドレス</th>
+      <th>ネットワークアドレス</th>
       <th>ポート</th>
       <th>接続</th>
     </tr>
@@ -98,7 +106,7 @@
 
 <% end %>
 
-<%= link_to 'Lightning トップ', lightning_path %><br>
+<%= link_to 'Lightning トップ', lightning_index_path %><br>
 <%= link_to '支払履歴', listsendpays_path %><br>
 <%= link_to '支払', pay_path %><br>
 <%= link_to 'Invoice発行', issue_invoice_path %><br>
