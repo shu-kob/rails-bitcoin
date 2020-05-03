@@ -48,9 +48,9 @@
         <td><% if @listpeers['peers'][i]['channels'][0] %>
             <%= @listpeers['peers'][i]['channels'][0]['state'] %><% end %></td>
         <td><% if !@listpeers['peers'][i]['channels'][0] %>
-          <%= button_to "接続", fundchannel_path(id: @listnodes['nodes'][i]['nodeid'], amount: 100000) %>
+          <%= button_to "接続", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
         <% elsif !@listpeers['peers'][i]['channels'][0]['state'] %>
-            <%= button_to "接続", fundchannel_path(id: @listnodes['nodes'][i]['nodeid'], amount: 100000) %><% end %></td>
+            <%= button_to "接続", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %><% end %></td>
       </tr>
     <% end %>
   </tbody>

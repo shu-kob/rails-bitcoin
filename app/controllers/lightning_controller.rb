@@ -6,13 +6,12 @@ class LightningController < ApplicationController
   
   def lightning
     @message = params[:message]
-    logger.debug @message
     @getinfo = rpc.getinfo
     @listpeers = rpc.listpeers
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
 
-    @num_per_page = 250;
+    @num_per_page = 500;
     @list_start_id = 0;
 
     if @getinfo['address'][0]
