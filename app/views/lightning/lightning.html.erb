@@ -38,7 +38,8 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= link_to @listpeers['peers'][i]['id'], "https://1ml.com/testnet/node/" + @listpeers['peers'][i]['id'] %></td>
-        <td><%= @listpeers['peers'][i]['netaddr'][0] %></td>
+        <% if @listpeers['peers'][i]['netaddr'] %>
+      <td><%= @listpeers['peers'][i]['netaddr'][0] %></td><% end %>
         <% if @listpeers['peers'][i]['channels'][0] %>
             <td><%= @listpeers['peers'][i]['channels'][0]['state'] %></td>
         <% end %>
@@ -81,22 +82,12 @@
             <%= @listnodes['nodes'][i]['alias'] %>
         <% end %>
         </td>
-        <td>
         <% if @listnodes['nodes'][i]['addresses'] %>
-        <% if @listnodes['nodes'][i]['addresses'][0] %>
-            <%= @listnodes['nodes'][i]['addresses'][0]['address']  %>
-        <% end %>
-        <% end %>
-        </td>
-        <td>
-        <% if @listnodes['nodes'][i]['addresses'] %>
-        <% if @listnodes['nodes'][i]['addresses'][0] %>
-            <%= @listnodes['nodes'][i]['addresses'][0]['port']  %>
-        <% end %>
-        <% end %>
-        </td>
-        <% if @listnodes['nodes'][i]['addresses'][0] %>
-        <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid'] + "@" + @listnodes['nodes'][i]['addresses'][0]['address'] + ":" + @listnodes['nodes'][i]['addresses'][0]['port'].to_s) %></td>
+          <% if @listnodes['nodes'][i]['addresses'][0] %>
+          <td><%= @listnodes['nodes'][i]['addresses'][0]['address'] %></td>
+          <td><%= @listnodes['nodes'][i]['addresses'][0]['port'] %></td>
+          <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid'] + "@" + @listnodes['nodes'][i]['addresses'][0]['address'] + ":" + @listnodes['nodes'][i]['addresses'][0]['port'].to_s) %></td>
+          <% end %>
         <% end %>
       </tr>
     <% end %>

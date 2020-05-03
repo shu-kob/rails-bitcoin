@@ -13,10 +13,12 @@ class LightningController < ApplicationController
     @num_per_page = 25;
     @list_start_id = 0;
 
-    logger.debug @getinfo['address']
-    logger.debug @getinfo['address'][0]['address']
-
-    @uri = @getinfo['id'] + "@" + @getinfo['address'][0]['address'].to_s + ":" + @getinfo['address'][0]['port'].to_s
+    if @getinfo['address'][0]
+      address = "@" + @getinfo['address'][0]['address'].to_s + ":" + @getinfo['address'][0]['port'].to_s
+      @uri = @getinfo['id'] + address
+    else
+      @uri = @getinfo['id']
+    end
 
     qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
     png = qr.to_img
@@ -30,15 +32,19 @@ class LightningController < ApplicationController
     logger.debug id
 
     begin
-      Timeout.timeout(10) do # 10秒でタイムアウト
+      Timeout.timeout(5) do # 5秒でタイムアウト
         if @connect = rpc.connect(id)
           redirect_to lightning_path
         else
           render template: 'bitcoin_app/notfound'
         end    
       end
+    rescue Lightning::RPCError
+      redirect_to lightning_path
     rescue Timeout::Error
       redirect_to lightning_path   # タイムアウト発生時の処理
+    ensure
+      redirect_to lightning_path
     end
 
   end
