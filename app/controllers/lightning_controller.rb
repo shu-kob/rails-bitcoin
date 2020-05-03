@@ -34,15 +34,15 @@ class LightningController < ApplicationController
     begin
       Timeout.timeout(5) do # 5秒でタイムアウト
         if @connect = rpc.connect(id)
-          redirect_to lightning_path
+          return true
         else
           render template: 'bitcoin_app/notfound'
         end    
       end
     rescue Lightning::RPCError
-      redirect_to lightning_path
+      return false
     rescue Timeout::Error
-      redirect_to lightning_path   # タイムアウト発生時の処理
+      return false   # タイムアウト発生時の処理
     ensure
       redirect_to lightning_path
     end
