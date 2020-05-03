@@ -33,6 +33,7 @@
   <thead>
     <tr>
       <th>接続先ID</th>
+      <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
       <th>fundchannel</th>
@@ -43,6 +44,7 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= link_to @listpeers['peers'][i]['id'], "https://1ml.com/testnet/node/" + @listpeers['peers'][i]['id'] %></td>
+        <td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td>
         <td><% if @listpeers['peers'][i]['netaddr'] %>
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
@@ -77,12 +79,17 @@
       <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>ポート</th>
+      <th>最終確認日時</th>
+      <th>Ping疎通</th>
       <th>接続</th>
     </tr>
   </thead>
 
   <tbody>
     <% for i in @list_start_id..@num_per_page %>
+    <% if @ping[i] = "OK" %>
+    <% if @listnodes['nodes'][i]['addresses'] %>
+    <% if @listnodes['nodes'][i]['addresses'][0] %>
       <tr>
         <td><%= link_to @listnodes['nodes'][i]['nodeid'], "https://1ml.com/testnet/node/" + @listnodes['nodes'][i]['nodeid'] %></td>
         <td>
@@ -90,14 +97,19 @@
             <%= @listnodes['nodes'][i]['alias'] %>
         <% end %>
         </td>
-        <% if @listnodes['nodes'][i]['addresses'] %>
+          <% if @listnodes['nodes'][i]['addresses'] %>
           <% if @listnodes['nodes'][i]['addresses'][0] %>
           <td><%= @listnodes['nodes'][i]['addresses'][0]['address'] %></td>
           <td><%= @listnodes['nodes'][i]['addresses'][0]['port'] %></td>
-          <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid'] + "@" + @listnodes['nodes'][i]['addresses'][0]['address'] + ":" + @listnodes['nodes'][i]['addresses'][0]['port'].to_s) %></td>
+          <td><%= Time.at(@listnodes['nodes'][i]['last_timestamp']) %></td>
+          <td><%= @ping[i] %></td>
+          <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid']) %></td>
           <% end %>
         <% end %>
       </tr>
+      <% end %>
+    <% end %>
+    <% end %>
     <% end %>
   </tbody>
 </table>

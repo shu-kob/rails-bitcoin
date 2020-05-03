@@ -10,6 +10,8 @@ class LightningController < ApplicationController
     @listpeers = rpc.listpeers
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
+    @nodeinfo= []
+    @ping= []
 
     @num_per_page = 500;
     @list_start_id = 0;
@@ -19,6 +21,21 @@ class LightningController < ApplicationController
       @uri = @getinfo['id'] + address
     else
       @uri = @getinfo['id']
+    end
+
+    for i in 0..@listpeers['peers'].length-1
+      @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
+    end
+
+    for j in 0..@listnodes['nodes'].length-1
+      begin
+        rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
+        ping = "OK"
+      rescue Lightning::RPCError
+        ping = "NO"
+      ensure
+        @ping.push(ping)
+      end
     end
 
     qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
