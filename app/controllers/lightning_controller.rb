@@ -5,18 +5,38 @@ require 'rqrcode_png'
 class LightningController < ApplicationController
   
   def lightning
+    @message = params[:message]
     @getinfo = rpc.getinfo
     @listpeers = rpc.listpeers
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
+    @nodeinfo= []
+    @ping= []
 
-    @num_per_page = 25;
+    @num_per_page = 500;
     @list_start_id = 0;
 
-    logger.debug @getinfo['address']
-    logger.debug @getinfo['address'][0]['address']
+    if @getinfo['address'][0]
+      address = "@" + @getinfo['address'][0]['address'].to_s + ":" + @getinfo['address'][0]['port'].to_s
+      @uri = @getinfo['id'] + address
+    else
+      @uri = @getinfo['id']
+    end
 
-    @uri = @getinfo['id'] + "@" + @getinfo['address'][0]['address'].to_s + ":" + @getinfo['address'][0]['port'].to_s
+    for i in 0..@listpeers['peers'].length-1
+      @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
+    end
+
+    for j in 0..@listnodes['nodes'].length-1
+      begin
+        rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
+        ping = "OK"
+      rescue Lightning::RPCError
+        ping = "NO"
+      ensure
+        @ping.push(ping)
+      end
+    end
 
     qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
     png = qr.to_img
@@ -27,23 +47,44 @@ class LightningController < ApplicationController
 
   def connect
     id = params[:id]
-    logger.debug id
-
     begin
-      Timeout.timeout(10) do # 10秒でタイムアウト
-        if @connect = rpc.connect(id)
-          redirect_to lightning_path
-        else
-          render template: 'bitcoin_app/notfound'
-        end    
+      Timeout.timeout(3) do
+        @connect = rpc.connect(id)
+        @message = "connect success"
+        return @message
       end
+    rescue Lightning::RPCError
+      @message = "RPCError"
+      return @message
     rescue Timeout::Error
-      redirect_to lightning_path   # タイムアウト発生時の処理
+      @message = "timeout"
+      return @message
+    ensure
+      redirect_to lightning_path(@message)
     end
 
   end
 
   def fundchannel
+    id = params[:id]
+    amount = params[:amount]
+    logger.debug id
+    logger.debug amount
+    begin
+      Timeout.timeout(3) do
+        @fundchannel = rpc.fundchannel(id, amount)
+        @message = "fundchannel success"
+        return @message
+      end
+    rescue Lightning::RPCError
+      @message = "RPCError"
+      return @message
+    rescue Timeout::Error
+      @message = "timeout"
+      return @message
+    ensure
+      redirect_to lightning_path(@message)
+    end
   end
 
   def pay
