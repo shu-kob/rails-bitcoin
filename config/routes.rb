@@ -27,4 +27,6 @@ Rails.application.routes.draw do
   post 'lightning_invoice', to: 'lightning#invoice', as: 'invoice'
   post 'lightning_connect', to: 'lightning#connect', as: 'connect'
   post 'lightning_fundchannel', to: 'lightning#fundchannel', as: 'fundchannel'
+  get 'lightning_deposit', to: 'lightning#deposit'
+  post 'lightning_deposit', to: 'lightning#deposit'
 end
