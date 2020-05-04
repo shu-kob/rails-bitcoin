@@ -118,6 +118,22 @@ class LightningController < ApplicationController
     render template: 'lightning/invoice'
   end
 
+  def deposit
+
+    @address = rpc.newaddr["address"]
+    amount = params[:amount].to_s
+    if amount != ""
+      @uri = "bitcoin:" + @address + "?amount=" + amount
+    else
+      @uri = "bitcoin:" + @address
+    end
+
+    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    png = qr.to_img
+    @qrcode = png.resize(300, 300).to_data_url
+    render template: 'lightning/deposit'
+  end
+
   private
   def rpc
     rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
