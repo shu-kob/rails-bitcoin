@@ -29,9 +29,13 @@ class LightningController < ApplicationController
 
     for j in 0..@listnodes['nodes'].length-1
       begin
+        Timeout.timeout(1) do
         rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
         ping = "OK"
+        end
       rescue Lightning::RPCError
+        ping = "NO"
+      rescue Timeout::Error
         ping = "NO"
       ensure
         @ping.push(ping)
