@@ -135,15 +135,15 @@ $ exec $SHELL
 $ mkdir -p ~/.rbenv/plugins
 $ cd ~/.rbenv/plugins
 $ git clone git://github.com/sstephenson/ruby-build.git
-$ rbenv install 2.6.4
+$ rbenv install 2.6.5
 かなりが時間かかるので気長に待ちましょう
-$ rbenv global 2.6.4
+$ rbenv global 2.6.5
 $ rbenv version
-# 2.6.4であればOK
+# 2.6.5であればOK
 $ which ruby
 # 例)/home/vagrant/.rbenv/shims/ruby などと返ってくればOK
 $ ruby -v
-# 2.6.4であればOK
+# 2.6.5であればOK
 $ gem install rails --version="~> 6.0.0”
 $ rbenv rehash
 $ rails -v
