@@ -100,11 +100,11 @@ $ brew link autoconf
 $ brew unlink autoconf && brew link autoconf
 $ brew install rbenv ruby-build
 $ brew update && brew upgrade ruby-build
-$ rbenv install 2.6.4
+$ rbenv install 2.6.5
 # かなりが時間かかるので気長に待ちましょう
-$ rbenv global 2.6.4
+$ rbenv global 2.6.5
 $ ruby -v
-# 2.6.4であればOK
+# 2.6.5であればOK
 $ gem install bundler
 $ bundle -v
 $ gem install rails --version="~> 6.0.0”
