@@ -107,7 +107,7 @@ $ ruby -v
 # 2.6.5であればOK
 $ gem install bundler
 $ bundle -v
-$ gem install rails --version="~> 6.0.0”
+$ gem install rails --version="~> 6.0.0"
 $ rails -v
 # 6系であればOK
 $ git clone https://github.com/shu-kob/rails-bitcoin
@@ -144,7 +144,7 @@ $ which ruby
 # 例)/home/vagrant/.rbenv/shims/ruby などと返ってくればOK
 $ ruby -v
 # 2.6.5であればOK
-$ gem install rails --version="~> 6.0.0”
+$ gem install rails --version="~> 6.0.0"
 $ rbenv rehash
 $ rails -v
 # 6系であればOK
