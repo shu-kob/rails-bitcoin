@@ -101,7 +101,7 @@ $ brew unlink autoconf && brew link autoconf
 $ brew install rbenv ruby-build
 $ brew update && brew upgrade ruby-build
 $ rbenv install 2.6.5
-# かなりが時間かかるので気長に待ちましょう
+# かなり時間がかかるので気長に待ちましょう
 $ rbenv global 2.6.5
 $ ruby -v
 # 2.6.5であればOK
@@ -136,7 +136,7 @@ $ mkdir -p ~/.rbenv/plugins
 $ cd ~/.rbenv/plugins
 $ git clone git://github.com/sstephenson/ruby-build.git
 $ rbenv install 2.6.5
-かなりが時間かかるので気長に待ちましょう
+かなり時間がかかるので気長に待ちましょう
 $ rbenv global 2.6.5
 $ rbenv version
 # 2.6.5であればOK
