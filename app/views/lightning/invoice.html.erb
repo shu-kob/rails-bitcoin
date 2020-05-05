@@ -15,12 +15,3 @@
 <br>
 
 <tr><th>支払期限: </th><td><%= Time.at(@invoice['expires_at']) %></td></tr>
-
-
-<br>
-<br>
-
-<%= link_to 'Lightning トップ', lightning_index_path %><br>
-<%= link_to '支払履歴', listsendpays_path %><br>
-<%= link_to '支払', pay_path %><br>
-<%= link_to 'Invoice発行', issue_invoice_path %><br>

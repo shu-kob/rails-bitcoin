@@ -18,8 +18,3 @@
 <tr><td><%= @uri %></td></tr>
 
 <%= button_to "新しいアドレス生成", {controller: 'lightning', action: 'deposit'}, {method: :get} %>
-
-<%= link_to 'Lightning トップ', lightning_index_path %><br>
-<%= link_to '支払履歴', listsendpays_path %><br>
-<%= link_to '支払', pay_path %><br>
-<%= link_to 'Invoice発行', issue_invoice_path %><br>

@@ -17,11 +17,3 @@
   <tr><th>payment_preimage</th><td><%= @receipt['payment_preimage'] %></td></tr>
   <tr><th>bolt11</th><td><%= @receipt['bolt11'] %></td></tr>
 </table>
-
-<br>
-<br>
-
-<%= link_to 'Lightning トップ', lightning_index_path %><br>
-<%= link_to '支払履歴', listsendpays_path %><br>
-<%= link_to '支払に戻る', pay_path %><br>
-<%= link_to 'Invoice発行', issue_invoice_path %><br>
