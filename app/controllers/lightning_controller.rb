@@ -13,7 +13,6 @@ class LightningController < ApplicationController
     @nodeinfo= []
     @ping= []
 
-    @num_per_page = 500;
     @list_start_id = 0;
 
     if @getinfo['address'][0]
@@ -140,7 +139,7 @@ class LightningController < ApplicationController
 
   private
   def rpc
-    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
+    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/signet/lightning-rpc')
     return rpc
   end
 end
