@@ -25,7 +25,6 @@ class LightningController < ApplicationController
     for i in 0..@listpeers['peers'].length-1
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
     end
-
     for j in 0..@listnodes['nodes'].length-1
       begin
         Timeout.timeout(1) do
@@ -71,8 +70,6 @@ class LightningController < ApplicationController
   def fundchannel
     id = params[:id]
     amount = params[:amount]
-    logger.debug id
-    logger.debug amount
     begin
       Timeout.timeout(3) do
         @fundchannel = rpc.fundchannel(id, amount)
@@ -135,6 +132,27 @@ class LightningController < ApplicationController
     png = qr.to_img
     @qrcode = png.resize(300, 300).to_data_url
     render template: 'lightning/deposit'
+  end
+
+  def close
+    channnel = params[:id]
+    begin
+      Timeout.timeout(3) do
+        @close = rpc.close(channnel)
+        @message = "close success"
+        return @message
+      end
+    rescue Lightning::RPCError
+      @message = "RPCError"
+      return @message
+    rescue Timeout::Error
+      @message = "timeout"
+      return @message
+    ensure
+      redirect_to lightning_path(@message)
+    end
+
+
   end
 
   private
