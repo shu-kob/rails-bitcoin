@@ -37,6 +37,7 @@
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
       <th>fundchannel</th>
+      <th>close channel</th>
     </tr>
   </thead>
 
@@ -44,7 +45,7 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= @listpeers['peers'][i]['id'] %></td>
-        <td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td>
+      <% if @nodeinfo[i]['nodes'][0].nil? %><td></td><% else %><td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td><% end %>
         <td><% if @listpeers['peers'][i]['netaddr'] %>
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
@@ -53,6 +54,7 @@
           <%= button_to "接続", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
         <% elsif !@listpeers['peers'][i]['channels'][0]['state'] %>
             <%= button_to "接続", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %><% end %></td>
+        <td><%= button_to "閉じる", close_path(id: @listpeers['peers'][i]['id']) %></td>
       </tr>
     <% end %>
   </tbody>
