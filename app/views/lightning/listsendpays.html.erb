@@ -9,7 +9,7 @@
     <% for i in 0..@listsendpays['payments'].length-1 %>
       <tr><th>id</th><td><%= @listsendpays['payments'][i]['id'] %></td></tr>
       <tr><th>payment_hash</th><td><%= @listsendpays['payments'][i]['payment_hash'] %></td></tr>
-      <tr><th>destination</th><td><%= link_to @listsendpays['payments'][i]['destination'], "https://1ml.com/testnet/node/" + @listsendpays['payments'][i]['destination'] %></td></tr>
+      <tr><th>destination</th><td><%= @listsendpays['payments'][i]['destination'] %></td></tr>
       <tr><th>msatoshi</th><td><%= @listsendpays['payments'][i]['msatoshi'] %></td></tr>
       <tr><th>amount_msat</th><td><%= @listsendpays['payments'][i]['amount_msat'] %></td></tr>
       <tr><th>msatoshi_sent</th><td><%= @listsendpays['payments'][i]['msatoshi_sent'] %></td></tr>

@@ -43,7 +43,7 @@
   <tbody>
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
-        <td><%= link_to @listpeers['peers'][i]['id'], "https://1ml.com/testnet/node/" + @listpeers['peers'][i]['id'] %></td>
+        <td><%= @listpeers['peers'][i]['id'] %></td>
         <td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td>
         <td><% if @listpeers['peers'][i]['netaddr'] %>
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
@@ -86,12 +86,9 @@
   </thead>
 
   <tbody>
-    <% for i in @list_start_id..@num_per_page %>
-    <% if @ping[i] = "OK" %>
-    <% if @listnodes['nodes'][i]['addresses'] %>
-    <% if @listnodes['nodes'][i]['addresses'][0] %>
+    <% for i in @list_start_id..@listnodes['nodes'].length-1 %>
       <tr>
-        <td><%= link_to @listnodes['nodes'][i]['nodeid'], "https://1ml.com/testnet/node/" + @listnodes['nodes'][i]['nodeid'] %></td>
+        <td><%= @listnodes['nodes'][i]['nodeid'] %></td>
         <td>
         <% if @listnodes['nodes'][i]['alias'] %>
             <%= @listnodes['nodes'][i]['alias'] %>
@@ -108,9 +105,6 @@
         <% end %>
       </tr>
       <% end %>
-    <% end %>
-    <% end %>
-    <% end %>
   </tbody>
 </table>
 
