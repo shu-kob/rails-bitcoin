@@ -82,31 +82,33 @@
       <th>ネットワークアドレス</th>
       <th>ポート</th>
       <th>最終確認日時</th>
-      <th>Ping疎通</th>
+      <th>Ping</th>
       <th>接続</th>
     </tr>
   </thead>
 
   <tbody>
-    <% for i in @list_start_id..@listnodes['nodes'].length-1 %>
+    <% for j in @list_start_id..@listnodes['nodes'].length-1 %>
+    <% if @ping[j] == "OK" %>
       <tr>
-        <td><%= @listnodes['nodes'][i]['nodeid'] %></td>
+        <td><%= @listnodes['nodes'][j]['nodeid'] %></td>
         <td>
-        <% if @listnodes['nodes'][i]['alias'] %>
-            <%= @listnodes['nodes'][i]['alias'] %>
+        <% if @listnodes['nodes'][j]['alias'] %>
+            <%= @listnodes['nodes'][j]['alias'] %>
         <% end %>
         </td>
-          <% if @listnodes['nodes'][i]['addresses'] %>
-          <% if @listnodes['nodes'][i]['addresses'][0] %>
-          <td><%= @listnodes['nodes'][i]['addresses'][0]['address'] %></td>
-          <td><%= @listnodes['nodes'][i]['addresses'][0]['port'] %></td>
-          <td><%= Time.at(@listnodes['nodes'][i]['last_timestamp']) %></td>
-          <td><%= @ping[i] %></td>
-          <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][i]['nodeid']) %></td>
+          <% if @listnodes['nodes'][j]['addresses'] %>
+            <% if @listnodes['nodes'][j]['addresses'][0] %>
+              <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
+              <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
+              <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
+              <td><%= @ping[j] %></td>
+              <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][j]['nodeid']) %></td>
+            <% end %>
           <% end %>
-        <% end %>
       </tr>
-      <% end %>
+    <% end %>
+    <% end %>
   </tbody>
 </table>
 
