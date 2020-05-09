@@ -30,12 +30,13 @@ class LightningController < ApplicationController
         Timeout.timeout(1) do
         rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
         ping = "OK"
+        @ping.push(ping)
         end
       rescue Lightning::RPCError
-        ping = "NO"
+        ping = "RPCError"
+        @ping.push(ping)
       rescue Timeout::Error
-        ping = "NO"
-      ensure
+        ping = "Timeout"
         @ping.push(ping)
       end
     end
@@ -157,7 +158,7 @@ class LightningController < ApplicationController
 
   private
   def rpc
-    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/signet/lightning-rpc')
+    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
     return rpc
   end
 end
