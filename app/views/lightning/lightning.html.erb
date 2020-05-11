@@ -1,6 +1,8 @@
 <% @title = "Ligtning Network 運用" %>
 <h1><%= @title %></h1>
 
+<body class="display-4">
+
 <br>
 <% if @message %><%= @message %><% end %>
 <br>
@@ -8,7 +10,7 @@
 <br>
 <b>自分のLightning Network ID</b>
 <br>
-<div><%= link_to @getinfo['id'], "https://1ml.com/testnet/node/" + @getinfo['id'] %></div>
+<tr><%= @getinfo['id'] %></tr>
 <br>
 
 <td><img src ="<%= @qrcode %>"></td>
@@ -115,3 +117,5 @@
 <br>
 
 <% end %>
+
+</body>
