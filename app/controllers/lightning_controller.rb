@@ -152,8 +152,26 @@ class LightningController < ApplicationController
     ensure
       redirect_to lightning_path(@message)
     end
+  end
 
-
+  def withdraw
+    begin
+      Timeout.timeout(3) do
+        newaddr = rpc.newaddr
+        logger.debug newaddr
+        tx = rpc.withdraw(newaddr["address"], "all")
+        logger.debug tx
+        redirect_to txinfo_path(tx["txid"])
+      end
+    rescue Lightning::RPCError
+      @message = "RPCError"
+      redirect_to lightning_path(@message)
+      return @message
+    rescue Timeout::Error
+      @message = "timeout"
+      return @message
+      redirect_to lightning_path(@message)
+    end
   end
 
   private

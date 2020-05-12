@@ -30,4 +30,5 @@ Rails.application.routes.draw do
   get 'lightning_deposit', to: 'lightning#deposit'
   post 'lightning_deposit', to: 'lightning#deposit'
   post 'lightning_close', to: 'lightning#close', as: 'close'
+  post 'lightning_withdraw', to: 'lightning#withdraw', as: 'withdraw'
 end
