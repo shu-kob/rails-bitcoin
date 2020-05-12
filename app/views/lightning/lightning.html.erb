@@ -49,7 +49,7 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= @listpeers['peers'][i]['id'] %></td>
-      <% if @nodeinfo[i]['nodes'][0].nil? %><td></td><% else %><td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td><% end %>
+        <td><% if !@nodeinfo[i]['nodes'][0].nil? %><%= @nodeinfo[i]['nodes'][0]['alias'] %><% end %></td>
         <td><% if @listpeers['peers'][i]['netaddr'] %>
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
