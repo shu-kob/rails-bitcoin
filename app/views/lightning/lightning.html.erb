@@ -1,5 +1,5 @@
 <% @title = "Ligtning Network 運用" %>
-<h1><%= @title %></h1>
+<h1 class="display-4"><%= @title %></h1>
 
 <br>
 <% if @message %><%= @message %><% end %>
@@ -8,7 +8,7 @@
 <br>
 <b>自分のLightning Network ID</b>
 <br>
-<div><%= link_to @getinfo['id'], "https://1ml.com/testnet/node/" + @getinfo['id'] %></div>
+<tr><%= @getinfo['id'] %></tr>
 <br>
 
 <td><img src ="<%= @qrcode %>"></td>
@@ -21,6 +21,10 @@
 <br>
 
 <%= link_to '支払', pay_path %>
+<br>
+<br>
+
+<%= button_to "引出", withdraw_path %>
 
 <br>
 <br>
@@ -45,7 +49,7 @@
     <% for i in 0..@listpeers['peers'].length-1 %>
       <tr>
         <td><%= @listpeers['peers'][i]['id'] %></td>
-      <% if @nodeinfo[i]['nodes'][0].nil? %><td></td><% else %><td><%= @nodeinfo[i]['nodes'][0]['alias'] %></td><% end %>
+        <td><% if !@nodeinfo[i]['nodes'][0].nil? %><%= @nodeinfo[i]['nodes'][0]['alias'] %><% end %></td>
         <td><% if @listpeers['peers'][i]['netaddr'] %>
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
@@ -54,7 +58,9 @@
           <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
         <% elsif @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_NORMAL" && @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_AWAITING_LOCKIN" %>
             <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %><% end %></td>
-        <td><% if @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] == "CHANNELD_NORMAL" %><%= button_to "閉じる", close_path(id: @listpeers['peers'][i]['id']) %><% end %></td>
+        <td><% if !@listpeers['peers'][i]['channels'].empty? %>
+          <% if @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] == "CHANNELD_NORMAL" %><%= button_to "閉じる", close_path(id: @listpeers['peers'][i]['id']) %>
+          <% end %><% end %></td>
       </tr>
     <% end %>
   </tbody>
