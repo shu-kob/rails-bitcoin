@@ -249,7 +249,7 @@ class BitcoinAppController < ApplicationController
     address_type = "bech32"
     @address = getnewaddress(address_type)
     amount = params[:amount].to_s
-    if params[:amount]
+    if amount != ""
       @uri = "bitcoin:" + @address + "?amount=" + amount
     else
       @uri = "bitcoin:" + @address

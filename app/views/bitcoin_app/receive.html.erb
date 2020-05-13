@@ -4,7 +4,9 @@
 <tr><img src ="<%= @qrcode %>"></tr>
 
 <br>
-
+<tr><td><%= @uri %></td></tr>
+<br>
+<br>
 <tr></tr>
 <%= form_tag({ :controller => 'bitcoin_app', :action => 'receive' },{ :method => :post}) do %>
     <%= label_tag :amount %>
@@ -15,6 +17,6 @@
 
 <br>
 
-<tr><td><%= @uri %></td></tr>
+<tr><%= @address %></tr>
 
 <%= button_to "新しいアドレス生成", {controller: 'bitcoin_app', action: 'receive'}, {method: :get} %>
