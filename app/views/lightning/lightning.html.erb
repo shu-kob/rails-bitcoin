@@ -40,6 +40,7 @@
       <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
+      <th>connect</th>
       <th>fundchannel</th>
       <th>close channel</th>
     </tr>
@@ -54,6 +55,7 @@
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
             <%= @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] %><% end %></td>
+        <td><% if @listpeers['peers'][i]['channels'][0] %><%= button_to "接続", connect_path(id: @listpeers['peers'][i]['id']) %><% end %></td>
         <td><% if !@listpeers['peers'][i]['channels'][0] %>
           <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
         <% elsif @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_NORMAL" && @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_AWAITING_LOCKIN" %>
