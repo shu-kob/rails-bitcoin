@@ -13,7 +13,7 @@ class LightningController < ApplicationController
     @nodeinfo= []
     @connect = []
     @connect_ping = []
-    @ping= []
+    @node_connect= []
 
     @list_start_id = 0;
 
@@ -22,6 +22,26 @@ class LightningController < ApplicationController
       @uri = @getinfo['id'] + address
     else
       @uri = @getinfo['id']
+    end
+
+    if (!@message)
+      for j in 0..@listnodes['nodes'].length-1
+        if @listnodes['nodes'][j]["addresses"].present?
+          begin
+            Timeout.timeout(0.02) do
+            rpc_connect = rpc.connect(@listnodes['nodes'][j]['nodeid'])
+            connect = "OK"
+            @node_connect.push(connect)
+            end
+          rescue Lightning::RPCError
+            connect = "RPCError"
+            @node_connect.push(connect)
+          rescue Timeout::Error
+            connect = "Timeout"
+            @node_connect.push(connect)
+          end
+        end
+      end
     end
 
     for i in 0..@listpeers['peers'].length-1
@@ -51,21 +71,6 @@ class LightningController < ApplicationController
       rescue Timeout::Error
         connect = "Timeout"
         @connect.push(connect)
-      end
-    end
-    for j in 0..@listnodes['nodes'].length-1
-      begin
-        Timeout.timeout(1) do
-        rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
-        ping = "OK"
-        @ping.push(ping)
-        end
-      rescue Lightning::RPCError
-        ping = "RPCError"
-        @ping.push(ping)
-      rescue Timeout::Error
-        ping = "Timeout"
-        @ping.push(ping)
       end
     end
 
