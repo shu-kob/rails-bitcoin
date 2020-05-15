@@ -5,7 +5,7 @@ Bitcoin.chain_params = :testnet
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=38332
+PORT=18332
 require 'rqrcode'
 require 'rqrcode_png'
 

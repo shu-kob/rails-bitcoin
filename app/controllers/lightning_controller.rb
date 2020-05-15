@@ -11,7 +11,26 @@ class LightningController < ApplicationController
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
     @nodeinfo= []
+    @connect = []
+    @connect_ping = []
     @ping= []
+
+    for h in 0..@listpeers['peers'].length-1
+      begin
+        Timeout.timeout(1) do
+        rpc_ping = rpc.ping(@listpeers['peers'][h]['id'])
+        rpc_connect = rpc.connect(@listpeers['peers'][h]['id'])
+        connect = "OK"
+        @connect.push(connect)
+        end
+      rescue Lightning::RPCError
+        connect = "RPCError"
+        @connect.push(connect)
+      rescue Timeout::Error
+        connect = "Timeout"
+        @connect.push(connect)
+      end
+    end
 
     @list_start_id = 0;
 
@@ -24,6 +43,32 @@ class LightningController < ApplicationController
 
     for i in 0..@listpeers['peers'].length-1
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
+      begin
+        Timeout.timeout(1) do
+        rpc_ping = rpc.ping(@listpeers['peers'][i]['id'])
+        ping = "OK"
+        @connect_ping.push(ping)
+        end
+      rescue Lightning::RPCError
+        ping = "RPCError"
+        @connect_ping.push(ping)
+      rescue Timeout::Error
+        ping = "Timeout"
+        @connect_ping.push(ping)
+      end
+      begin
+        Timeout.timeout(1) do
+        rpc_connect = rpc.connect(@listpeers['peers'][i]['id'])
+        connect = "OK"
+        @connect.push(connect)
+        end
+      rescue Lightning::RPCError
+        connect = "RPCError"
+        @connect.push(connect)
+      rescue Timeout::Error
+        connect = "Timeout"
+        @connect.push(connect)
+      end
     end
     for j in 0..@listnodes['nodes'].length-1
       begin
@@ -176,7 +221,7 @@ class LightningController < ApplicationController
 
   private
   def rpc
-    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/signet/lightning-rpc')
+    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
     return rpc
   end
 end
