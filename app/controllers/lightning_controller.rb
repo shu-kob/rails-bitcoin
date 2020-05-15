@@ -11,7 +11,9 @@ class LightningController < ApplicationController
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
     @nodeinfo= []
-    @ping= []
+    @connect = []
+    @connect_ping = []
+    @node_connect= []
 
     @list_start_id = 0;
 
@@ -22,22 +24,53 @@ class LightningController < ApplicationController
       @uri = @getinfo['id']
     end
 
+    if (!@message)
+      for j in 0..@listnodes['nodes'].length-1
+        if @listnodes['nodes'][j]["addresses"].present?
+          begin
+            Timeout.timeout(0.02) do
+            rpc_connect = rpc.connect(@listnodes['nodes'][j]['nodeid'])
+            connect = "OK"
+            @node_connect.push(connect)
+            end
+          rescue Lightning::RPCError
+            connect = "RPCError"
+            @node_connect.push(connect)
+          rescue Timeout::Error
+            connect = "Timeout"
+            @node_connect.push(connect)
+          end
+        end
+      end
+    end
+
     for i in 0..@listpeers['peers'].length-1
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
-    end
-    for j in 0..@listnodes['nodes'].length-1
       begin
         Timeout.timeout(1) do
-        rpc_ping = rpc.ping(@listnodes['nodes'][j]['nodeid'])
+        rpc_ping = rpc.ping(@listpeers['peers'][i]['id'])
         ping = "OK"
-        @ping.push(ping)
+        @connect_ping.push(ping)
         end
       rescue Lightning::RPCError
         ping = "RPCError"
-        @ping.push(ping)
+        @connect_ping.push(ping)
       rescue Timeout::Error
         ping = "Timeout"
-        @ping.push(ping)
+        @connect_ping.push(ping)
+      end
+      begin
+        Timeout.timeout(1) do
+        rpc_connect = rpc.connect(@listpeers['peers'][i]['id'])
+        connect = "OK"
+        @connect.push(connect)
+        end
+      rescue Lightning::RPCError
+        connect = "RPCError"
+        @connect.push(connect)
+      rescue Timeout::Error
+        connect = "Timeout"
+        @connect.push(connect)
       end
     end
 
@@ -176,7 +209,7 @@ class LightningController < ApplicationController
 
   private
   def rpc
-    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/signet/lightning-rpc')
+    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
     return rpc
   end
 end
