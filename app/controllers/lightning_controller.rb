@@ -15,23 +15,6 @@ class LightningController < ApplicationController
     @connect_ping = []
     @ping= []
 
-    for h in 0..@listpeers['peers'].length-1
-      begin
-        Timeout.timeout(1) do
-        rpc_ping = rpc.ping(@listpeers['peers'][h]['id'])
-        rpc_connect = rpc.connect(@listpeers['peers'][h]['id'])
-        connect = "OK"
-        @connect.push(connect)
-        end
-      rescue Lightning::RPCError
-        connect = "RPCError"
-        @connect.push(connect)
-      rescue Timeout::Error
-        connect = "Timeout"
-        @connect.push(connect)
-      end
-    end
-
     @list_start_id = 0;
 
     if @getinfo['address'][0]
