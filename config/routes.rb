@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/index/:blockheight/:blocknum', to: 'bitcoin_app#index', as: 'pagenation'
   get '/tx/:txid', to: 'bitcoin_app#txinfo', as: 'txinfo'
   get '/block/:blockhash', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
+  get '/blockheight/:blockheight', to: 'bitcoin_app#blockheightinfo', as: 'blockheightinfo'
   get '/address/:address', to: 'bitcoin_app#addressinfo', as: 'addressinfo'
   get '/mining', to: 'bitcoin_app#mining'
   post '/mine', to: 'bitcoin_app#mine'

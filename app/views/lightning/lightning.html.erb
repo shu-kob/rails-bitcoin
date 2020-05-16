@@ -28,23 +28,30 @@
 
 <br>
 <br>
-
+<% if @listfunds["outputs"] %>
   <table border="1">
     <thead>
       <tr>
-        <th>TXID</th>
+        <th>txid</th>
+        <th>value</th>
+        <th>address</th>
+        <th>status</th>
+        <th>blockheight</th>
       </tr>
     </thead>
     <tbody>
       <% for k in 0..@listfunds["outputs"].length-1 %>
       <tr>
         <td><%= link_to @listfunds["outputs"][k]["txid"], txinfo_path(@listfunds["outputs"][k]["txid"]) %></td>
+        <td><%= @listfunds["outputs"][k]["value"] %></td>
+        <td><%= link_to @listfunds["outputs"][k]["address"], addressinfo_path(@listfunds["outputs"][k]["address"]) %></td>
+        <td><%= @listfunds["outputs"][k]["status"] %></td>
+        <td><%= link_to @listfunds["outputs"][k]["blockheight"], blockheightinfo_path(@listfunds["outputs"][k]["blockheight"]) %></td>
       </tr>
       <% end %>
     </tbody>
   </table>
-
-
+<% end %>
 <br>
 <br>
 
