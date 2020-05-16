@@ -29,6 +29,14 @@
 <br>
 <br>
 <% if @listfunds["outputs"] %>
+<% balance = 0 %>
+<% for k in 0..@listfunds["outputs"].length-1 %>
+<% if @listfunds["outputs"][k]["status"] == "confirmed" %>
+<% balance = balance + @listfunds["outputs"][k]["value"] %>
+<% end %>
+<% end %>
+<tr><th>listfunds</th></tr><br>
+<tr><th>Unlock balance: </th><td><%= balance %> satoshi</td></tr>
   <table border="1">
     <thead>
       <tr>
