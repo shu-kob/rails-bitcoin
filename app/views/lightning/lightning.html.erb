@@ -29,6 +29,25 @@
 <br>
 <br>
 
+  <table border="1">
+    <thead>
+      <tr>
+        <th>TXID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for k in 0..@listfunds["outputs"].length-1 %>
+      <tr>
+        <td><%= link_to @listfunds["outputs"][k]["txid"], txinfo_path(@listfunds["outputs"][k]["txid"]) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+
+<br>
+<br>
+
 <b>接続ピア数：</b>
 <%= @listpeers['peers'].length %>
 
