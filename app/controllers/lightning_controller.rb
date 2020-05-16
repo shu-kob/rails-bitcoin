@@ -15,7 +15,9 @@ class LightningController < ApplicationController
     @connect_ping = []
     @node_connect= []
 
-    @list_start_id = 0;
+    @list_start_id = 0
+
+    @listfunds = rpc.listfunds
 
     if @getinfo['address'][0]
       address = "@" + @getinfo['address'][0]['address'].to_s + ":" + @getinfo['address'][0]['port'].to_s

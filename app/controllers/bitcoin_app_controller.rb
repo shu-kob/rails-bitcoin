@@ -169,6 +169,15 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/blockinfo'
   end
 
+  def blockheightinfo
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    @blockheight = params[:blockheight].to_i
+    @blockhash = bitcoinRPC('getblockhash',[@blockheight])
+    @blockinfos = bitcoinRPC('getblock',[@blockhash])
+
+    render template: 'bitcoin_app/blockinfo'
+  end
+
   def mining
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
 
