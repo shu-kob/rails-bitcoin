@@ -78,7 +78,11 @@
         <td><%= @listfunds["outputs"][k]["value"] %></td>
         <td><%= link_to @listfunds["outputs"][k]["address"], addressinfo_path(@listfunds["outputs"][k]["address"]) %></td>
         <td><%= @listfunds["outputs"][k]["status"] %></td>
-        <td><%= link_to @listfunds["outputs"][k]["blockheight"], blockheightinfo_path(@listfunds["outputs"][k]["blockheight"]) %></td>
+        <td>
+          <% if @listfunds["outputs"][k]["blockheight"] %>
+            <%= link_to @listfunds["outputs"][k]["blockheight"], blockheightinfo_path(@listfunds["outputs"][k]["blockheight"]) %>
+          <% end %>
+        </td>
       </tr>
       <% end %>
     </tbody>
