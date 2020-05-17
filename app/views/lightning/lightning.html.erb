@@ -27,7 +27,6 @@
 <%= button_to "引出", withdraw_path %>
 
 <br>
-<br>
 <% if @listfunds["outputs"] %>
   <% balance = 0 %>
     <% for k in 0..@listfunds["outputs"].length-1 %>
@@ -36,6 +35,7 @@
       <% end %>
     <% end %>
   <tr><th>Unlock balance: </th><td><%= balance %> satoshi</td></tr>
+  <br>
   <tr><th>listfunds</th></tr><br>
   <table border="1">
     <thead>
