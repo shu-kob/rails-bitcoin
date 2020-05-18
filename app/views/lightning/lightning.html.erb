@@ -102,8 +102,6 @@
       <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
-      <th>Ping</th>
-      <th>connect</th>
       <th>接続</th>
       <th>fundchannel</th>
       <th>close channel</th>
@@ -119,8 +117,6 @@
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
             <%= @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] %><% end %></td>
-        <td><%= @connect_ping[i] %></td>
-        <td><%= @connect[i] %></td>
         <td><%= button_to "接続", connect_path(id: @listpeers['peers'][i]['id']) %></td>
         <td><% if !@listpeers['peers'][i]['channels'][0] %>
           <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
@@ -146,7 +142,7 @@
 <b>ノード数：</b>
 <%= @listnodes['nodes'].length %>
 
-<% if !@message and @listnodes['nodes'][0] %>
+<% if @listnodes['nodes'][0] %>
 
 <table border="1">
   <thead>
@@ -156,14 +152,12 @@
       <th>ネットワークアドレス</th>
       <th>ポート</th>
       <th>最終確認日時</th>
-      <th>Connect</th>
       <th>接続</th>
     </tr>
   </thead>
 
   <tbody>
     <% for j in @list_start_id..@listnodes['nodes'].length-1 %>
-    <% if @node_connect[j] == "OK" %>
       <tr>
         <td><%= @listnodes['nodes'][j]['nodeid'] %></td>
         <td>
@@ -176,12 +170,10 @@
               <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
               <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
               <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
-              <td><%= @node_connect[j] %></td>
               <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][j]['nodeid']) %></td>
             <% end %>
           <% end %>
       </tr>
-    <% end %>
     <% end %>
   </tbody>
 </table>

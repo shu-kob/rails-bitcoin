@@ -10,10 +10,7 @@ class LightningController < ApplicationController
     @listpeers = rpc.listpeers
     @listfunds = rpc.listfunds
     @listnodes = rpc.listnodes
-    @nodeinfo= []
-    @connect = []
-    @connect_ping = []
-    @node_connect= []
+    @nodeinfo = []
 
     @list_start_id = 0
 
@@ -26,54 +23,8 @@ class LightningController < ApplicationController
       @uri = @getinfo['id']
     end
 
-    if (!@message)
-      for j in 0..@listnodes['nodes'].length-1
-        if @listnodes['nodes'][j]["addresses"].present?
-          begin
-            Timeout.timeout(0.02) do
-            rpc_connect = rpc.connect(@listnodes['nodes'][j]['nodeid'])
-            connect = "OK"
-            @node_connect.push(connect)
-            end
-          rescue Lightning::RPCError
-            connect = "RPCError"
-            @node_connect.push(connect)
-          rescue Timeout::Error
-            connect = "Timeout"
-            @node_connect.push(connect)
-          end
-        end
-      end
-    end
-
     for i in 0..@listpeers['peers'].length-1
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
-      begin
-        Timeout.timeout(1) do
-        rpc_ping = rpc.ping(@listpeers['peers'][i]['id'])
-        ping = "OK"
-        @connect_ping.push(ping)
-        end
-      rescue Lightning::RPCError
-        ping = "RPCError"
-        @connect_ping.push(ping)
-      rescue Timeout::Error
-        ping = "Timeout"
-        @connect_ping.push(ping)
-      end
-      begin
-        Timeout.timeout(1) do
-        rpc_connect = rpc.connect(@listpeers['peers'][i]['id'])
-        connect = "OK"
-        @connect.push(connect)
-        end
-      rescue Lightning::RPCError
-        connect = "RPCError"
-        @connect.push(connect)
-      rescue Timeout::Error
-        connect = "Timeout"
-        @connect.push(connect)
-      end
     end
 
     qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
