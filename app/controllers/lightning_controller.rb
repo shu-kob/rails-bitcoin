@@ -160,6 +160,11 @@ class LightningController < ApplicationController
     end
   end
 
+  def listchannels
+    @listchannels = rpc.listchannels
+    render template: 'lightning/listchannels'
+  end
+
   private
   def rpc
     rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/testnet/lightning-rpc')
