@@ -102,6 +102,7 @@
       <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
+      <th>Ping</th>
       <th>接続</th>
       <th>fundchannel</th>
       <th>close channel</th>
@@ -117,6 +118,7 @@
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
             <%= @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] %><% end %></td>
+        <td><%= button_to "Ping", ping_path(id: @listpeers['peers'][i]['id']) %></td>
         <td><%= button_to "接続", connect_path(id: @listpeers['peers'][i]['id']) %></td>
         <td><% if !@listpeers['peers'][i]['channels'][0] %>
           <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
