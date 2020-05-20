@@ -34,6 +34,25 @@ class LightningController < ApplicationController
     render template: 'lightning/lightning'
   end
 
+  def ping
+    id = params[:id]
+    begin
+      Timeout.timeout(3) do
+        @connect = rpc.ping(id)
+        @message = "Ping success"
+        return @message
+      end
+    rescue Lightning::RPCError
+      @message = "Ping RPCError"
+      return @message
+    rescue Timeout::Error
+      @message = "Ping timeout"
+      return @message
+    ensure
+      redirect_to lightning_path(@message)
+    end
+  end
+
   def connect
     id = params[:id]
     begin

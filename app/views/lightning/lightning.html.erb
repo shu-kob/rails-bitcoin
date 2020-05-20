@@ -102,6 +102,7 @@
       <th>エイリアス</th>
       <th>ネットワークアドレス</th>
       <th>チャネル状態</th>
+      <th>Ping</th>
       <th>接続</th>
       <th>fundchannel</th>
       <th>close channel</th>
@@ -117,10 +118,11 @@
           <%= @listpeers['peers'][i]['netaddr'][0] %><% end %></td>
         <td><% if @listpeers['peers'][i]['channels'][0] %>
             <%= @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] %><% end %></td>
+        <td><%= button_to "Ping", ping_path(id: @listpeers['peers'][i]['id']) %></td>
         <td><%= button_to "接続", connect_path(id: @listpeers['peers'][i]['id']) %></td>
         <td><% if !@listpeers['peers'][i]['channels'][0] %>
           <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %>
-        <% elsif @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_NORMAL" && @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] != "CHANNELD_AWAITING_LOCKIN" %>
+        <% elsif @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'].nil? %>
             <%= button_to "開局", fundchannel_path(id: @listpeers['peers'][i]['id'], amount: 100000) %><% end %></td>
         <td><% if !@listpeers['peers'][i]['channels'].empty? %>
           <% if @listpeers['peers'][i]['channels'][@listpeers['peers'][i]['channels'].length-1]['state'] == "CHANNELD_NORMAL" %><%= button_to "閉局", close_path(id: @listpeers['peers'][i]['id']) %>
@@ -152,6 +154,7 @@
       <th>ネットワークアドレス</th>
       <th>ポート</th>
       <th>最終確認日時</th>
+      <th>Ping</th>
       <th>接続</th>
     </tr>
   </thead>
@@ -160,19 +163,20 @@
     <% for j in @list_start_id..@listnodes['nodes'].length-1 %>
       <tr>
         <td><%= @listnodes['nodes'][j]['nodeid'] %></td>
-        <td>
         <% if @listnodes['nodes'][j]['alias'] %>
-            <%= @listnodes['nodes'][j]['alias'] %>
+          <td><%= @listnodes['nodes'][j]['alias'] %></td>
+        <% else %>
+          <td></td>
         <% end %>
-        </td>
-          <% if @listnodes['nodes'][j]['addresses'] %>
-            <% if @listnodes['nodes'][j]['addresses'][0] %>
-              <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
-              <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
-              <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
-              <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][j]['nodeid']) %></td>
-            <% end %>
-          <% end %>
+        <% if @listnodes['nodes'][j]['addresses'].present? %>
+          <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
+          <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
+          <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
+        <% else %>
+          <td></td><td></td><td></td>
+        <% end %>
+        <td><%= button_to "Ping", ping_path(id: @listnodes['nodes'][j]['nodeid']) %></td>
+        <td><%= button_to "接続", connect_path(id: @listnodes['nodes'][j]['nodeid']) %></td>
       </tr>
     <% end %>
   </tbody>
