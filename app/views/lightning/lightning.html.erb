@@ -168,12 +168,10 @@
         <% else %>
           <td></td>
         <% end %>
-        <% if @listnodes['nodes'][j]['addresses'] %>
-          <% if @listnodes['nodes'][j]['addresses'][0].present? %>
-            <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
-            <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
-            <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
-          <% end %>
+        <% if @listnodes['nodes'][j]['addresses'].present? %>
+          <td><%= @listnodes['nodes'][j]['addresses'][0]['address'] %></td>
+          <td><%= @listnodes['nodes'][j]['addresses'][0]['port'] %></td>
+          <td><%= Time.at(@listnodes['nodes'][j]['last_timestamp']) %></td>
         <% else %>
           <td></td><td></td><td></td>
         <% end %>
