@@ -24,7 +24,11 @@
 <br>
 <br>
 
-<%= button_to "引出", withdraw_path %>
+<%= form_tag({ :controller => 'lightning', :action => 'withdraw' },{ :method => :post }) do %>
+    <%= label_tag :address %>
+    <%= text_field_tag :address %><br>
+    <%= submit_tag "引出"%>
+<% end %>
 
 <br>
 <% if @listfunds["outputs"] %>

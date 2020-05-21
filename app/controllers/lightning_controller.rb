@@ -160,11 +160,10 @@ class LightningController < ApplicationController
   end
 
   def withdraw
+    address = params[:address]
     begin
       Timeout.timeout(3) do
-        newaddr = rpc.newaddr
-        logger.debug newaddr
-        tx = rpc.withdraw(newaddr["address"], "all")
+        tx = rpc.withdraw(address, "all")
         logger.debug tx
         redirect_to txinfo_path(tx["txid"])
       end
