@@ -4,16 +4,20 @@
 <br>
 <br>
 
-<table border="1">
-  <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
-  <tr><th>payment_hash</th><td><%= @receipt['payment_hash'] %></td></tr>
-  <tr><th>destination</th><td><%= link_to @receipt['destination'], "https://1ml.com/testnet/node/" + @receipt['destination'] %></td></tr>
-  <tr><th>msatoshi</th><td><%= @receipt['msatoshi'] %></td></tr>
-  <tr><th>amount_msat</th><td><%= @receipt['amount_msat'] %></td></tr>
-  <tr><th>msatoshi_sent</th><td><%= @receipt['msatoshi_sent'] %></td></tr>
-  <tr><th>amount_sent_msat</th><td><%= @receipt['amount_sent_msat'] %></td></tr>
-  <tr><th>created_at</th><td><%= Time.at(@receipt['created_at']) %></td></tr>
-  <tr><th>status</th><td><%= @receipt['status'] %></td></tr>
-  <tr><th>payment_preimage</th><td><%= @receipt['payment_preimage'] %></td></tr>
-  <tr><th>bolt11</th><td><%= @receipt['bolt11'] %></td></tr>
-</table>
+<% if @receipt == "RPCError" %>
+  <tr>既に支払い済みか支払い能力を超えているため支払いできません</tr>
+<% else %>
+  <table border="1">
+    <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
+    <tr><th>payment_hash</th><td><%= @receipt['payment_hash'] %></td></tr>
+    <tr><th>destination</th><td><%= link_to @receipt['destination'], "https://1ml.com/testnet/node/" + @receipt['destination'] %></td></tr>
+    <tr><th>msatoshi</th><td><%= @receipt['msatoshi'] %></td></tr>
+    <tr><th>amount_msat</th><td><%= @receipt['amount_msat'] %></td></tr>
+    <tr><th>msatoshi_sent</th><td><%= @receipt['msatoshi_sent'] %></td></tr>
+    <tr><th>amount_sent_msat</th><td><%= @receipt['amount_sent_msat'] %></td></tr>
+    <tr><th>created_at</th><td><%= Time.at(@receipt['created_at']) %></td></tr>
+    <tr><th>status</th><td><%= @receipt['status'] %></td></tr>
+    <tr><th>payment_preimage</th><td><%= @receipt['payment_preimage'] %></td></tr>
+    <tr><th>bolt11</th><td><%= @receipt['bolt11'] %></td></tr>
+  </table>
+<% end %>

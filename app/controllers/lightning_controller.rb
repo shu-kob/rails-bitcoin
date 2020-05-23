@@ -99,7 +99,11 @@ class LightningController < ApplicationController
 
   def paid
     invoice = params[:pay]['invoice']
-    @receipt = rpc.pay(invoice)
+    begin
+      @receipt = rpc.pay(invoice)
+    rescue Lightning::RPCError
+      @receipt = "RPCError"
+    end
     render template: 'lightning/receipt'
   end
 
