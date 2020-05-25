@@ -1,9 +1,15 @@
 <% @title = "鍵生成" %>
 <h1><%= @title %></h1>
 
+Mnemonic Word List:
+<br>
+<td><%= @word_list %></td><br>
+Mnemonic Word List:
+<br>
+<td><%= @word_list_ja %></td><br>
 Privkey:
 <br>
-<td><%= @key.priv_key  %></td><br>
-Pubkey:
+<td><%= @key.priv %></td><br>
+Address:
 <br>
-<td><%= @key.pubkey  %></td><br>
+<td><%= @key.addr %></td><br>
