@@ -322,17 +322,14 @@ class BitcoinAppController < ApplicationController
 	end
 
   def keys
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    @balance = bitcoinRPC('getbalance',[])
-    @key = Bitcoin::Key.generate
-
-    listaddressgroupings = bitcoinRPC('listaddressgroupings',[])
-    address = listaddressgroupings[0][0][0]
-
-    @txid = bitcoinRPC('sendtoaddress',[address, 1])
-    @gettx = bitcoinRPC('gettransaction',[@txid])
-    @blockhash = bitcoinRPC('generatetoaddress',[1, address])
-    @getblock = bitcoinRPC('getblock',[@blockhash[0]])
+    mnemonic = Bitcoin::Mnemonic.new('english')
+    entropy = SecureRandom.hex(32)
+    @word_list = mnemonic.to_mnemonic(entropy)
+    mnemonic_ja = Bitcoin::Mnemonic.new('japanese')
+    @word_list_ja = mnemonic_ja.to_mnemonic(entropy)
+    seed = mnemonic.to_seed(@word_list)
+    master_key = Bitcoin::ExtKey.generate_master(seed)
+    @key = master_key.derive(84, true).derive(0, true).derive(0, true).derive(0).derive(0)
 
     render template: 'bitcoin_app/keys'
   end
