@@ -330,7 +330,6 @@ class BitcoinAppController < ApplicationController
     seed = mnemonic.to_seed(@word_list)
     master_key = Bitcoin::ExtKey.generate_master(seed)
     @key = master_key.derive(84, true).derive(0, true).derive(0, true).derive(0).derive(0)
-
     render template: 'bitcoin_app/wallet'
   end
 

@@ -1,15 +1,10 @@
 <% @title = "ウォレット" %>
 <h1><%= @title %></h1>
 
-Mnemonic Word List:
 <br>
-<td><%= @word_list %></td><br>
-Mnemonic Word List:
-<br>
-<td><%= @word_list_ja %></td><br>
-Privkey:
-<br>
-<td><%= @key.priv %></td><br>
-Address:
-<br>
-<td><%= @key.addr %></td><br>
+<table border="1">
+  <tr><th>Mnemonic Word List(en)</th><td><%= @word_list %></td></tr>
+  <tr><th>Mnemonic Word List(ja)</th><td><%= @word_list_ja %></td></tr>
+  <tr><th>Private Key</th><td><%= @key.priv %></td></tr>
+  <tr><th>Address</th><td><%= @key.addr %></td></tr>
+</table>
