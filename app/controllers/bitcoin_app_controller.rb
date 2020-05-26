@@ -321,7 +321,7 @@ class BitcoinAppController < ApplicationController
     end
 	end
 
-  def keys
+  def wallet
     mnemonic = Bitcoin::Mnemonic.new('english')
     entropy = SecureRandom.hex(32)
     @word_list = mnemonic.to_mnemonic(entropy)
@@ -330,8 +330,7 @@ class BitcoinAppController < ApplicationController
     seed = mnemonic.to_seed(@word_list)
     master_key = Bitcoin::ExtKey.generate_master(seed)
     @key = master_key.derive(84, true).derive(0, true).derive(0, true).derive(0).derive(0)
-
-    render template: 'bitcoin_app/keys'
+    render template: 'bitcoin_app/wallet'
   end
 
 	private
