@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post '/receive', to: 'bitcoin_app#receive'
   get '/addresslist', to: 'bitcoin_app#addresslist'
   get '/txlist', to: 'bitcoin_app#txlist'
-  get '/keys', to: 'bitcoin_app#keys'
+  get '/wallet', to: 'bitcoin_app#wallet'
   get 'lightning', to: 'lightning#lightning', as: 'lightning_index'
   get 'lightning/:message', to: 'lightning#lightning', as: 'lightning'
   get 'lightning_pay', to: 'lightning#pay', as: 'pay'
