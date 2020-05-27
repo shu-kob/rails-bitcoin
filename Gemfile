@@ -35,6 +35,10 @@ gem 'c-lightningrb', require: 'lightning'
 
 gem "actionview", ">= 6.0.2.2"
 
+gem "activesupport", ">= 6.0.3.1"
+gem "activestorage", ">= 6.0.3.1"
+gem "actionpack", ">= 6.0.3.1"
+
 gem 'jquery-rails'
 
 gem 'rqrcode'
