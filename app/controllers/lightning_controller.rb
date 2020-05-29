@@ -27,9 +27,9 @@ class LightningController < ApplicationController
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
     end
 
-    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-    png = qr.to_img
-    @qrcode = png.resize(300, 300).to_data_url
+#    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+#    png = qr.to_img
+#    @qrcode = png.resize(300, 300).to_data_url
 
     render template: 'lightning/lightning'
   end
