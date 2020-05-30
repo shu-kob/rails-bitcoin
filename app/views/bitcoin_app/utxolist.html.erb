@@ -1,0 +1,28 @@
+<% @title = "UTXO一覧" %>
+<h1><%= @title %></h1>
+
+<br>
+
+<table border="1">
+  <% for i in 0..@utxo_list.length-1 %>
+    <tr><th>txid</th><td><%= link_to @utxo_list[i]['txid'], txinfo_path(@utxo_list[i]['txid']) %></td></tr>
+    <tr><th>vout</th><td><%= @utxo_list[i]['vout'] %></td></tr>
+    <tr><th>confirmations</th><td><%= @utxo_list[i]['confirmations'] %></td></tr>
+    <tr><th>address</th><td><%= link_to @utxo_list[i]['address'], addressinfo_path(@utxo_list[i]['address']) %></td></tr>
+    <tr><th>oa_address</th><td><% if @utxo_list[i]['oa_address'] %>
+    <%= link_to @utxo_list[i]['oa_address'], utxo_oaaddress_path(@utxo_list[i]['oa_address']) %><% end %></td></tr>
+    <tr><th>script</th><td><%= @utxo_list[i]['script'] %></td></tr>
+    <tr><th>script_type</th><td><%= @utxo_list[i]['script_type'] %></td></tr>
+    <tr><th>amount</th><td><%= @utxo_list[i]['amount'] %></td></tr>
+    <tr><th>asset_id</th><td><%= @utxo_list[i]['asset_id'] %></td></tr>
+    <tr><th>asset_quantity</th><td><%= @utxo_list[i]['asset_quantity'] %></td></tr>
+    <tr><th>asset_amount</th><td><%= @utxo_list[i]['asset_amount'] %></td></tr>
+    <tr><th>account</th><td><%= @utxo_list[i]['account'] %></td></tr>
+    <tr><th>asset_definition_url</th><td><%= @utxo_list[i]['asset_definition_url'] %></td></tr>
+    <tr><th>proof_of_authenticity</th><td><%= @utxo_list[i]['proof_of_authenticity'] %></td></tr>
+    <tr><th>output_type</th><td><%= @utxo_list[i]['output_type'] %></td></tr>
+    <tr><th>solvable</th><td><%= @utxo_list[i]['solvable'] %></td></tr>
+    <tr><th>spendable</th><td><%= @utxo_list[i]['spendable'] %></td></tr>
+    <tr></tr>
+  <% end %>
+</table>

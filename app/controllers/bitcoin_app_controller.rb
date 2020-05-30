@@ -6,6 +6,7 @@ RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
 PORT=18332
+require 'openassets'
 require 'rqrcode'
 require 'rqrcode_png'
 
@@ -333,6 +334,26 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/wallet'
   end
 
+  def utxolist
+    if oa_address = params[:oaaddress]
+      @utxo_list = api.list_unspent([oa_address])
+    else
+      @utxo_list = api.list_unspent
+    end
+    render template: 'bitcoin_app/utxolist'
+  end
+
+  def openassetsaddress(btc_Address)
+    oa_address = OpenAssets.address_to_oa_address(btc_Address)
+    return oa_address
+  end
+
+  def issue
+    @address = params[:address]
+    @listunspent = api.list_unspent
+    render template: 'bitcoin_app/issue'
+  end
+
 	private
 	def bitcoinRPC(method,param)
 		http = Net::HTTP.new(HOST, PORT)
@@ -341,6 +362,27 @@ class BitcoinAppController < ApplicationController
     request.content_type = 'application/json'
     request.body = {method: method, params: param, id: 'jsonrpc'}.to_json
     JSON.parse(http.request(request).body)["result"]
+  end
+
+  def api
+    api = OpenAssets::Api.new({
+      network:             'testnet',
+      provider:           'bitcoind',
+      cache:            'testnet.db',
+      dust_limit:                600,
+      default_fees:            10000,
+      min_confirmation:            1,
+      max_confirmation:      9999999,
+      rpc: {
+        user:                  'hoge',
+        password:              'hoge',
+        schema:               'http',
+        port:                  18332,
+        host:            'localhost',
+        timeout:                  60,
+        open_timeout:             60 }
+    })
+    return api
   end
 
 end
