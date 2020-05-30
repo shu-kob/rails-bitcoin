@@ -335,8 +335,8 @@ class BitcoinAppController < ApplicationController
   end
 
   def utxolist
-    if oa_address = params[:oa_address]
-      @utxo_list = api.list_unspent(oa_address)
+    if oa_address = params[:oaaddress]
+      @utxo_list = api.list_unspent([oa_address])
     else
       @utxo_list = api.list_unspent
     end

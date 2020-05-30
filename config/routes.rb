@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get '/txlist', to: 'bitcoin_app#txlist'
   get '/wallet', to: 'bitcoin_app#wallet'
   get '/utxolist', to: 'bitcoin_app#utxolist'
+  get '/utxolist/:oaaddress', to: 'bitcoin_app#utxolist', as: 'utxo_oaaddress'
   get 'lightning', to: 'lightning#lightning', as: 'lightning_index'
   get 'lightning/:message', to: 'lightning#lightning', as: 'lightning'
   get 'lightning_pay', to: 'lightning#pay', as: 'pay'
