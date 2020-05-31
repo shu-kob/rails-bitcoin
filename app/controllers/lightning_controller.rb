@@ -122,9 +122,9 @@ class LightningController < ApplicationController
     description = params[:issue]['description']
     @invoice = rpc.invoice(msatoshi, label, description)
     @uri = @invoice['bolt11']
-    qr = RQRCode::QRCode.new(@uri)
-    png = qr.to_img
-    @qrcode = png.resize(500, 500).to_data_url
+#    qr = RQRCode::QRCode.new(@uri)
+#    png = qr.to_img
+#    @qrcode = png.resize(500, 500).to_data_url
     render template: 'lightning/invoice'
   end
 
@@ -138,9 +138,9 @@ class LightningController < ApplicationController
       @uri = "bitcoin:" + @address
     end
 
-    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-    png = qr.to_img
-    @qrcode = png.resize(300, 300).to_data_url
+#    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+#    png = qr.to_img
+#    @qrcode = png.resize(300, 300).to_data_url
     render template: 'lightning/deposit'
   end
 
