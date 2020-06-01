@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get '/wallet', to: 'bitcoin_app#wallet'
   get '/utxolist', to: 'bitcoin_app#utxolist'
   get '/utxolist/:oaaddress', to: 'bitcoin_app#utxolist', as: 'utxo_oaaddress'
+  get '/assetutxo', to: 'bitcoin_app#assetutxo', as: 'assetutxo'
+  post '/assetissue', to: 'bitcoin_app#assetissue', as: 'assetissue'
   get 'lightning', to: 'lightning#lightning', as: 'lightning_index'
   get 'lightning/:message', to: 'lightning#lightning', as: 'lightning'
   get 'lightning_pay', to: 'lightning#pay', as: 'pay'

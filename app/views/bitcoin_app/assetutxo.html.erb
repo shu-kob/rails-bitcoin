@@ -1,0 +1,12 @@
+<% @title = "Open Assets 発行" %>
+<h1><%= @title %></h1>
+
+<br>
+
+<%= form_tag({ :controller => 'bitcoin_app', :action => 'assetissue' },{ :method => :post }) do %>
+  <%= label_tag :oa_address %>
+  <%= text_field_tag :oa_address %><br>
+  <%= label_tag :amount %>
+  <%= text_field_tag :amount %><br>
+  <%= submit_tag "アセット発行"%>
+<% end %>

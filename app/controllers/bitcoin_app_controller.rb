@@ -348,10 +348,16 @@ class BitcoinAppController < ApplicationController
     return oa_address
   end
 
-  def issue
-    @address = params[:address]
-    @listunspent = api.list_unspent
-    render template: 'bitcoin_app/issue'
+  def assetutxo
+
+  end
+
+  def assetissue
+    oa_address = params[:oa_address]
+    amount = params[:amount].to_i
+    metadata = ''
+    @tx = api.issue_asset(oa_address, amount, metadata)
+    render template: 'bitcoin_app/assetissue'
   end
 
 	private
