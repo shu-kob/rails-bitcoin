@@ -9,7 +9,7 @@
       <tr><th>destination</th><td><%= @listchannels["channels"][h]["destination"] %></td></tr>
       <tr><th>short_channel_id</th><td><%= @listchannels["channels"][h]["short_channel_id"] %></td></tr>
       <tr><th>public</th><td><%= @listchannels["channels"][h]["public"] %></td></tr>
-      <tr><th>satoshis</th></tr><td><%= @listchannels["channels"][h]["satoshis"] %></td>
+      <tr><th>satoshis</th><td><%= @listchannels["channels"][h]["satoshis"] %></td></tr>
       <tr><th>amount_msat</th><td><%= @listchannels["channels"][h]["amount_msat"] %></td></tr>
       <tr><th>message_flags</th><td><%= @listchannels["channels"][h]["message_flags"] %></td></tr>
       <tr><th>channel_flags</th><td><%= @listchannels["channels"][h]["channel_flags"] %></td></tr>
@@ -20,6 +20,7 @@
       <tr><th>delay</th><td><%= @listchannels["channels"][h]["delay"] %></td></tr>
       <tr><th>htlc_minimum_msat</th><td><%= @listchannels["channels"][h]["htlc_minimum_msat"] %></td></tr>
       <tr><th>htlc_maximum_msat</th><td><%= @listchannels["channels"][h]["htlc_maximum_msat"] %></td></tr>
+      <tr></tr>
       <% end %>
   </table>
 <% end %>
