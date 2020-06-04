@@ -3,24 +3,24 @@
 
 <% if @listchannels["channels"] %>
   <tr><th>ネットワーク上のチャンネル一覧</th></tr>
-  <table border="1">
     <% for h in 0..@listchannels["channels"].length-1 %>
-      <tr><th>source</th><td><%= @listchannels["channels"][h]["source"] %></td></tr>
-      <tr><th>destination</th><td><%= @listchannels["channels"][h]["destination"] %></td></tr>
-      <tr><th>short_channel_id</th><td><%= @listchannels["channels"][h]["short_channel_id"] %></td></tr>
-      <tr><th>public</th><td><%= @listchannels["channels"][h]["public"] %></td></tr>
-      <tr><th>satoshis</th><td><%= @listchannels["channels"][h]["satoshis"] %></td></tr>
-      <tr><th>amount_msat</th><td><%= @listchannels["channels"][h]["amount_msat"] %></td></tr>
-      <tr><th>message_flags</th><td><%= @listchannels["channels"][h]["message_flags"] %></td></tr>
-      <tr><th>channel_flags</th><td><%= @listchannels["channels"][h]["channel_flags"] %></td></tr>
-      <tr><th>active</th><td><%= @listchannels["channels"][h]["active"] %></td></tr>
-      <tr><th>last_update</th><td><%= Time.at(@listchannels["channels"][h]["last_update"]) %></td></tr>
-      <tr><th>base_fee_millisatoshi</th><td><%= @listchannels["channels"][h]["base_fee_millisatoshi"] %></td></tr>
-      <tr><th>fee_per_millionth</th><td><%= @listchannels["channels"][h]["fee_per_millionth"] %></td></tr>
-      <tr><th>delay</th><td><%= @listchannels["channels"][h]["delay"] %></td></tr>
-      <tr><th>htlc_minimum_msat</th><td><%= @listchannels["channels"][h]["htlc_minimum_msat"] %></td></tr>
-      <tr><th>htlc_maximum_msat</th><td><%= @listchannels["channels"][h]["htlc_maximum_msat"] %></td></tr>
-      <tr></tr>
-      <% end %>
+      <table border="1">
+        <tr><th>source</th><td><%= @listchannels["channels"][h]["source"] %></td></tr>
+        <tr><th>destination</th><td><%= @listchannels["channels"][h]["destination"] %></td></tr>
+        <tr><th>short_channel_id</th><td><%= @listchannels["channels"][h]["short_channel_id"] %></td></tr>
+        <tr><th>public</th><td><%= @listchannels["channels"][h]["public"] %></td></tr>
+        <tr><th>satoshis</th><td><%= @listchannels["channels"][h]["satoshis"] %></td></tr>
+        <tr><th>amount_msat</th><td><%= @listchannels["channels"][h]["amount_msat"] %></td></tr>
+        <tr><th>message_flags</th><td><%= @listchannels["channels"][h]["message_flags"] %></td></tr>
+        <tr><th>channel_flags</th><td><%= @listchannels["channels"][h]["channel_flags"] %></td></tr>
+        <tr><th>active</th><td><%= @listchannels["channels"][h]["active"] %></td></tr>
+        <tr><th>last_update</th><td><%= Time.at(@listchannels["channels"][h]["last_update"]) %></td></tr>
+        <tr><th>base_fee_millisatoshi</th><td><%= @listchannels["channels"][h]["base_fee_millisatoshi"] %></td></tr>
+        <tr><th>fee_per_millionth</th><td><%= @listchannels["channels"][h]["fee_per_millionth"] %></td></tr>
+        <tr><th>delay</th><td><%= @listchannels["channels"][h]["delay"] %></td></tr>
+        <tr><th>htlc_minimum_msat</th><td><%= @listchannels["channels"][h]["htlc_minimum_msat"] %></td></tr>
+        <tr><th>htlc_maximum_msat</th><td><%= @listchannels["channels"][h]["htlc_maximum_msat"] %></td></tr>
+      </table>
+    <% end %>
   </table>
 <% end %>
