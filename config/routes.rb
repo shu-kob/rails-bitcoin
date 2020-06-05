@@ -38,4 +38,5 @@ Rails.application.routes.draw do
   post 'lightning_close', to: 'lightning#close', as: 'close'
   post 'lightning_withdraw', to: 'lightning#withdraw', as: 'withdraw'
   get 'lightning_listchannels', to: 'lightning#listchannels', as: 'listchannels'
+  get 'lightning_shop', to: 'lightning#shop', as: 'lightning_shop'
 end
