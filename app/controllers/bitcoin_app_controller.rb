@@ -5,7 +5,7 @@ Bitcoin.chain_params = :testnet
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=18332
+PORT=38332
 require 'openassets'
 require 'rqrcode'
 require 'rqrcode_png'
@@ -372,9 +372,9 @@ class BitcoinAppController < ApplicationController
 
   def api
     api = OpenAssets::Api.new({
-      network:             'testnet',
+      network:             'signet',
       provider:           'bitcoind',
-      cache:            'testnet.db',
+      cache:            'signet.db',
       dust_limit:                600,
       default_fees:            10000,
       min_confirmation:            1,
@@ -383,7 +383,7 @@ class BitcoinAppController < ApplicationController
         user:                  'hoge',
         password:              'hoge',
         schema:               'http',
-        port:                  18332,
+        port:                  38332,
         host:            'localhost',
         timeout:                  60,
         open_timeout:             60 }
