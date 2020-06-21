@@ -128,6 +128,11 @@ class LightningController < ApplicationController
     render template: 'lightning/invoice'
   end
 
+  def listinvoices
+    @listinvoices = rpc.listinvoices
+    render template: 'lightning/listinvoices'
+  end
+
   def deposit
 
     @address = rpc.newaddr["address"]
