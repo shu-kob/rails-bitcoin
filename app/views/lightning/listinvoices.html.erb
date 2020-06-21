@@ -1,0 +1,26 @@
+<% @title = "請求履歴" %>
+<h1><%= @title %></h1>
+
+<br>
+<br>
+
+<% if @listinvoices['invoices'] %>
+    <% for h in 0..@listinvoices['invoices'].length-1 %>
+    <table border="1">
+      <tr><th>label</th><td><%= @listinvoices['invoices'][h]["label"] %></td></tr>
+      <tr><th>bolt11</th><td><%= @listinvoices['invoices'][h]["bolt11"] %></td></tr>
+      <tr><th>payment_hash</th><td><%= @listinvoices['invoices'][h]["payment_hash"] %></td></tr>
+      <tr><th>msatoshi</th><td><%= @listinvoices['invoices'][h]["msatoshi"] %></td></tr>
+      <tr><th>amount_msat</th><td><%= @listinvoices['invoices'][h]["amount_msat"] %></td></tr>
+      <tr><th>status</th><td><%= @listinvoices['invoices'][h]["status"] %></td></tr>
+      <tr><th>pay_index</th><td><%= @listinvoices['invoices'][h]["pay_index"] %></td></tr>
+      <tr><th>msatoshi_received</th><td><%= @listinvoices['invoices'][h]["msatoshi_received"] %></td></tr>
+      <tr><th>amount_received_msat</th><td><%= @listinvoices['invoices'][h]["amount_received_msat"] %></td></tr>
+      <% if @listinvoices['invoices'][h]["paid_at"] %><tr><th>paid_at</th><td><%= Time.at(@listinvoices['invoices'][h]["paid_at"]) %></td></tr><% end %>
+      <tr><th>payment_preimage</th><td><%= @listinvoices['invoices'][h]["payment_preimage"] %></td></tr>
+      <tr><th>description</th><td><%= @listinvoices['invoices'][h]["description"] %></td></tr>
+      <tr><th>expires_at</th><td><%= Time.at(@listinvoices['invoices'][h]["expires_at"]) %></td></tr>
+    </table>
+    <% end %>
+  </table>
+<% end %>
