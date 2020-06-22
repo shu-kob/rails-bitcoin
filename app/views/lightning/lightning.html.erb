@@ -60,7 +60,7 @@
           <td><%= @listfunds["channels"][h]["state"] %></td>
           <td><%= @listfunds["channels"][h]["channel_sat"] %></td>
           <td><%= @listfunds["channels"][h]["channel_total_sat"] %></td>
-          <td><%= link_to @listfunds["channels"][h]["funding_txid"], txinfo_path(@listfunds["channels"][h]["funding_txid"]) %></td>
+          <td><%= link_to @listfunds["channels"][h]["funding_txid"], "https://explorer.bc-2.jp/tx/" + @listfunds["channels"][h]["funding_txid"] %></td>
         </tr>
       <% end %>
     </tbody>
@@ -78,9 +78,9 @@
     <tbody>
       <% for k in 0..@listfunds["outputs"].length-1 %>
       <tr>
-        <td><%= link_to @listfunds["outputs"][k]["txid"], txinfo_path(@listfunds["outputs"][k]["txid"]) %></td>
+        <td><%= link_to @listfunds["outputs"][k]["txid"], "https://explorer.bc-2.jp/tx/" + @listfunds["outputs"][k]["txid"] %></td>
         <td><%= @listfunds["outputs"][k]["value"] %></td>
-        <td><%= link_to @listfunds["outputs"][k]["address"], addressinfo_path(@listfunds["outputs"][k]["address"]) %></td>
+        <td><%= link_to @listfunds["outputs"][k]["address"], "https://explorer.bc-2.jp/address/" + @listfunds["outputs"][k]["address"] %></td>
         <td><%= @listfunds["outputs"][k]["status"] %></td>
         <td>
           <% if @listfunds["outputs"][k]["blockheight"] %>
