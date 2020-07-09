@@ -174,8 +174,16 @@ class BitcoinAppController < ApplicationController
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     @blockheight = params[:blockheight].to_i
     @blockhash = bitcoinRPC('getblockhash',[@blockheight])
-
-    redirect_to 'https://explorer.bc-2.jp/block/' + @blockhash
+    @blockinfos = bitcoinRPC('getblock',[@blockhash])
+    if @blockchaininfo["chain"] == "main"
+      redirect_to 'https://blockstream.info/block/' + @blockhash
+    elsif @blockchaininfo["chain"] == "testnet"
+      redirect_to 'https://blockstream.info/testnet/' + @blockhash
+    elsif @blockchaininfo["chain"] == "signet"
+      redirect_to 'https://explorer.bc-2.jp/block/' + @blockhash
+    elsif @blockchaininfo["chain"] == "regtest"
+      render template: 'bitcoin_app/blockinfo'
+    end
   end
 
   def mining
