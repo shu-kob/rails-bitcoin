@@ -186,6 +186,20 @@ class BitcoinAppController < ApplicationController
     end
   end
 
+  def network
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    network = []
+    if @blockchaininfo["chain"] == "main"
+      network.push('https://blockstream.info/block/')
+    elsif @blockchaininfo["chain"] == "testnet"
+      network.push('https://blockstream.info/testnet/')
+    elsif @blockchaininfo["chain"] == "signet"
+      network.push('https://explorer.bc-2.jp/block/')
+    end
+    network.push(@blockchaininfo["chain"])
+    return network
+  end
+
   def mining
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
 
