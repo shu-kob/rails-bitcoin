@@ -172,32 +172,27 @@ class BitcoinAppController < ApplicationController
 
   def blockheightinfo
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+    blockchain_explorer_url = network(@blockchaininfo["chain"])
     @blockheight = params[:blockheight].to_i
+    url_path_block = 'block/'
     @blockhash = bitcoinRPC('getblockhash',[@blockheight])
     @blockinfos = bitcoinRPC('getblock',[@blockhash])
-    if @blockchaininfo["chain"] == "main"
-      redirect_to 'https://blockstream.info/block/' + @blockhash
-    elsif @blockchaininfo["chain"] == "testnet"
-      redirect_to 'https://blockstream.info/testnet/' + @blockhash
-    elsif @blockchaininfo["chain"] == "signet"
-      redirect_to 'https://explorer.bc-2.jp/block/' + @blockhash
-    elsif @blockchaininfo["chain"] == "regtest"
+    if @blockchaininfo["chain"] == "regtest"
       render template: 'bitcoin_app/blockinfo'
+    else
+      redirect_to blockchain_explorer_url + url_path_block + @blockhash
     end
   end
 
-  def network
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    network = []
+  def network(chain)
     if @blockchaininfo["chain"] == "main"
-      network.push('https://blockstream.info/block/')
+      blockchain_explorer_url = 'https://blockstream.info/'
     elsif @blockchaininfo["chain"] == "testnet"
-      network.push('https://blockstream.info/testnet/')
+      blockchain_explorer_url = 'https://blockstream.info/testnet/'
     elsif @blockchaininfo["chain"] == "signet"
-      network.push('https://explorer.bc-2.jp/block/')
+      blockchain_explorer_url = 'https://explorer.bc-2.jp/'
     end
-    network.push(@blockchaininfo["chain"])
-    return network
+    return blockchain_explorer_url
   end
 
   def mining
