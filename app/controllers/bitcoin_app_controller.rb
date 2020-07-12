@@ -172,7 +172,7 @@ class BitcoinAppController < ApplicationController
 
   def blockheightinfo
     @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    blockchain_explorer_url = network(@blockchaininfo["chain"])
+    blockchain_explorer_url = blockchain_explorer_url(@blockchaininfo["chain"])
     @blockheight = params[:blockheight].to_i
     url_path_block = 'block/'
     @blockhash = bitcoinRPC('getblockhash',[@blockheight])
@@ -184,7 +184,7 @@ class BitcoinAppController < ApplicationController
     end
   end
 
-  def network(chain)
+  def blockchain_explorer_url(chain)
     if @blockchaininfo["chain"] == "main"
       blockchain_explorer_url = 'https://blockstream.info/'
     elsif @blockchaininfo["chain"] == "testnet"
