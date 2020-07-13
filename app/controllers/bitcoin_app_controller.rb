@@ -177,7 +177,7 @@ class BitcoinAppController < ApplicationController
     url_path_block = 'block/'
     @blockhash = bitcoinRPC('getblockhash',[@blockheight])
     @blockinfos = bitcoinRPC('getblock',[@blockhash])
-    if @blockchaininfo["chain"] == "regtest"
+    if blockchain_explorer_url == "regtest"
       render template: 'bitcoin_app/blockinfo'
     else
       redirect_to blockchain_explorer_url + url_path_block + @blockhash
@@ -185,12 +185,14 @@ class BitcoinAppController < ApplicationController
   end
 
   def blockchain_explorer_url(chain)
-    if @blockchaininfo["chain"] == "main"
+    if chain == "main"
       blockchain_explorer_url = 'https://blockstream.info/'
-    elsif @blockchaininfo["chain"] == "testnet"
+    elsif chain == "testnet"
       blockchain_explorer_url = 'https://blockstream.info/testnet/'
-    elsif @blockchaininfo["chain"] == "signet"
+    elsif chain == "signet"
       blockchain_explorer_url = 'https://explorer.bc-2.jp/'
+    elsif chain == "regtest"
+      blockchain_explorer_url = 'regtest'
     end
     return blockchain_explorer_url
   end
