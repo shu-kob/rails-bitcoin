@@ -97,30 +97,34 @@ class BitcoinAppController < ApplicationController
 
   def txinfo
     @txid = params[:txid]
-    @txinfo = gettxinfo(@txid)
-
-    mempoolinfo = bitcoinRPC('getrawmempool',[])
-    for w in 0..mempoolinfo.length
-      if mempoolinfo[w] == @txid
-        @in_mempool = true
-      else
-        @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-        for i in 0..@blockchaininfo['blocks']
-          blockhash = bitcoinRPC('getblockhash', [@blockchaininfo['blocks'] - i])
-          blockinfo = bitcoinRPC('getblock', [blockhash])
-          for v in 0..blockinfo['tx'].length - 1
-            if blockinfo['tx'][v] == @txid
-              @confirm_block = blockinfo
+    if blockchain_explorer_url() == "regtest"
+      @blockinfos = bitcoinRPC('getblock',[@blockhash])
+      render template: 'bitcoin_app/blockinfo'
+      @txinfo = gettxinfo(@txid)
+      mempoolinfo = bitcoinRPC('getrawmempool',[])
+      for w in 0..mempoolinfo.length
+        if mempoolinfo[w] == @txid
+          @in_mempool = true
+        else
+          @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+          for i in 0..@blockchaininfo['blocks']
+            blockhash = bitcoinRPC('getblockhash', [@blockchaininfo['blocks'] - i])
+            blockinfo = bitcoinRPC('getblock', [blockhash])
+            for v in 0..blockinfo['tx'].length - 1
+              if blockinfo['tx'][v] == @txid
+                @confirm_block = blockinfo
+              end
             end
           end
         end
       end
+      zero_blockhash = bitcoinRPC('getblockhash',[0])
+      @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
+      render template: 'bitcoin_app/txinfo'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url + 'tx/' + @txid
     end
-
-    zero_blockhash = bitcoinRPC('getblockhash',[0])
-    @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
-
-    render template: 'bitcoin_app/txinfo'
   end
 
   def gettxinfo(txid)
