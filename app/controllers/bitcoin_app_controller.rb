@@ -231,48 +231,50 @@ class BitcoinAppController < ApplicationController
 
   def addressinfo
     @addressid = params[:address]
-    @validateaddress = bitcoinRPC('validateaddress',[@addressid])
-    if @validateaddress['isvalid']
-      mempoolinfo = bitcoinRPC('getrawmempool',[])
-			@addresstx = []
+    if blockchain_explorer_url() == "regtest"
+      @validateaddress = bitcoinRPC('validateaddress',[@addressid])
+      if @validateaddress['isvalid']
+        mempoolinfo = bitcoinRPC('getrawmempool',[])
+			  @addresstx = []
 			
-      for n in 0..mempoolinfo.length-1
-        address_unconf_txlist = gettxinfo(mempoolinfo[n])
-        for p in 0..address_unconf_txlist[0]['vout'].length-1
-          if (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses']) && (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses'][0] == @addressid)
-            address_unconf_txlist.push(0)
-            @addresstx.push(address_unconf_txlist)
-          end
-        end
-			end
-			
-      blockinfo = bitcoinRPC('getblockchaininfo',[])
-      current_height = blockinfo['blocks']
-			
-			for p in 0..current_height-1
-        blockhash = bitcoinRPC('getblockhash',[current_height - p])
-        @blosckinfos = bitcoinRPC('getblock',[blockhash])
-				
-        for s in 0..@blosckinfos['tx'].length-1
-          address_conf_txlist = gettxinfo(@blosckinfos['tx'][s])
-					for t in 0..address_conf_txlist[0]['vout'].length-1
-            if (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses']) && (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
-              address_conf_txlist.push(current_height - @blosckinfos['height'] + 1)
-              @addresstx.push(address_conf_txlist)
+        for n in 0..mempoolinfo.length-1
+          address_unconf_txlist = gettxinfo(mempoolinfo[n])
+          for p in 0..address_unconf_txlist[0]['vout'].length-1
+            if (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses']) && (address_unconf_txlist[0]['vout'][p]['scriptPubKey']['addresses'][0] == @addressid)
+              address_unconf_txlist.push(0)
+              @addresstx.push(address_unconf_txlist)
             end
-					end
-					
-				end
+          end
+			  end
+			
+        blockinfo = bitcoinRPC('getblockchaininfo',[])
+        current_height = blockinfo['blocks']
+			
+			  for p in 0..current_height-1
+          blockhash = bitcoinRPC('getblockhash',[current_height - p])
+          @blosckinfos = bitcoinRPC('getblock',[blockhash])
 				
+          for s in 0..@blosckinfos['tx'].length-1
+            address_conf_txlist = gettxinfo(@blosckinfos['tx'][s])
+					  for t in 0..address_conf_txlist[0]['vout'].length-1
+              if (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses']) && (address_conf_txlist[0]['vout'][t]['scriptPubKey']['addresses'][0] == @addressid)
+                address_conf_txlist.push(current_height - @blosckinfos['height'] + 1)
+                @addresstx.push(address_conf_txlist)
+              end
+					  end
+				  end
+        end
       end
+      @uri = "bitcoin:" + @addressid
+
+      qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+      png = qr.to_img
+      @qrcode = png.resize(300, 300).to_data_url
+      render template: 'bitcoin_app/addressinfo'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url + 'address/' + @addressid
     end
-
-    @uri = "bitcoin:" + @addressid
-
-    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-    png = qr.to_img
-    @qrcode = png.resize(300, 300).to_data_url
-    render template: 'bitcoin_app/addressinfo'
 	end
 
   def getnewaddress(address_type)

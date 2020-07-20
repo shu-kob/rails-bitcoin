@@ -80,7 +80,7 @@
       <tr>
         <td><%= link_to @listfunds["outputs"][k]["txid"], "https://explorer.bc-2.jp/tx/" + @listfunds["outputs"][k]["txid"] %></td>
         <td><%= @listfunds["outputs"][k]["value"] %></td>
-        <td><%= link_to @listfunds["outputs"][k]["address"], "https://explorer.bc-2.jp/address/" + @listfunds["outputs"][k]["address"] %></td>
+        <td><%= link_to @listfunds["outputs"][k]["address"], addressinfo_path(@listfunds["outputs"][k]["address"]) %></td>
         <td><%= @listfunds["outputs"][k]["status"] %></td>
         <td>
           <% if @listfunds["outputs"][k]["blockheight"] %>
