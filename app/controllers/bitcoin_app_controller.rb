@@ -167,11 +167,14 @@ class BitcoinAppController < ApplicationController
   end
 
   def blockinfo
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     @blockhashid = params[:blockhash]
-    @blockinfos = bitcoinRPC('getblock',[@blockhashid])
-
-    render template: 'bitcoin_app/blockinfo'
+    if blockchain_explorer_url() == "regtest"
+      @blockinfos = bitcoinRPC('getblock',[@blockhashid])
+      render template: 'bitcoin_app/blockinfo'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url + 'block/' + @blockhashid
+    end
   end
 
   def blockheightinfo
