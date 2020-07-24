@@ -12,49 +12,58 @@ require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
-    if params[:blockheight]
-      blockheightnum = params[:blockheight].to_i
-    end
-    if params[:blocknum]
-      blocknum = params[:blocknum].to_i
-    else
-      blocknum = 25
-    end
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    @blockheight = @blockchaininfo['blocks']
-    if (blockheightnum) && (blockheightnum < @blockheight)
-      i = blockheightnum
-    else
-      i = @blockheight
-    end
+    render template: 'bitcoin_app/index'
+  end
 
-    if i >= blocknum - 1
-      @blocknum = 25
-    elsif i < blocknum - 1 && @blockheight >= blocknum
-      @blocknum = blocknum
-      i = blocknum - 1
-    else
-      @blocknum = i
-    end
+  def blocklist
+    if blockchain_explorer_url() == "regtest"
+      if params[:blockheight]
+        blockheightnum = params[:blockheight].to_i
+      end
+      if params[:blocknum]
+        blocknum = params[:blocknum].to_i
+      else
+        blocknum = 25
+      end
+      @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+      @blockheight = @blockchaininfo['blocks']
+      if (blockheightnum) && (blockheightnum < @blockheight)
+        i = blockheightnum
+      else
+        i = @blockheight
+      end
+
+      if i >= blocknum - 1
+        @blocknum = 25
+      elsif i < blocknum - 1 && @blockheight >= blocknum
+        @blocknum = blocknum
+        i = blocknum - 1
+      else
+        @blocknum = i
+      end
 		
-    @height_num  = i - @blocknum
-    blockhash = []
-    blockinfo = []
-		j = 0
+      @height_num  = i - @blocknum
+      blockhash = []
+      blockinfo = []
+		  j = 0
 		
-    if i == 0
-    	@blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-      @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-		else
-      while i > @height_num do
+      if i == 0
         @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
         @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-        i = i - 1
-        j = j + 1
+		  else
+        while i > @height_num do
+          @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
+          @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
+          i = i - 1
+          j = j + 1
+        end
       end
-    end
 		
-    render template: 'bitcoin_app/index'
+      render template: 'bitcoin_app/blocklist'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url
+    end
   end
 
   def txlist

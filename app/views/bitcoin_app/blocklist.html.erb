@@ -1,0 +1,39 @@
+<% @title = "ブロック一覧" %>
+<h1><%= @title %></h1>
+
+<br>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>ブロック高</th>
+      <th>ブロックハッシュ</th>
+      <th>承認時刻</th>
+      <th>トランザクション数</th>
+      <th>サイズ</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% for i in 0..@blockinfo.length-1 %>
+      <tr>
+        <td><%= @blockinfo[i]['height'] %></td>
+        <td><%= link_to @blockinfo[i]['hash'], blockinfo_path(@blockinfo[i]['hash']) %></td>
+        <td><%= Time.at(@blockinfo[i]['time']) %></td>
+        <td><%= @blockinfo[i]['tx'].length %></td>
+        <td><%= @blockinfo[i]['size'] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+<% if @blockinfo[0]['height'] < @blockheight %>
+<td><%= link_to "次へ", pagenation_path(@blockinfo[0]['height'] + 25, 25) %></td>
+<% end %>
+
+<td>   </td>
+
+<% if @blockinfo[@blockinfo.length-1]['height'] > 0 %>
+  <td><%= link_to "前へ", pagenation_path(@blockinfo[@blockinfo.length-1]['height'] - 1, 25) %></td>
+<% end %>
