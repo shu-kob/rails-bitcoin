@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get '/', to: 'bitcoin_app#index'
   get '/index', to: 'bitcoin_app#index'
-  get '/index/:blockheight/:blocknum', to: 'bitcoin_app#index', as: 'pagenation'
+  get '/blocklist', to: 'bitcoin_app#blocklist'
+  get '/blocklist/:blockheight/:blocknum', to: 'bitcoin_app#blocklist', as: 'pagenation'
   get '/tx/:txid', to: 'bitcoin_app#txinfo', as: 'txinfo'
   get '/block/:blockhash', to: 'bitcoin_app#blockinfo', as: 'blockinfo'
   get '/blockheight/:blockheight', to: 'bitcoin_app#blockheightinfo', as: 'blockheightinfo'

@@ -12,87 +12,105 @@ require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
-    if params[:blockheight]
-      blockheightnum = params[:blockheight].to_i
-    end
-    if params[:blocknum]
-      blocknum = params[:blocknum].to_i
+    if blockchain_explorer_url() == "regtest"
+      redirect_to blocklist_path()
     else
-      blocknum = 25
+      render template: 'bitcoin_app/index'
     end
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    @blockheight = @blockchaininfo['blocks']
-    if (blockheightnum) && (blockheightnum < @blockheight)
-      i = blockheightnum
-    else
-      i = @blockheight
-    end
+  end
 
-    if i >= blocknum - 1
-      @blocknum = 25
-    elsif i < blocknum - 1 && @blockheight >= blocknum
-      @blocknum = blocknum
-      i = blocknum - 1
-    else
-      @blocknum = i
-    end
+  def blocklist
+    if blockchain_explorer_url() == "regtest"
+      if params[:blockheight]
+        blockheightnum = params[:blockheight].to_i
+      end
+      if params[:blocknum]
+        blocknum = params[:blocknum].to_i
+      else
+        blocknum = 25
+      end
+      @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+      @blockheight = @blockchaininfo['blocks']
+      if (blockheightnum) && (blockheightnum < @blockheight)
+        i = blockheightnum
+      else
+        i = @blockheight
+      end
+
+      if i >= blocknum - 1
+        @blocknum = 25
+      elsif i < blocknum - 1 && @blockheight >= blocknum
+        @blocknum = blocknum
+        i = blocknum - 1
+      else
+        @blocknum = i
+      end
 		
-    @height_num  = i - @blocknum
-    blockhash = []
-    blockinfo = []
-		j = 0
+      @height_num  = i - @blocknum
+      blockhash = []
+      blockinfo = []
+		  j = 0
 		
-    if i == 0
-    	@blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
-      @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-		else
-      while i > @height_num do
+      if i == 0
         @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
         @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
-        i = i - 1
-        j = j + 1
+		  else
+        while i > @height_num do
+          @blockhash = blockhash.push(bitcoinRPC('getblockhash',[i]))
+          @blockinfo = blockinfo.push(bitcoinRPC('getblock',[@blockhash[j]]))
+          i = i - 1
+          j = j + 1
+        end
       end
-    end
 		
-    render template: 'bitcoin_app/index'
+      render template: 'bitcoin_app/blocklist'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url
+    end
   end
 
   def txlist
-    mempoolinfo = bitcoinRPC('getrawmempool',[])
-    confirmation_num = []
-    @txlist = []
-		for n in 0..mempoolinfo.length-1
-      unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
-      decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
-      unconf_value = 0
-      for u in 0..decodedunconfirmedtxinfo['vout'].length-1
-        unconf_value = unconf_value + decodedunconfirmedtxinfo['vout'][u]['value']
-      end
-      @unconftx = []
-      @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0, -1, -1)
-      @txlist.push(@unconftx)
-		end
-    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
-    current_height = @blockchaininfo['blocks']
-		for p in 0..current_height-1
-			blockhash = bitcoinRPC('getblockhash',[current_height - p])
-      @blockinfo = bitcoinRPC('getblock',[blockhash])
-      for s in 0..@blockinfo['tx'].length-1 
-        confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfo['tx'][s]])
-        @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
-        value = 0
-        for t in 0..@decodedtxinfo['vout'].length-1
-          value = value + @decodedtxinfo['vout'][t]['value']
+    if blockchain_explorer_url() == "regtest"
+      mempoolinfo = bitcoinRPC('getrawmempool',[])
+      confirmation_num = []
+      @txlist = []
+		  for n in 0..mempoolinfo.length-1
+        unconfirmedrawtx = bitcoinRPC('getrawtransaction',[mempoolinfo[n]])
+        decodedunconfirmedtxinfo = bitcoinRPC('decoderawtransaction',[unconfirmedrawtx])
+        unconf_value = 0
+        for u in 0..decodedunconfirmedtxinfo['vout'].length-1
+          unconf_value = unconf_value + decodedunconfirmedtxinfo['vout'][u]['value']
         end
+        @unconftx = []
+        @unconftx.push(decodedunconfirmedtxinfo, unconf_value, 0, -1, -1)
+        @txlist.push(@unconftx)
+		  end
+      @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
+      current_height = @blockchaininfo['blocks']
+		  for p in 0..current_height-1
+			  blockhash = bitcoinRPC('getblockhash',[current_height - p])
+        @blockinfo = bitcoinRPC('getblock',[blockhash])
+        for s in 0..@blockinfo['tx'].length-1
+          confirmedrawtx = bitcoinRPC('getrawtransaction',[@blockinfo['tx'][s]])
+          @decodedtxinfo = bitcoinRPC('decoderawtransaction',[confirmedrawtx])
+          value = 0
+          for t in 0..@decodedtxinfo['vout'].length-1
+            value = value + @decodedtxinfo['vout'][t]['value']
+          end
 
-        @conftx = []
-        @conftx.push(@decodedtxinfo, value, @blockinfo)
-        @txlist.push(@conftx)
+          @conftx = []
+          @conftx.push(@decodedtxinfo, value, @blockinfo)
+          @txlist.push(@conftx)
+        end
       end
+      zero_blockhash = bitcoinRPC('getblockhash',[0])
+      @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
+      render template: 'bitcoin_app/txlist'
+    else
+      blockchain_explorer_url = blockchain_explorer_url()
+      redirect_to blockchain_explorer_url + 'tx/recent'
     end
-    zero_blockhash = bitcoinRPC('getblockhash',[0])
-    @decode_zero_blockhash = bitcoinRPC('getblock', [zero_blockhash])
-    render template: 'bitcoin_app/txlist'
   end
 
   def txinfo
