@@ -12,7 +12,11 @@ require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
-    render template: 'bitcoin_app/index'
+    if blockchain_explorer_url() == "regtest"
+      redirect_to blocklist_path()
+    else
+      render template: 'bitcoin_app/index'
+    end
   end
 
   def blocklist
