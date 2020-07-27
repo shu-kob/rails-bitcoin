@@ -117,7 +117,6 @@ class BitcoinAppController < ApplicationController
     @txid = params[:txid]
     if blockchain_explorer_url() == "regtest"
       @blockinfos = bitcoinRPC('getblock',[@blockhash])
-      render template: 'bitcoin_app/blockinfo'
       @txinfo = gettxinfo(@txid)
       mempoolinfo = bitcoinRPC('getrawmempool',[])
       for w in 0..mempoolinfo.length
@@ -198,13 +197,7 @@ class BitcoinAppController < ApplicationController
   def blockheightinfo
     @blockheight = params[:blockheight].to_i
     @blockhash = bitcoinRPC('getblockhash',[@blockheight])
-    if blockchain_explorer_url() == "regtest"
-      @blockinfos = bitcoinRPC('getblock',[@blockhash])
-      render template: 'bitcoin_app/blockinfo'
-    else
-      blockchain_explorer_url = blockchain_explorer_url()
-      redirect_to blockchain_explorer_url + 'block/' + @blockhash
-    end
+    redirect_to blockinfo_path(@blockhash)
   end
 
   def blockchain_explorer_url()
