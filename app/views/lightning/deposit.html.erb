@@ -1,10 +1,9 @@
 <% @title = "Lightning WalletにBTC受取" %>
 <h1><%= @title %></h1>
 
-<tr><img src ="<%= @qrcode %>"></tr>
+<!-- <tr><img src ="<%= @qrcode %>"></tr> -->
 
 <br>
-<!-- <tr><td><%= @uri %></td></tr> -->
 <br>
 <br>
 <tr></tr>
@@ -19,4 +18,4 @@
 
 <tr><%= @address %></tr>
 
-<%= button_to "新しいアドレス生成", {controller: 'lightning', action: 'deposit'}, {method: :get} %>
+<%= button_to "新しいアドレスを生成", {controller: 'lightning', action: 'deposit'}, {method: :get} %>

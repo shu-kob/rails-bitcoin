@@ -5,7 +5,7 @@
 <br>
 
 <% if @receipt == "RPCError" %>
-  <tr>既に支払い済みか支払い能力を超えているため支払いできません</tr>
+  <tr>既に支払い済みか支払可能額を超えているため支払いできません</tr>
 <% else %>
   <table border="1">
     <tr><th>id</th><td><%= @receipt['id'] %></td></tr>
