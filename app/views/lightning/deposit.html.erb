@@ -1,10 +1,11 @@
 <% @title = "Lightning WalletにBTC受取" %>
 <h1><%= @title %></h1>
-
-<!-- <tr><img src ="<%= @qrcode %>"></tr> -->
-
 <br>
 <br>
+<tr><th>　　　　</th><td></td><%= @qrcode.html_safe %></tr>
+<br>
+<br>
+
 <br>
 <tr></tr>
 <%= form_tag({ :controller => 'lightning', :action => 'deposit' },{ :method => :post}) do %>

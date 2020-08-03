@@ -245,7 +245,7 @@ class BitcoinAppController < ApplicationController
 
   def addressinfo
     @addressid = params[:address]
-    if blockchain_explorer_url() == "regtest"
+    if blockchain_explorer_url() != "regtest"
       @validateaddress = bitcoinRPC('validateaddress',[@addressid])
       if @validateaddress['isvalid']
         mempoolinfo = bitcoinRPC('getrawmempool',[])
@@ -281,9 +281,14 @@ class BitcoinAppController < ApplicationController
       end
       @uri = "bitcoin:" + @addressid
 
-      qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-      # png = qr.to_img
-      @qrcode = qr.resize(300, 300).to_data_url
+      qrcode = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+      @qrcode = qrcode.as_svg(
+        offset: 0,
+        color: '000',
+        shape_rendering: 'crispEdges',
+        module_size: 6,
+        standalone: true
+      )
       render template: 'bitcoin_app/addressinfo'
     else
       blockchain_explorer_url = blockchain_explorer_url()
