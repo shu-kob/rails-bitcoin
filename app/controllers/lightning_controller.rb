@@ -27,9 +27,14 @@ class LightningController < ApplicationController
       @nodeinfo.push(rpc.listnodes(@listpeers['peers'][i]['id']))
     end
 
-#    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-#    png = qr.to_img
-#    @qrcode = png.resize(300, 300).to_data_url
+    qrcode = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    @qrcode = qrcode.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 6,
+      standalone: true
+    )
 
     render template: 'lightning/lightning'
   end
@@ -122,9 +127,14 @@ class LightningController < ApplicationController
     description = params[:issue]['description']
     @invoice = rpc.invoice(msatoshi, label, description)
     @uri = @invoice['bolt11']
-#    qr = RQRCode::QRCode.new(@uri)
-#    png = qr.to_img
-#    @qrcode = png.resize(500, 500).to_data_url
+    qrcode = RQRCode::QRCode.new(@uri, :size => 20, :level => :h)
+    @qrcode = qrcode.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 6,
+      standalone: true
+    )
     render template: 'lightning/invoice'
   end
 
@@ -143,9 +153,14 @@ class LightningController < ApplicationController
       @uri = "bitcoin:" + @address
     end
 
-#    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-#    png = qr.to_img
-#    @qrcode = png.resize(300, 300).to_data_url
+    qrcode = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
+    @qrcode = qrcode.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 6,
+      standalone: true
+    )
     render template: 'lightning/deposit'
   end
 
