@@ -8,7 +8,7 @@ HOST="localhost"
 PORT=38332
 require 'openassets'
 require 'rqrcode'
-require 'rqrcode_png'
+# require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
@@ -282,8 +282,8 @@ class BitcoinAppController < ApplicationController
       @uri = "bitcoin:" + @addressid
 
       qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-      png = qr.to_img
-      @qrcode = png.resize(300, 300).to_data_url
+      # png = qr.to_img
+      @qrcode = qr.resize(300, 300).to_data_url
       render template: 'bitcoin_app/addressinfo'
     else
       blockchain_explorer_url = blockchain_explorer_url()
@@ -307,9 +307,14 @@ class BitcoinAppController < ApplicationController
       @uri = "bitcoin:" + @address
     end
 
-    qr = RQRCode::QRCode.new(@uri, :size => 10, :level => :h)
-    png = qr.to_img
-    @qrcode = png.resize(300, 300).to_data_url
+    qrcode = RQRCode::QRCode.new(@uri, size: 10, level: :h)
+    @qrcode = qrcode.as_svg(
+      offset: 0,
+      color: '000',
+      shape_rendering: 'crispEdges',
+      module_size: 6,
+      standalone: true
+    )
     render template: 'bitcoin_app/receive'
   end
 
