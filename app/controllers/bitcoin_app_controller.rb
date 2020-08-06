@@ -8,7 +8,6 @@ HOST="localhost"
 PORT=38332
 require 'openassets'
 require 'rqrcode'
-# require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
