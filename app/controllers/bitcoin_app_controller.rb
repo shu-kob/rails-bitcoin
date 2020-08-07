@@ -8,7 +8,6 @@ HOST="localhost"
 PORT=38332
 require 'openassets'
 require 'rqrcode'
-# require 'rqrcode_png'
 
 class BitcoinAppController < ApplicationController
   def index
@@ -245,7 +244,7 @@ class BitcoinAppController < ApplicationController
 
   def addressinfo
     @addressid = params[:address]
-    if blockchain_explorer_url() != "regtest"
+    if blockchain_explorer_url() == "regtest"
       @validateaddress = bitcoinRPC('validateaddress',[@addressid])
       if @validateaddress['isvalid']
         mempoolinfo = bitcoinRPC('getrawmempool',[])

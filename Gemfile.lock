@@ -203,9 +203,6 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 0.1)
     rqrcode_core (0.1.2)
-    rqrcode_png (0.1.5)
-      chunky_png
-      rqrcode
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
     sass-rails (6.0.0)
@@ -287,7 +284,6 @@ DEPENDENCIES
   puma (~> 4.3)
   rails (~> 6.0.1)
   rqrcode
-  rqrcode_png
   sass-rails (>= 6)
   selenium-webdriver
   spring

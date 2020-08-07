@@ -43,7 +43,6 @@ gem "actionpack", ">= 6.0.3.2"
 gem 'jquery-rails'
 
 gem 'rqrcode'
-gem 'rqrcode_png'
 
 gem "websocket-extensions", ">= 0.1.5"
 
