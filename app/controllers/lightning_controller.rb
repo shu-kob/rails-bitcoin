@@ -1,6 +1,5 @@
 require 'lightning'
 require 'rqrcode'
-require 'rqrcode_png'
 
 class LightningController < ApplicationController
   
