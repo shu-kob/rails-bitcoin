@@ -5,7 +5,7 @@ Bitcoin.chain_params = :testnet
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=38332
+PORT=18332
 require 'openassets'
 require 'rqrcode'
 
@@ -203,7 +203,7 @@ class BitcoinAppController < ApplicationController
     chain = chain()
     if chain == "main"
       blockchain_explorer_url = 'https://blockstream.info/'
-    elsif chain == "testnet"
+    elsif chain == "test"
       blockchain_explorer_url = 'https://blockstream.info/testnet/'
     elsif chain == "signet"
       blockchain_explorer_url = 'https://explorer.bc-2.jp/'
