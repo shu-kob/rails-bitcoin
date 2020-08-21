@@ -5,7 +5,9 @@
 <tr><th>　　　　</th><td></td><%= @qrcode.html_safe %></tr>
 <br>
 <br>
-
+<tr><th></th><td></td><%= @uri %></tr>
+<br>
+<br>
 <br>
 <tr></tr>
 <%= form_tag({ :controller => 'lightning', :action => 'deposit' },{ :method => :post}) do %>
