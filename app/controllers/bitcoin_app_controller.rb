@@ -423,9 +423,9 @@ class BitcoinAppController < ApplicationController
 
   def api
     api = OpenAssets::Api.new({
-      network:             'signet',
+      network:             'testnet',
       provider:           'bitcoind',
-      cache:            'signet.db',
+      cache:            'testnet.db',
       dust_limit:                600,
       default_fees:            10000,
       min_confirmation:            1,
@@ -434,7 +434,7 @@ class BitcoinAppController < ApplicationController
         user:                  'hoge',
         password:              'hoge',
         schema:               'http',
-        port:                  38332,
+        port:                  18332,
         host:            'localhost',
         timeout:                  60,
         open_timeout:             60 }
