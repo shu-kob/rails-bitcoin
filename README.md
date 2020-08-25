@@ -37,7 +37,7 @@ $ sudo cp * /usr/local/bin
 $ bitcoind -regtest -txindex -daemon
 ```
 
-ブロックチェーンの状況を見てみます。Regtestモードの最初は0ブロックしかありません。
+ブロックチェーンの同期状況を見てみます。Regtestモードの最初は0ブロックしかありません。
 
 ```
 $ bitcoin-cli -regtest getblockchaininfo
