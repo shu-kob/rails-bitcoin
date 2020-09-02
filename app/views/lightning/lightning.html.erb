@@ -134,7 +134,9 @@
 <% end %>
 <br>
 <br>
-<% if @getinfo["network"] == "testnet" %>
+<% if @getinfo["network"] == "bitcoin" %>
+<%= link_to 'LN Explorer', 'https://graph.lndexplorer.com/', :target=>["_blank"] %>
+<% elsif @getinfo["network"] == "testnet" %>
 <%= link_to 'LN Testnet Explorer', 'https://explorer.acinq.co/', :target=>["_blank"] %>
 <% end %>
 <br>
