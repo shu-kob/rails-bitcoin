@@ -4,7 +4,11 @@
 <br>
 
 <% if !(@blockchaininfo['chain'] == "regtest") %>
-  <td>regtestモードではないのでマイニングできません</td>
+  <td>regtestモードではないのでマイニングできません</td><br>
+  <th>Chain: </th>
+  <% if @blockchaininfo['chain'] == "bitcoin" %><%= "mainnet" %>
+  <% elsif @blockchaininfo['chain'] == "test" %><%= "testnet" %>
+<% else %><%= @blockchaininfo['chain'] %><% end %>
 <% else %>
   <%= button_to "マイニング", {controller: 'bitcoin_app', action: 'mine'}, {method: :get} %>
   <br>

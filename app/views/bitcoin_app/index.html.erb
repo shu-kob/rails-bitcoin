@@ -1,7 +1,7 @@
 <% @title = "トップページ" %>
 <h1><%= @title %></h1>
 
-Chain:
+<tr><th>chain: </th><td></td>
 <% if @network == "bitcoin" %><%= "mainnet" %>
 <% elsif @network == "test" %><%= "testnet" %>
-<% else %><%= @network %><% end %>
+<% else %><%= @network %><% end %></td></tr>
