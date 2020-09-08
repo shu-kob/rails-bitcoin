@@ -395,8 +395,8 @@ class BitcoinAppController < ApplicationController
     render template: 'bitcoin_app/utxolist'
   end
 
-  def openassetsaddress(btc_Address)
-    oa_address = OpenAssets.address_to_oa_address(btc_Address)
+  def openassetsaddress(btc_address)
+    oa_address = OpenAssets.address_to_oa_address(btc_address)
     return oa_address
   end
 
@@ -405,7 +405,8 @@ class BitcoinAppController < ApplicationController
   end
 
   def assetissue
-    oa_address = params[:oa_address]
+    btc_address = params[:address]
+    oa_address = openassetsaddress(btc_address)
     amount = params[:amount].to_i
     metadata = ''
     @tx = api.issue_asset(oa_address, amount, metadata)
