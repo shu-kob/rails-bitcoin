@@ -12,6 +12,7 @@ require 'rqrcode'
 class BitcoinAppController < ApplicationController
   def index
     @network = chain()
+    @blockchaininfo = bitcoinRPC('getblockchaininfo',[])
     if blockchain_explorer_url() == "regtest"
       redirect_to blocklist_path()
     else

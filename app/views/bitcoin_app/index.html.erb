@@ -5,3 +5,9 @@
 <% if @network == "bitcoin" %><%= "mainnet" %>
 <% elsif @network == "test" %><%= "testnet" %>
 <% else %><%= @network %><% end %></td></tr>
+
+<br>
+<% if @blockchaininfo["blocks"] == @blockchaininfo["headers"] %><td>同期完了</td>
+<% else %><th>同期完了まであと</th><td>
+<%= @blockchaininfo["headers"] - @blockchaininfo["blocks"] %>ブロック</td>
+<% end %>
