@@ -34,7 +34,7 @@ gem 'bitcoinrb', require: 'bitcoin'
 gem 'openassets'
 gem 'c-lightningrb', require: 'lightning'
 
-gem "actionview", ">= 6.0.2.2"
+gem "actionview", ">= 6.0.3.3"
 
 gem "activesupport", ">= 6.0.3.1"
 gem "activestorage", ">= 6.0.3.1"
