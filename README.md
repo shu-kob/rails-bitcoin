@@ -68,9 +68,9 @@ $ cd ~/.bitcoin
 
 #### Mac, Linux共通 
 
-生成されているbitcoin.confを編集
+bitcoin.confを記載
 
-下記をコピペして保存
+下記を記述して保存
 
 ```
 regtest=1
@@ -79,6 +79,9 @@ server=1
 daemon=1
 rpcuser=hoge
 rpcpassword=hoge
+[testnet]
+rpcport=18332
+port=18333
 [regtest]
 rpcport=18443
 port=18444
