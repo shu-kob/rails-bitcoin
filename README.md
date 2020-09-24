@@ -174,4 +174,9 @@ config.vm.network "private_network", ip: "192.168.33.10"
 ```
 をコメントアウトして仮想マシンを起動
 
+```
+vagrant up
+vagrant ssh
+```
+
 http://192.168.33.10:3000/
