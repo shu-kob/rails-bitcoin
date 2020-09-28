@@ -44,7 +44,7 @@ regtestはスタンドアロンのテストモード、txindexはネブロック
 $ bitcoin-cli -regtest getblockchaininfo
 ```
 
-停止
+停止するには下記コマンドを実行します。
 
 ```
 $ bitcoin-cli -regtest stop
