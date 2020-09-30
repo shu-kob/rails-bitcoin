@@ -24,7 +24,7 @@
 
 <br>
 <% if !@validateaddress['isvalid'] %>
-  <td>ビットコインのアドレスではありません</td>
+  <td>ビットコインのアドレスではないか、異なるchainのアドレスです</td>
 <% else %>
   <% if @addresstx.empty? %>
     <td>トランザクションはまだありません</td>
