@@ -38,6 +38,20 @@ $ bitcoind -regtest -txindex -daemon
 ```
 regtestはスタンドアロンのテストモード、txindexはネブロックチェーン上のトランザクションを全取得、daemonはデーモン起動で、コンソール上にログを吐きません。
 
+ログは下記に出力されます。
+
+Macの場合
+```
+"/Users/${USER}/Library/Application Support/Bitcoin/regtest/debug.log"
+```
+
+Ubuntuの場合
+
+```
+~/.bitcoin/regtest/debug.log
+
+```
+
 ブロックチェーンの同期状況を見てみます。Regtestモードの最初は0ブロックしかありません。
 
 ```
