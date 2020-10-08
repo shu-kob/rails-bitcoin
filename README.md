@@ -3,7 +3,7 @@
 ## Bitcoin Core
 Bitcoin Coreはbitcoindとも呼ばれる公式クライアントです。
 
-### Bitcoin Coreのインストール
+### Bitcoin Core(bitcoind)のインストール
 
 #### Macにbitcoindをインストール
 
