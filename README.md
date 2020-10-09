@@ -49,7 +49,6 @@ Ubuntuの場合
 
 ```
 ~/.bitcoin/regtest/debug.log
-
 ```
 
 ブロックチェーンの同期状況を見てみます。Regtestモードの最初は0ブロックしかありません。
