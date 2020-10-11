@@ -195,7 +195,9 @@ vagrant ssh
 
 http://192.168.33.10:3000/
 
-Ubutnuにc-lightningをインストール
+## c-lightningをインストール
+
+### Ubuntuにc-lightningをインストール
 
 ```
 $ sudo apt-get update -y && apt install -y wget xz-utils
