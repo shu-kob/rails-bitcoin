@@ -193,3 +193,14 @@ vagrant ssh
 ```
 
 http://192.168.33.10:3000/
+
+## c-lightningをインストール
+
+### Ubuntuにc-lightningをインストール
+
+```
+$ sudo apt-get update -y && apt install -y wget xz-utils
+$ wget https://github.com/ElementsProject/lightning/releases/download/v0.9.1/clightning-v0.9.1-Ubuntu-18.04.tar.xz
+$ tar -xvf clightning-v0.9.1-Ubuntu-18.04.tar.xz
+$ chmod +x /usr/bin/lightning*
+```
