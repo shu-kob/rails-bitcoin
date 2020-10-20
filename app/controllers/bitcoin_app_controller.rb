@@ -1,11 +1,11 @@
 require 'bitcoin'
 require 'net/http'
 require 'json'
-Bitcoin.chain_params = :testnet
+Bitcoin.chain_params = :regtest
 RPCUSER="hoge"
 RPCPASSWORD="hoge"
 HOST="localhost"
-PORT=38332
+PORT=18443
 require 'openassets'
 require 'rqrcode'
 
@@ -426,9 +426,9 @@ class BitcoinAppController < ApplicationController
 
   def api
     api = OpenAssets::Api.new({
-      network:             'testnet',
+      network:             'regtest',
       provider:           'bitcoind',
-      cache:            'testnet.db',
+      cache:            'regteest.db',
       dust_limit:                600,
       default_fees:            10000,
       min_confirmation:            1,

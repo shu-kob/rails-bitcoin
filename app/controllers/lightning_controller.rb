@@ -208,7 +208,7 @@ class LightningController < ApplicationController
 
   private
   def rpc
-    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/signet/lightning-rpc')
+    rpc = Lightning::RPC.new('/Users/skobuchi/.lightning/regtest/lightning-rpc')
     return rpc
   end
 end

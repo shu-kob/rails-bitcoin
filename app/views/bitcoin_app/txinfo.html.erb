@@ -26,7 +26,7 @@
   <tr>
     <th>手数料</th>
     <% if input_value == 0 %>
-      <td>0 BTC</td>
+      <td>Coinbase TXなのでなし</td>
     <% else %>
       <td><%= input_value.to_d - @txinfo[2].to_d %> BTC</td>
     <% end %>
