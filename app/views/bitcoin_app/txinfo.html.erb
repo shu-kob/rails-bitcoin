@@ -82,7 +82,7 @@
         <% if(@txinfo[0]['vout'][i]['scriptPubKey']['addresses']) %>
           <td><%= link_to @txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0], addressinfo_path(@txinfo[0]['vout'][i]['scriptPubKey']['addresses'][0]) %></td>
         <% else %>
-          <td>EMPTY</td>
+          <td>データ領域のためなし</td>
         <% end %>
         <th>送金額</th><td><%= @txinfo[0]['vout'][i]['value'] %> BTC</td>
       </tr>
