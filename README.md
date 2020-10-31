@@ -185,7 +185,7 @@ Vagrantfile
 ```
 config.vm.network "private_network", ip: "192.168.33.10"
 ```
-をコメントアウトして仮想マシンを起動
+をコメントアウトして仮想マシンを起動して入る
 
 ```
 vagrant up
