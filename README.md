@@ -36,9 +36,9 @@ $ sudo cp * /usr/local/bin
 ```
 $ bitcoind -regtest -txindex -daemon
 ```
-regtestはスタンドアロンのテストモード
-txindexはブロックチェーン上のトランザクションを全取得
-daemonはデーモン起動でコンソール上にログを吐きません。
+regtestはスタンドアロンのテストモード<br>
+txindexはブロックチェーン上のトランザクションを全取得<br>
+daemonはデーモン起動でコンソール上にログを吐きません。<br>
 
 ログは下記に出力されます。
 
