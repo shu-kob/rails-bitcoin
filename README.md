@@ -98,12 +98,16 @@ server=1
 daemon=1
 rpcuser=hoge
 rpcpassword=hoge
-[testnet]
+
+[test]
 rpcport=18332
 port=18333
 [regtest]
 rpcport=18443
 port=18444
+[signet]
+rpcport=38332
+port=38333
 ```
 
 起動してブロックチェーン情報を取得
