@@ -428,7 +428,7 @@ class BitcoinAppController < ApplicationController
     api = OpenAssets::Api.new({
       network:             'regtest',
       provider:           'bitcoind',
-      cache:            'regteest.db',
+      cache:            'regtest.db',
       dust_limit:                600,
       default_fees:            10000,
       min_confirmation:            1,
