@@ -39,7 +39,7 @@ gem "actionview", ">= 6.0.3.3"
 gem "activerecord", ">= 6.0.3.5"
 gem "activesupport", ">= 6.0.3.1"
 gem "activestorage", ">= 6.0.3.1"
-gem "actionpack", ">= 6.0.3.2"
+gem "actionpack", ">= 6.0.3.7"
 
 gem 'jquery-rails'
 
