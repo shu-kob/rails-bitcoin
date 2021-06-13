@@ -13,9 +13,9 @@ bitcoindのVer.は適宜変更してください。
 
 ```
 $ cd
-$ wget https://bitcoin.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-osx64.tar.gz
-$ tar -zxvf bitcoin-0.20.1-osx64.tar.gz
-$ cd bitcoin-0.20.1/bin/
+$ wget https://bitcoin.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-osx64.tar.gz
+$ tar -zxvf bitcoin-0.21.1-osx64.tar.gz
+$ cd bitcoin-0.21.1/bin/
 $ sudo cp * /usr/local/bin
 ```
 
@@ -27,9 +27,9 @@ bitcoindのVer.は適宜変更してください。
 
 ```
 $ cd
-$ wget https://bitcoin.org/bin/bitcoin-core-0.20.1/bitcoin-0.20.1-x86_64-linux-gnu.tar.gz
-$ tar -zxvf bitcoin-0.20.1-x86_64-linux-gnu.tar.gz
-$ cd bitcoin-0.20.1/bin/
+$ wget https://bitcoin.org/bin/bitcoin-core-0.21.1/bitcoin-0.21.1-x86_64-linux-gnu.tar.gz
+$ tar -zxvf bitcoin-0.21.1-x86_64-linux-gnu.tar.gz
+$ cd bitcoin-0.21.1/bin/
 $ sudo cp * /usr/local/bin
 ```
 
