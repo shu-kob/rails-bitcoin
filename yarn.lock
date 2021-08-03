@@ -1385,6 +1385,13 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+atocha@^1.0.1:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/atocha/-/atocha-1.2.2.tgz#c6eb890fd122163f4040c5878ef8dca95e9a54ab"
+  integrity sha512-nsHoiK74fhWdxf7SDQ9t6gYEAJN6wlKJwtvSik+uEdBxPQr9y958xCBdPIf8T3VtD8/wUBGaxWOjiG0anX8F1w==
+  dependencies:
+    swear "^1.0.4"
+
 autoprefixer@^9.6.1:
   version "9.8.6"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.8.6.tgz#3b73594ca1bf9266320c5acf1588d74dea74210f"
@@ -1894,6 +1901,11 @@ chalk@^2.0, chalk@^2.0.0, chalk@^2.4.1, chalk@^2.4.2:
     ansi-styles "^3.2.1"
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
+
+check@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/check/-/check-1.0.0.tgz#3ecf5f0c861eb9bae78ced297239083acf181ab9"
+  integrity sha1-Ps9fDIYeubrnjO0pcjkIOs8YGrk=
 
 chokidar@^2.1.8:
   version "2.1.8"
@@ -3037,6 +3049,14 @@ file-uri-to-path@1.0.0:
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
   integrity sha512-0Zt+s3L7Vf1biwWZ29aARiVYLx7iMGnEUl9x33fbB/j3jR81u/O2LbqK+Bm1CDSNDKVtJ/YjwY7TUd5SkeLQLw==
 
+files@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/files/-/files-2.1.1.tgz#690697ae876ff55a6c16bd986610bbe6c170ad45"
+  integrity sha512-fLIicLkV3QWsClkNA4xvNoneBo9Skuqgq9sBDVXmF4+R4lrqNLt3EUXkvkVk8w6ebO2vb7GTFtZhqgkUIQTTrg==
+  dependencies:
+    atocha "^1.0.1"
+    swear "^1.1.0"
+
 fill-range@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-4.0.0.tgz#d544811d428f98eb06a63dc402d2403c328c38f7"
@@ -3299,15 +3319,7 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-glob-parent@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"
-  integrity sha1-nmr2KZ2NO9K9QEMIMr0RPfkGxa4=
-  dependencies:
-    is-glob "^3.1.0"
-    path-dirname "^1.0.0"
-
-glob-parent@~5.1.0:
+glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
@@ -3923,7 +3935,7 @@ is-extendable@^1.0.1:
   dependencies:
     is-plain-object "^2.0.4"
 
-is-extglob@^2.1.0, is-extglob@^2.1.1:
+is-extglob@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
   integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
@@ -3944,13 +3956,6 @@ is-fullwidth-code-point@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/is-fullwidth-code-point/-/is-fullwidth-code-point-2.0.0.tgz#a3b30a5c4f199183167aaab93beefae3ddfb654f"
   integrity sha1-o7MKXE8ZkYMWeqq5O+764937ZU8=
-
-is-glob@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-3.1.0.tgz#7ba5ae24217804ac70707b96922567486cc3e84a"
-  integrity sha1-e6WuJCF4BKxwcHuWkiVnSGzD6Eo=
-  dependencies:
-    is-extglob "^2.1.0"
 
 is-glob@^4.0.0, is-glob@^4.0.1, is-glob@~4.0.1:
   version "4.0.1"
@@ -4438,7 +4443,7 @@ meow@^3.7.0:
     object-assign "^4.0.1"
     read-pkg-up "^1.0.1"
     redent "^1.0.0"
-    trim-newlines "^3.0.1"
+    trim-newlines "^1.0.0"
 
 merge-descriptors@1.0.1:
   version "1.0.1"
@@ -5139,11 +5144,6 @@ path-complete-extname@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/path-complete-extname/-/path-complete-extname-1.0.0.tgz#f889985dc91000c815515c0bfed06c5acda0752b"
   integrity sha512-CVjiWcMRdGU8ubs08YQVzhutOR5DEfO97ipRIlOGMK5Bek5nQySknBpuxVAVJ36hseTNs+vdIcv57ZrWxH7zvg==
-
-path-dirname@^1.0.0:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/path-dirname/-/path-dirname-1.0.2.tgz#cc33d24d525e099a5388c0336c6e32b9160609e0"
-  integrity sha1-zDPSTVJeCZpTiMAzbG4yuRYGCeA=
 
 path-exists@^2.0.0:
   version "2.1.0"
@@ -7017,6 +7017,11 @@ svgo@^1.0.0:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+swear@^1.0.4, swear@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/swear/-/swear-1.1.0.tgz#b7546b2871fcfebdc06cdfbfb8fa33ac1093a20c"
+  integrity sha512-VgWuk/cUUXtpy4JlwaLHc0M4Oqc7c6EtJwvWD9LwwpbZLsxQ9buZ5l32M/26sdJPyuUnpgiK4K+KH8vPudEbQg==
 
 tapable@^1.0.0, tapable@^1.1.3:
   version "1.1.3"
