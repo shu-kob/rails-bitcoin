@@ -123,20 +123,43 @@ bitcoindを起動したままにして、Ruby on Railsの環境を整えてい�
 ### Macの場合
 
 ```
-$ brew link autoconf
-$ brew unlink autoconf && brew link autoconf
+$ brew install ruby
 $ brew install rbenv ruby-build
 $ brew update && brew upgrade ruby-build
-$ rbenv install 2.6.5
+$ rbenv install 3.1.0
 # かなり時間がかかるので気長に待ちましょう
-$ rbenv global 2.6.5
+```
+
+```
+$ vi ~/.zprofile
+```
+
+下記を追記
+
+```
+[[ -d ~/.rbenv  ]] && \
+  export PATH=${HOME}/.rbenv/bin:${PATH} && \
+  eval "$(rbenv init -)"
+```
+
+```
+$ source ~/.zprofile
+```
+
+```
+$ rbenv global 3.1.0
+```
+
+ターミナルを一旦ログアウト
+
+```
 $ ruby -v
-# 2.6.5であればOK
+# 3.1.0であればOK
 $ gem install bundler
 $ bundle -v
-$ gem install rails --version="~> 6.0.0"
+$ gem install rails --version="~> 7.0.0"
 $ rails -v
-# 6系であればOK
+# 7系であればOK
 $ git clone https://github.com/shu-kob/rails-bitcoin
 $ cd rails-bitcoin
 $ bundle install
@@ -162,19 +185,19 @@ $ exec $SHELL
 $ mkdir -p ~/.rbenv/plugins
 $ cd ~/.rbenv/plugins
 $ git clone git://github.com/sstephenson/ruby-build.git
-$ rbenv install 2.6.5
+$ rbenv install 3.1.0
 かなり時間がかかるので気長に待ちましょう
-$ rbenv global 2.6.5
+$ rbenv global 3.1.0
 $ rbenv version
-# 2.6.5であればOK
+# 3.1.0であればOK
 $ which ruby
 # 例)/home/vagrant/.rbenv/shims/ruby などと返ってくればOK
 $ ruby -v
-# 2.6.5であればOK
-$ gem install rails --version="~> 6.0.0"
+# 3.1.0であればOK
+$ gem install rails --version="~> 7.0.0"
 $ rbenv rehash
 $ rails -v
-# 6系であればOK
+# 7系であればOK
 $ git clone https://github.com/shu-kob/rails-bitcoin
 $ cd rails-bitcoin
 $ bundle install
